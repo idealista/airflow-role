@@ -1,0 +1,60 @@
+---
+
+- name: Airflow | Ensure Airflow group
+  group:
+    name: "{{ airflow_group }}"
+
+- name: Airflow | Ensure Airflow user
+  user:
+    name: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+    shell: /bin/bash
+
+- name: Airflow | Installing dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items: "{{ airflow_required_libs }}"
+
+- name: Airflow | Installing Airflow
+  pip:
+    name: apache-airflow
+    version: "{{ airflow_version }}"
+  register: airflow_install
+
+- name: Airflow | Installing Airflow Extra Packages
+  pip:
+    name: apache-airflow[{{ item }}]
+    version: "{{ airflow_version }}"
+  with_items: "{{ airflow_extra_packages }}"
+
+- name: Airflow | Create path for Airflow home
+  file:
+    path: "{{ airflow_home }}"
+    state: directory
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: Airflow | Create path for configuration files
+  file:
+    path: "{{ airflow_environment_file_folder }}"
+    state: directory
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: Airflow | Copy Environment File
+  template:
+    src: airflow-environment-file.j2
+    dest: "{{ airflow_environment_file_folder }}/airflow"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: Airflow | Copy Daemon scripts
+  template:
+    src: "{{ item.key }}.service.j2"
+    dest: /lib/systemd/system/{{ item.key }}.service
+    mode: 0644
+  notify: restart {{ item.key }}
+  with_dict: "{{ airflow_services }}"
+  when: "{{ item.value.enabled }}"

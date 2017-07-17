@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  company: Idealista S.A.
+  description: Apache Airflow role
+  min_ansible_version: 2.2.1.0
+  license: Apache 2.0
+  platforms:
+    - name: Debian
+      versions:
+        - stretch

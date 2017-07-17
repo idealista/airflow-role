@@ -1,0 +1,16 @@
+---
+
+- name: Airflow | Install
+  include: install.yml
+  tags:
+    - install
+
+- name: Airflow | Config
+  include: config.yml
+  tags:
+    - config
+
+- name: Airflow | Service
+  include: service.yml
+  tags:
+    - service

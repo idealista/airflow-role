@@ -1,0 +1,11 @@
+---
+
+- name: Airflow | Configuring service
+  systemd:
+    name: "{{ item.key }}"
+    state: "{{ item.value.state }}"
+    enabled: "{{ item.value.enabled }}"
+    daemon_reload: yes
+  with_dict: "{{ airflow_services }}"
+  when: "{{ item.value.enabled }}"
+  changed_when: false

@@ -1,0 +1,66 @@
+---
+molecule:
+  # directory in CWD to place all temp files, etc.
+  molecule_dir: .molecule
+
+  # where temporary state will be stored (lives under molecule_dir)
+  state_file: state
+
+  # name of temporary vagrantfile created during runs (lives under molecule_dir)
+  vagrantfile_file: vagrantfile
+
+  # directories to ignore when doing trailing whitespace checks on files during verify command
+  ignore_paths:
+    - .git
+    - .vagrant
+    - .molecule
+
+  # directory to look for testinfra tests
+  testinfra_dir: tests
+
+  # directory containing group_vars to use with ansible
+  group_vars: ../tests/group_vars
+
+dependency:
+  name: galaxy
+
+# ansible related configuration
+ansible:
+  playbook: tests/playbook.yml
+
+test:
+  sequence:
+    - destroy
+    - syntax
+    - create
+    - converge
+    - verify
+    - idempotence
+
+# configuration options for the internal call to vagrant
+vagrant:
+  # molecule's --platform option will look for these names
+  raw_config_args:
+    - "landrush.enabled = true"
+    - "landrush.tld = 'vm'"
+    - "landrush.guest_redirect_dns = true"
+
+  platforms:
+    - name: Debian9
+      box: debian/stretch64
+
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 1024
+        cpus: 4
+
+  instances:
+    - name: airflow.vm
+      ansible_groups:
+        - airflow
+      interfaces:
+        - network_name: private_network
+          type: dhcp
+          auto_config: true

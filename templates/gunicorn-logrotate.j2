@@ -1,0 +1,13 @@
+{{ airflow_logs_folder }}/gunicorn-*.log {
+    daily
+    missingok
+    rotate 7
+    size 500M
+    compress
+    notifempty
+    create 644 {{ airflow_user }} {{ airflow_group }}
+    sharedscripts
+    postrotate
+        [ -f /run/airflow/webserver.pid ] && kill -USR1 `cat /run/airflow/webserver.pid`
+    endscript
+}

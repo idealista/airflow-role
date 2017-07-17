@@ -1,0 +1,20 @@
+---
+# handlers file for airflow-role
+
+- name: restart airflow-webserver
+  systemd:
+    name: airflow-webserver
+    state: restarted
+  when: airflow_services['airflow-webserver'] and airflow_services['airflow-webserver']['enabled']
+
+- name: restart airflow-scheduler
+  systemd:
+    name: airflow-scheduler
+    state: restarted
+  when: airflow_services['airflow-scheduler'] and airflow_services['airflow-scheduler']['enabled']
+
+- name: restart airflow-worker
+  systemd:
+    name: airflow-worker
+    state: restarted
+  when: airflow_services['airflow-worker'] and airflow_services['airflow-worker']['enabled']
