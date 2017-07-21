@@ -56,7 +56,7 @@ airflow_max_active_runs_per_dag: 16
 airflow_fernet_key:
 
 airflow_donot_pickle: False
-airflow_dagbag_import_timeout:
+airflow_dagbag_import_timeout: 30
 
 airflow_task_runner: BashTaskRunner
 
