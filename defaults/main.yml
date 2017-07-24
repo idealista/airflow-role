@@ -27,7 +27,7 @@ airflow_services:
     enabled: no
     state: started
   airflow-flower:
-    enabled: yes
+    enabled: no
     state: started
 
 # Files & Paths
