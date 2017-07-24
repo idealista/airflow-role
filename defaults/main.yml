@@ -26,6 +26,9 @@ airflow_services:
   airflow-worker:
     enabled: no
     state: started
+  airflow-flower:
+    enabled: yes
+    state: started
 
 # Files & Paths
 airflow_home: /etc/airflow
