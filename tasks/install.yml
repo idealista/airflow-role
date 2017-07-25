@@ -10,24 +10,6 @@
     group: "{{ airflow_group }}"
     shell: /bin/bash
 
-- name: Airflow | Installing dependencies
-  apt:
-    pkg: "{{ item }}"
-    state: present
-  with_items: "{{ airflow_required_libs }}"
-
-- name: Airflow | Installing Airflow
-  pip:
-    name: apache-airflow
-    version: "{{ airflow_version }}"
-  register: airflow_install
-
-- name: Airflow | Installing Airflow Extra Packages
-  pip:
-    name: apache-airflow[{{ item }}]
-    version: "{{ airflow_version }}"
-  with_items: "{{ airflow_extra_packages }}"
-
 - name: Airflow | Create path for Airflow home
   file:
     path: "{{ airflow_home }}"
@@ -41,6 +23,43 @@
     state: directory
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
+
+- name: Airflow | Installing dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items: "{{ airflow_required_libs }}"
+
+- block:
+  - name: Airflow | Installing proper Celery version
+    pip:
+      name: celery
+      version: "{{ celery_version }}"
+
+  - name: Airflow | Installing extra Celery packages
+    pip:
+      name: celery[{{ item }}]
+      version: "{{ celery_version }}"
+    with_items: "{{ celery_extra_packages }}"
+
+    when: airflow_executor == "CeleryExecutor"
+
+- name: Airflow | Set AIRFLOW_HOME environment variable in /etc/environment
+  lineinfile:
+    path: /etc/environment
+    line: 'AIRFLOW_HOME={{ airflow_home }}'
+
+- name: Airflow | Installing Airflow
+  pip:
+    name: apache-airflow
+    version: "{{ airflow_version }}"
+  register: airflow_install
+
+- name: Airflow | Installing Airflow Extra Packages
+  pip:
+    name: apache-airflow[{{ item }}]
+    version: "{{ airflow_version }}"
+  with_items: "{{ airflow_extra_packages }}"
 
 - name: Airflow | Copy Environment File
   template:
