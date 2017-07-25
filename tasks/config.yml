@@ -32,6 +32,7 @@
     - restart airflow-webserver
     - restart airflow-scheduler
     - restart airflow-worker
+    - restart airflow-flower
 
 - name: Airflow | Initializing DB
   shell: AIRFLOW_HOME={{ airflow_home }} /usr/local/bin/airflow initdb
@@ -44,6 +45,7 @@
     - restart airflow-webserver
     - restart airflow-scheduler
     - restart airflow-worker
+    - restart airflow-flower
 
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
   copy:
@@ -58,6 +60,7 @@
     - restart airflow-webserver
     - restart airflow-scheduler
     - restart airflow-worker
+    - restart airflow-flower
 
 - name: Airflow | Copy extra airflow config templates (provided by playbooks)
   template:
@@ -72,3 +75,4 @@
     - restart airflow-webserver
     - restart airflow-scheduler
     - restart airflow-worker
+    - restart airflow-flower
