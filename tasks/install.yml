@@ -42,7 +42,7 @@
     name: celery[{{ item }}]
     version: "{{ celery_version }}"
   with_items: "{{ celery_extra_packages }}"
-  when: airflow_executor == "CeleryExecutor"
+  when: airflow_executor == "CeleryExecutor" and celery_extra_packages
 
 - name: Airflow | Set AIRFLOW_HOME environment variable in /etc/environment
   lineinfile:
