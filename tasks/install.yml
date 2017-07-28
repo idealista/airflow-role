@@ -28,21 +28,21 @@
   apt:
     pkg: "{{ item }}"
     state: present
+    update_cache: yes
   with_items: "{{ airflow_required_libs }}"
 
-- block:
-  - name: Airflow | Installing proper Celery version
-    pip:
-      name: celery
-      version: "{{ celery_version }}"
+- name: Airflow | Installing proper Celery version
+  pip:
+    name: celery
+    version: "{{ celery_version }}"
+  when: airflow_executor == "CeleryExecutor"
 
-  - name: Airflow | Installing extra Celery packages
-    pip:
-      name: celery[{{ item }}]
-      version: "{{ celery_version }}"
-    with_items: "{{ celery_extra_packages }}"
-
-    when: airflow_executor == "CeleryExecutor"
+- name: Airflow | Installing extra Celery packages
+  pip:
+    name: celery[{{ item }}]
+    version: "{{ celery_version }}"
+  with_items: "{{ celery_extra_packages }}"
+  when: airflow_executor == "CeleryExecutor"
 
 - name: Airflow | Set AIRFLOW_HOME environment variable in /etc/environment
   lineinfile:
@@ -60,6 +60,7 @@
     name: apache-airflow[{{ item }}]
     version: "{{ airflow_version }}"
   with_items: "{{ airflow_extra_packages }}"
+  when: airflow_extra_packages
 
 - name: Airflow | Copy Environment File
   template:
