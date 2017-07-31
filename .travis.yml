@@ -8,8 +8,8 @@ sudo: required
 # Environment variables for the containers' use
 env:
   - docker_image: python:2.7.13-jessie # So we can download the proper Docker image
-  - init: /lib/systemd/systemd # So we can use systemd in our container
-  - run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" # So we can use systemd in our container
+    init: /lib/systemd/systemd # So we can use systemd in our container
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" # So we can use systemd in our container
 
 # Tell Travis to start Docker when it brings up an environment.
 services:
