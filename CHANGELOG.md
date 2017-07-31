@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.2.0](https://github.com/idealista/airflow-role/tree/1.2.0)
+### Added
+- *Authentication via LDAP now working* @jnogol
+- *Tiny bugs in tasks/install.yml fixed* @jnogol
+- *Travis CI integration added* @jnogol
+
 ## [1.1.0](https://github.com/idealista/airflow-role/tree/1.1.0)
 ### Added
 - *Added Celery Worker optional installation* @jnogol
