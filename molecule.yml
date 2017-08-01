@@ -39,12 +39,12 @@ test:
 
 # configuration options for the internal call to vagrant
 vagrant:
-  # molecule's --platform option will look for these names
   raw_config_args:
     - "landrush.enabled = true"
     - "landrush.tld = 'vm'"
     - "landrush.guest_redirect_dns = true"
 
+  # molecule's --platform option will look for these names
   platforms:
     - name: Debian9
       box: debian/stretch64
