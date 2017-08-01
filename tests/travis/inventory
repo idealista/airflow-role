@@ -1,0 +1,2 @@
+[airflow]
+localhost ansible_connection=local

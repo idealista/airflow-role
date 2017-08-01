@@ -1,5 +1,7 @@
 ![Logo](https://raw.githubusercontent.com/idealista/airflow-role/master/logo.gif)
 
+[![Build Status](https://travis-ci.org/idealista/airflow-role.png)](https://travis-ci.org/idealista/airflow-role)
+
 # Apache Airflow Ansible role
 
 This ansible role installs a Apache Airflow server in a debian environment.
