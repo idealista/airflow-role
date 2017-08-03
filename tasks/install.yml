@@ -62,6 +62,18 @@
   with_items: "{{ airflow_extra_packages }}"
   when: airflow_extra_packages
 
+- name: Airflow | Installing DAGs dependencies
+  pip:
+    name: "{{ item.key }}"
+    version: "{{ item.value.version }}"
+  with_dict: "{{ dags_dependencies }}"
+  when: dags_dependencies is defined
+  notify:
+    - restart airflow-webserver
+    - restart airflow-scheduler
+    - restart airflow-worker
+    - restart airflow-flower
+
 - name: Airflow | Copy Environment File
   template:
     src: airflow-environment-file.j2
