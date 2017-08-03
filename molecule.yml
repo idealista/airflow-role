@@ -39,12 +39,12 @@ test:
 
 # configuration options for the internal call to vagrant
 vagrant:
-  # molecule's --platform option will look for these names
   raw_config_args:
     - "landrush.enabled = true"
     - "landrush.tld = 'vm'"
     - "landrush.guest_redirect_dns = true"
 
+  # molecule's --platform option will look for these names
   platforms:
     - name: Debian9
       box: debian/stretch64
@@ -64,3 +64,37 @@ vagrant:
         - network_name: private_network
           type: dhcp
           auto_config: true
+
+docker:
+  containers:
+    - name: airflow.vm
+      ansible_groups:
+        - airflow
+
+      # We are using this image because the default Debian image has
+      # Python 2.7.9 and the playbook won't deploy
+      image: python
+      image_version: 2.7.13-jessie
+
+      port_bindings:
+        80: 80
+        8080: 8080
+        5555: 5555
+
+      # All these parameters are needed for Docker testing with systemd
+      privileged: True
+      cap_add:
+        - SYS_ADMIN
+      volume_mounts:
+        - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+      command: '/lib/systemd/systemd'
+
+verifier:
+  name: testinfra
+  options:
+    # We have to override these options because, when Docker driver selected,
+    # Testinfra uses Docker as backend connection instead of Ansible and the
+    # fixture in tests/test_ansible.yml won't work and neither will testinfra
+    # find the containers
+    connection: ansible
+    ansible-inventory: .molecule/ansible_inventory

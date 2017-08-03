@@ -24,11 +24,18 @@ script:
   - 'container_id=$(mktemp)'
 
   # Run container detached, with our role mounted inside.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/airflow-role:ro ${run_opts} ${docker_image} "${init}" > "${container_id}"'
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/airflow-role ${run_opts} ${docker_image} "${init}" > "${container_id}"'
 
   # Install Ansible inside the container
   - >
-    docker exec --tty "$(cat ${container_id})" pip install ansible
+    docker exec --tty "$(cat ${container_id})" pip install ansible==2.3.1.0
+
+  # Install Testinfra inside the container
+  - >
+    docker exec --tty "$(cat ${container_id})" pip install testinfra==1.5.5
+
+  # Install Retrying Python module, needed for the tests
+  - 'docker exec --tty "$(cat ${container_id})" pip install retrying'
 
   # Install sudo inside the container
   - 'docker exec --tty "$(cat ${container_id})" apt update'
@@ -59,6 +66,15 @@ script:
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
+
+  # Run Testinfra tests
+  - >
+    docker exec --tty "$(cat ${container_id})" bash -c
+    'env TERM=xterm;
+    cd /etc/ansible/roles/airflow-role;
+    testinfra tests/test_ansible.py
+    --connection=ansible
+    --ansible-inventory=tests/travis/inventory'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
