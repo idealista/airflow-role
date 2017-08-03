@@ -34,6 +34,9 @@ script:
   - >
     docker exec --tty "$(cat ${container_id})" pip install testinfra==1.5.5
 
+  # Install Retrying Python module, needed for the tests
+  - 'docker exec --tty "$(cat ${container_id})" pip install retrying'
+
   # Install sudo inside the container
   - 'docker exec --tty "$(cat ${container_id})" apt update'
   - 'docker exec --tty "$(cat ${container_id})" apt install sudo'
