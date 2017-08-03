@@ -76,3 +76,11 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+
+- name: Airflow | Add cron job for updating DAGs folder automatically
+  cron:
+    name: "Updating {{ item.key }} from repository"
+    minute: "*/5"
+    job: "git clone --depth 1 {{ item.value.src }} {{ item.value.host_subfolder }} && cd {{ item.value.host_subfolder }} && git filter-branch --prune-empty --subdirectory-filter {{ item.value.repository_subfolder }} HEAD"
+  with_dict: "{{ dags_repository }}"
+  when: dags_repository is defined
