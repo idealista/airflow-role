@@ -1,4 +1,5 @@
 import pytest
+from retrying import retry
 
 
 @pytest.fixture()
@@ -22,6 +23,7 @@ def test_airflow_version(PipPackage, AnsibleDefaults):
     assert installed_version == expected_version
 
 
+@retry(stop_max_delay=5000)
 def test_airflow_services(Service, AnsibleDefaults):
     airflow_services = AnsibleDefaults["airflow_services"]
 
