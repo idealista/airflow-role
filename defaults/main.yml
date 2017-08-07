@@ -7,7 +7,6 @@ airflow_extra_packages:
 airflow_required_libs:
   - python-pip
   - acl
-  - git
 
 # Owner
 airflow_user: airflow
