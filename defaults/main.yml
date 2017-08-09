@@ -7,7 +7,6 @@ airflow_extra_packages:
 airflow_required_libs:
   - python-pip
   - acl
-  - git
 
 # Owner
 airflow_user: airflow
@@ -204,15 +203,6 @@ airflow_admin_hide_sensitive_variable_fields: True
 
 ## DAGs
 # Python dependencies needed by the DAGs. This variable is expected to be a
-# dictionary following the structure provided in the example comment
-dags_dependencies: {} # Remove these brackets when this dictionary is not empty
-  # pip_package:
-  #   version: version_needed
-
-# URL with a repository of DAGs, plugins, etc. This variable is expected to be a
-# dictionary following the structure provided in the example comment
-dags_repository: {} # Remove these brackets when this dictionary is not empty
-  # repository_name:
-  #   src: repository_url
-  #   repository_subfolder: subfolder_from_git_repository
-  #   host_subfolder: path_in_host  
+# list of items following the structure provided in the example comment
+dags_dependencies:
+  # - {name: pip_package, version: version_needed}
