@@ -71,7 +71,7 @@ docker:
       ansible_groups:
         - airflow
 
-      image: geerlingguy/docker-debian9-ansible
+      image: geerlingguy/docker-debian8-ansible
       image_version: latest
 
       # All these parameters are needed for Docker testing with systemd
