@@ -71,10 +71,8 @@ docker:
       ansible_groups:
         - airflow
 
-      # We are using this image because the default Debian image has
-      # Python 2.7.9 and the playbook won't deploy
-      image: python
-      image_version: 2.7.13-jessie
+      image: geerlingguy/docker-debian9-ansible
+      image_version: latest
 
       # All these parameters are needed for Docker testing with systemd
       privileged: True
