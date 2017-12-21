@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+
+
+## [1.3.2](https://github.com/idealista/airflow-role/tree/1.3.2)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.3.1...1.3.2)
 ### Fixed
 - *[#28](https://github.com/idealista/airflow-role/issues/28) Fix Init DB task hang* @jnogol
 
