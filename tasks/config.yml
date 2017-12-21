@@ -35,7 +35,9 @@
     - restart airflow-flower
 
 - name: Airflow | Initializing DB
-  shell: AIRFLOW_HOME={{ airflow_home }} /usr/local/bin/airflow initdb
+  command: /usr/local/bin/airflow initdb
+  environment:
+    AIRFLOW_HOME: "{{ airflow_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   tags:
