@@ -58,7 +58,7 @@
   pip:
     name: apache-airflow
     version: "{{ airflow_version }}"
-    extra_args: --build-dir /airflowtmp
+    extra_args: --build-dir /airflowtmp --cache-dir /airflowtmp
   register: airflow_install
 
 - name: Airflow | Installing Airflow Extra Packages
