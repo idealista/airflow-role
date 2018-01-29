@@ -5,12 +5,12 @@ sudo: required
 group: deprecated-2017Q4
 
 env:
-  - TMPDIR=/airflowtmp
+  - TMPDIR=~/airflowtmp
 
 services:
   - docker
 before_install:
-  - mkdir /airflowtmp
+  - mkdir ~/airflowtmp
 install:
   - pip install ansible==2.4.2.0
   - pip install ansible-lint==3.4.20
