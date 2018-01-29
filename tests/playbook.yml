@@ -1,5 +1,5 @@
 ---
 
-- hosts: airflow.vm
+- hosts: airflow
   roles:
     - role: airflow-role
