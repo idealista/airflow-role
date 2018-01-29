@@ -75,6 +75,9 @@ docker:
       image: geerlingguy/docker-debian9-ansible
       image_version: latest
 
+      environment:
+        TMPDIR: /root/
+
       # All these parameters are needed for Docker testing with systemd
       privileged: True
       cap_add:
