@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ### Fixed
 - *[#33](https://github.com/idealista/airflow-role/pull/33) Travis working* @jnogol
 
+### Changed
+- *[#31](https://github.com/idealista/airflow-role/pull/31) Using import_tasks instead of include and avoiding pip cache* @sschaetz
+
 ## [1.3.2](https://github.com/idealista/airflow-role/tree/1.3.2)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.3.1...1.3.2)
 ### Fixed
