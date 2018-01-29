@@ -2,11 +2,13 @@
 language: python
 python: "2.7.13"
 sudo: required
-language: python
+group: deprecated-2017Q4
+
 services:
   - docker
 install:
-  - pip install ansible==2.3.1.0
+  - pip install ansible==2.4.2.0
+  - pip install ansible-lint==3.4.20
   - pip install molecule==1.25.0
   - pip install docker
 script:
