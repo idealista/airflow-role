@@ -49,16 +49,10 @@
     path: /etc/environment
     line: 'AIRFLOW_HOME={{ airflow_home }}'
 
-- name: Create Airflow temp folder
-  file:
-    path: /airflowtmp
-    state: directory
-
 - name: Airflow | Installing Airflow
   pip:
     name: apache-airflow
     version: "{{ airflow_version }}"
-    extra_args: --build-dir /airflowtmp --cache-dir /airflowtmp
   register: airflow_install
 
 - name: Airflow | Installing Airflow Extra Packages
