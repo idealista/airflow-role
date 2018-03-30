@@ -39,6 +39,7 @@ airflow_dags_folder: "{{ airflow_home }}/dags"
 airflow_logs_folder: /var/log/airflow
 airflow_child_process_log_folder: "{{ airflow_logs_folder }}/scheduler"
 airflow_environment_file_folder: /etc/sysconfig
+airflow_environment_extra_vars: []
 
 # Allowing playbooks to provide external config files&templates
 airflow_extra_conf_path: "{{ playbook_dir }}/files/airflow"
