@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+
+## [1.4.0](https://github.com/idealista/airflow-role/tree/1.4.0)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.3.2...1.4.0)
 ### Added
 - *[#32](https://github.com/idealista/airflow-role/issues/32) Use Goss instead of Testinfra* @jnogol
 
@@ -11,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ### Changed
 - *[#31](https://github.com/idealista/airflow-role/pull/31) Using import_tasks instead of include and avoiding pip cache* @sschaetz
+- *[#34](https://github.com/idealista/airflow-role/pull/34) Add config to have customizable pip and airflow executables* @deytao
 
 ## [1.3.2](https://github.com/idealista/airflow-role/tree/1.3.2)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.3.1...1.3.2)
