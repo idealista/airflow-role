@@ -15,8 +15,9 @@ molecule:
     - .vagrant
     - .molecule
 
-  # directory to look for testinfra tests
-  testinfra_dir: tests
+  # directory to look for goss tests
+  goss_dir: tests/goss
+  goss_playbook: verifier.yml
 
   # directory containing group_vars to use with ansible
   group_vars: ../tests/group_vars
@@ -67,14 +68,15 @@ vagrant:
 
 docker:
   containers:
-    - name: airflow.vm
+    - name: airflow
       ansible_groups:
         - airflow
 
-      # We are using this image because the default Debian image has
-      # Python 2.7.9 and the playbook won't deploy
-      image: python
-      image_version: 2.7.13-jessie
+      image: geerlingguy/docker-debian9-ansible
+      image_version: latest
+
+      environment:
+        TMPDIR: /root/
 
       # All these parameters are needed for Docker testing with systemd
       privileged: True
@@ -85,11 +87,4 @@ docker:
       command: '/lib/systemd/systemd'
 
 verifier:
-  name: testinfra
-  options:
-    # We have to override these options because, when Docker driver selected,
-    # Testinfra uses Docker as backend connection instead of Ansible and the
-    # fixture in tests/test_ansible.yml won't work and neither will testinfra
-    # find the containers
-    connection: ansible
-    ansible-inventory: .molecule/ansible_inventory
+  name: goss
