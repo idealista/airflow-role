@@ -86,11 +86,15 @@
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
+  tags:
+    skip_ansible_lint
 
-- name: Airflow | Add connections from configuration file URI based
+- name: Airflow | Add connections from configuration file
   command: "{{ airflow_executable }} connections -a {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' {% endfor %}"
   environment:
     AIRFLOW_HOME: "{{ airflow_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"
+  tags:
+    skip_ansible_lint
