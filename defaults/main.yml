@@ -206,6 +206,9 @@ airflow_github_enterprise_api_rev: v3
 
 # ADMIN
 airflow_admin_hide_sensitive_variable_fields: True
+airflow_admin_variables: []
+  # - key: bucket_name
+  #   value: logs_foo
 
 ## DAGs
 # Python dependencies needed by the DAGs. This variable is expected to be a

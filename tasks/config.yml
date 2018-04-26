@@ -78,3 +78,11 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+
+- name: Airflow | Add variables from configuration file
+  command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_home }}"
+  become: true
+  become_user: "{{ airflow_user }}"
+  with_items: "{{ airflow_admin_variables }}"
