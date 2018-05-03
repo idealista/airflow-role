@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.5.0](https://github.com/idealista/airflow-role/tree/1.5.0)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.4.0...1.5.0)
+### Added
+- *[#36](https://github.com/idealista/airflow-role/issues/32) Add tasks in config to create variables and connections used in Airflow DAGs.* @deytao
+
 ## [1.4.0](https://github.com/idealista/airflow-role/tree/1.4.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.3.2...1.4.0)
 ### Added
