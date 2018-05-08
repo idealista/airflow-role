@@ -38,6 +38,7 @@ airflow_home: /etc/airflow
 airflow_dags_folder: "{{ airflow_home }}/dags"
 airflow_logs_folder: /var/log/airflow
 airflow_child_process_log_folder: "{{ airflow_logs_folder }}/scheduler"
+airflow_pidfile_folder: "/run/airflow"
 airflow_environment_file_folder: /etc/sysconfig
 airflow_environment_extra_vars: []
   # - name: PATH
