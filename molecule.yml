@@ -49,6 +49,8 @@ vagrant:
   platforms:
     - name: Debian9
       box: debian/stretch64
+    - name: Xenial
+      box: ubuntu/xenial64
 
   providers:
     - name: virtualbox
