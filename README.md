@@ -4,7 +4,7 @@
 
 # Apache Airflow Ansible role
 
-This ansible role installs a Apache Airflow server in a debian environment.
+This ansible role installs a Apache Airflow server in a Debian/Ubuntu environment.
 
 - [Getting Started](#getting-started)
 	- [Prerequisities](#prerequisities)
@@ -19,12 +19,12 @@ This ansible role installs a Apache Airflow server in a debian environment.
 
 ## Getting Started
 
-These instructions will get you a copy of the role for your ansible playbook. Once launched, it will install a [Apache Airflow](https://airflow.incubator.apache.org/) server in a Debian system.
+These instructions will get you a copy of the role for your ansible playbook. Once launched, it will install a [Apache Airflow](https://airflow.incubator.apache.org/) server in a Debian or Ubuntu system.
 
 ### Prerequisities
 
 Ansible 2.4.1.0 version installed.
-Inventory destination should be a Debian environment.
+Inventory destination should be a Debian or Ubuntu environment.
 
 For testing purposes, [Molecule](https://molecule.readthedocs.io/) with [Vagrant](https://www.vagrantup.com/) as driver (with [landrush](https://github.com/vagrant-landrush/landrush) plugin) and [VirtualBox](https://www.virtualbox.org/) as provider.
 

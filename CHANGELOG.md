@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.6.0](https://github.com/idealista/airflow-role/tree/1.6.0)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.5.0...1.6.0)
+### Changed
+- *[#38](https://github.com/idealista/airflow-role/pull/38) Parametrized PID files location, and create it on startup if it doesn't already exist.* @fhalim
+
 ## [1.5.0](https://github.com/idealista/airflow-role/tree/1.5.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.4.0...1.5.0)
 ### Added
