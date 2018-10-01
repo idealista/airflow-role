@@ -22,7 +22,7 @@
 
 - name: Airflow | Copy basic airflow config file
   template:
-    src: "airflow.cfg.j2"
+    src: "{{ airflow_config_template_path }}"
     dest: "{{ airflow_home }}/airflow.cfg"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
