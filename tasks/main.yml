@@ -4,13 +4,16 @@
   import_tasks: install.yml
   tags:
     - install
+    - airflow_install
 
 - name: Airflow | Config
   import_tasks: config.yml
   tags:
     - config
+    - airflow_config
 
 - name: Airflow | Service
   import_tasks: service.yml
   tags:
     - service
+    - airflow_service

@@ -24,13 +24,6 @@
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
 
-- name: Airflow | Create path for PID files
-  file:
-    path: "{{ airflow_pidfile_folder }}"
-    state: directory
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
-
 - name: Airflow | Installing dependencies
   apt:
     pkg: "{{ item }}"
