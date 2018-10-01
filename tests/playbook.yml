@@ -2,4 +2,10 @@
 
 - hosts: airflow
   roles:
-    - role: airflow-role
+    - airflow-role
+  post_tasks:
+    # This is to avoid the bug in web UI when no DAG is present
+    - name: Copy sample-dag.py
+      copy:
+          dest: "{{ airflow_dags_folder }}/sample-dag.py"
+          src: sample-dag.py
