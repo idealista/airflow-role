@@ -4,6 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.7.0](https://github.com/idealista/airflow-role/tree/1.7.0)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.6.0...1.7.0)
+### Changed
+- *Update default version to 1.9.0* @jnogol
+- *Ability to provide `airflow.cfg` template via playbooks* @jnogol
+- *[#41](https://github.com/idealista/airflow-role/issues/41) Update `airflow.cfg` template with 1.9.0 features* @jnogol
+
+### Added
+- *Add sample DAG in tests to avoid scheduler issues* @jnogol
+- *Add `airflow_` tags in `main.yml`* @jnogol
+
 ## [1.6.0](https://github.com/idealista/airflow-role/tree/1.6.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.5.0...1.6.0)
 ### Changed
