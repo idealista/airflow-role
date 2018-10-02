@@ -43,6 +43,8 @@ or using [Ansible Galaxy](https://galaxy.ansible.com/idealista/airflow-role/) as
 
 ```
 - src: idealista.airflow-role
+  version: 1.0.0
+  name: airflow
 ```
 
 Install the role with ansible-galaxy command:
@@ -90,9 +92,9 @@ See also the list of [contributors](https://github.com/idealista/airflow-role/co
 
 ## License
 
-![Apache 2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)
+![Apache 2.0 License](https://img.shields.io/hexpm/l/plug.svg)
 
-This project is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license - see the [LICENSE.txt](LICENSE.txt) file for details.
+This project is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
