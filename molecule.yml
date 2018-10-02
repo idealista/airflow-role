@@ -80,6 +80,9 @@ docker:
       environment:
         TMPDIR: /root/
 
+      port_bindings:
+        8080: 8888
+
       # All these parameters are needed for Docker testing with systemd
       privileged: True
       cap_add:
