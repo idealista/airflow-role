@@ -58,6 +58,8 @@
     version: "{{ airflow_version }}"
     extra_args: --no-cache-dir
   register: airflow_install
+  environment:
+    SLUGIFY_USES_TEXT_UNIDECODE: "yes"
 
 - name: Airflow | Installing Airflow Extra Packages
   pip:

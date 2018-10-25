@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.7.1](https://github.com/idealista/airflow-role/tree/1.7.1)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.0...1.7.1)
+### Changed
+- *[#44](https://github.com/idealista/airflow-role/issues/44) Make role compatible with Airflow 1.10.0* @jnogol
+- *Update Goss version to 0.3.6* @jnogol
+
 ## [1.7.0](https://github.com/idealista/airflow-role/tree/1.7.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.6.0...1.7.0)
 ### Changed

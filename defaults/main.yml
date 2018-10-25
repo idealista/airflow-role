@@ -1,7 +1,7 @@
 ---
 ## General
 airflow_version: 1.9.0
-airflow_extra_packages:
+airflow_extra_packages: []
 
 airflow_pip_executable: "pip"
 airflow_executable: "/usr/local/bin/airflow"
@@ -15,7 +15,6 @@ airflow_user: airflow
 airflow_group: airflow
 
 ## Service options
-
 airflow_scheduler_runs: 5
 
 airflow_services:
