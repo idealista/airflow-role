@@ -10,6 +10,10 @@ airflow_required_libs:
   - python-pip
   - acl
 
+airflow_required_python_packages:
+  # Version is not mandatory
+  # - {name: pyasn1, version: 0.4.4}
+
 # Owner
 airflow_user: airflow
 airflow_group: airflow
@@ -167,6 +171,7 @@ airflow_webserver_authenticate: False
 airflow_webserver_auth_backend:
 
 ## LDAP (only applies if airflow_webserver_auth_backend == "airflow.contrib.auth.backends.ldap_auth")
+# Bear in mind that, starting with Airflow 1.10.0, PyPi package pyasn1 v0.4.4 is needed
 airflow_ldap_uri:
 airflow_ldap_user_filter:
 airflow_ldap_user_name_attr:
