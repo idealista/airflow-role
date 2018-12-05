@@ -66,6 +66,12 @@ Use in a playbook:
 
 Look to the defaults properties file to see the possible configuration properties.
 
+Bear in mind that, starting with Airflow v1.10.0, PyPi package `pyasn1` v0.4.4 is needed. To install it:
+``` yml
+airflow_required_python_packages:
+  - {name: pyasn1, version: 0.4.4}
+```
+
 ## Testing
 
 ```
