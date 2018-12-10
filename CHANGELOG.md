@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [1.7.2](https://github.com/idealista/airflow-role/tree/1.7.2)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.1...1.7.2)
+### Fixed
+- *[#47](https://github.com/idealista/airflow-role/issues/47) Fix web UI when using LDAP and Airflow>=1.10* @jnogol
+
 ## [1.7.1](https://github.com/idealista/airflow-role/tree/1.7.1)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.0...1.7.1)
 ### Changed

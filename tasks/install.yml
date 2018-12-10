@@ -31,6 +31,13 @@
     update_cache: yes
   with_items: "{{ airflow_required_libs }}"
 
+- name: Airflow | Installing Python pip dependencies
+  pip:
+    executable: "{{ airflow_pip_executable }}"
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+  with_items: "{{ airflow_required_python_packages }}"
+
 - name: Airflow | Installing proper Celery version
   pip:
     executable: "{{ airflow_pip_executable }}"
