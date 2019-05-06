@@ -10,7 +10,7 @@ airflow_required_libs:
   - python-pip
   - acl
 
-airflow_required_python_packages: []
+airflow_required_python_packages:
   # Version is not mandatory
   # - {name: pyasn1, version: 0.4.4}
 
