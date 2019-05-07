@@ -104,7 +104,7 @@ airflow_encrypt_s3_logs: False
 airflow_s3_log_folder: # DEPRECATED
 
 ## DB
-airflow_database_conn: sqlite:////etc/airflow/airflow.db
+airflow_database_conn: sqlite:///{{ airflow_home }}/airflow.db
 airflow_database_pool_size: 5
 airflow_database_pool_recycle: 2000
 
