@@ -40,7 +40,7 @@
       register: test_files
 
     - name: Execute Goss tests
-      command: "{{ goss_dst }} -g {{ item }} validate --format {{ goss_format }} --retry-timeout 2"
+      command: "{{ goss_dst }} -g {{ item }} validate --format {{ goss_format }} --retry-timeout 2s"
       register: test_results
       with_items: "{{ test_files.stdout_lines }}"
 
