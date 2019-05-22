@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+### Fixed
+- *[#47](https://github.com/idealista/airflow-role/issues/50) Fix deprecation warning from jinja templates @adrimarteau
 
 ## [1.7.2](https://github.com/idealista/airflow-role/tree/1.7.2)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.1...1.7.2)
