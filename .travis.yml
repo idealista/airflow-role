@@ -4,16 +4,18 @@ python: "2.7.15"
 sudo: required
 
 env:
-  - PIPENV_IGNORE_VIRTUALENVS=1
+  - ansible_version: 2.4.5
+  - ansible_version: 2.7.9
+  - ansible_version: 2.8.1
 
 services:
   - docker
 
 install:
-  - pip install pipenv==2018.11.26
-  - pipenv install -r test-requirements.txt
+  - pip install ansible==${ansible_version}
+  - pip install -r test-requirements.txt
 script:
-  - pipenv run molecule test
+  - molecule test --all
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

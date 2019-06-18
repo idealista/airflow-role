@@ -67,12 +67,23 @@
   environment:
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
 
+- name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
+  pip:
+    executable: "{{ airflow_pip_executable }}"
+    name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
+  with_items: "{{ airflow_extra_packages }}"
+  when: 
+    - airflow_extra_packages
+    - ansible_version.full is version_compare('2.7', '<')
+
 - name: Airflow | Installing Airflow Extra Packages
   pip:
     executable: "{{ airflow_pip_executable }}"
-    name: apache-airflow[{{ airflow_extra_packages }}]
+    name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
-  when: airflow_extra_packages
+  when: 
+    - airflow_extra_packages
+    - ansible_version.full is version_compare('2.7', '>=')
 
 - name: Airflow | Installing DAGs dependencies
   pip:

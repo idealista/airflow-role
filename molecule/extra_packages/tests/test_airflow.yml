@@ -1,0 +1,24 @@
+service:
+{% for airflow_service in airflow_services %}
+{% if airflow_services[airflow_service]["enabled"] %}
+  {{ airflow_service }}:
+    enabled: true
+    running: true
+{% endif %}
+{% endfor %}
+
+user:
+  {{ airflow_user }}:
+    exists: true
+    groups:
+      - {{ airflow_group }}
+
+group:
+  {{ airflow_group }}:
+    exists: true
+
+command:
+  /usr/local/bin/airflow version:
+    exit-status: 0
+    stdout:
+      - "{{ airflow_version }}"
