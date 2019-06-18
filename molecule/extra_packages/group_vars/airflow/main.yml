@@ -9,7 +9,3 @@ airflow_required_libs:
 airflow_extra_packages:
   - celery
   - mysql
-
-# airflow_extra_packages: celery, mysql
-
-# airflow_extra_packages: [celery, mysql]
