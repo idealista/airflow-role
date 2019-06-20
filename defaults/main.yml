@@ -1,6 +1,8 @@
 ---
 ## General
 airflow_version: 1.9.0
+# Available extra packages: https://airflow.apache.org/installation.html#extra-packages
+# List should follow Ansible's YAML basics: https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
 airflow_extra_packages: []
 
 airflow_pip_executable: "pip"

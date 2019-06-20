@@ -72,6 +72,12 @@ airflow_required_python_packages:
   - {name: pyasn1, version: 0.4.4}
 ```
 
+`airflow_extra_packages` (available at: https://airflow.apache.org/installation.html#extra-packages) should be a list following this format:
+``` yml
+airflow_extra_packages:
+  - celery
+  - mysql
+```
 ## Testing
 
 ```

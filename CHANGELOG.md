@@ -4,10 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
-## [1.7.4](https://github.com/idealista/airflow-role/tree/1.7.4)
-[Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.3...1.7.4)
+## [1.8.0](https://github.com/idealista/airflow-role/tree/1.8.0)
+[Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.3...1.8.0)
+### Added
+- *[#61](https://github.com/idealista/airflow-role/issues/61) Add KillSignal=SIGINT to workers service file* @jnogol
 ### Fixed
-- *[#47](https://github.com/idealista/airflow-role/issues/50) Fix deprecation warning from jinja templates @adrimarteau
+- *[#50](https://github.com/idealista/airflow-role/issues/50) Fix deprecation warning from jinja templates* @adrimarteau @jnogol
 
 ## [1.7.3](https://github.com/idealista/airflow-role/tree/1.7.3)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.2...1.7.3)
