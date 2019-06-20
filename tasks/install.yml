@@ -26,10 +26,9 @@
 
 - name: Airflow | Installing dependencies
   apt:
-    pkg: "{{ item }}"
+    pkg: "{{ airflow_required_libs }}"
     state: present
     update_cache: yes
-  with_items: "{{ airflow_required_libs }}"
 
 - name: Airflow | Installing Python pip dependencies
   pip:
@@ -68,13 +67,23 @@
   environment:
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
 
+- name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
+  pip:
+    executable: "{{ airflow_pip_executable }}"
+    name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
+  with_items: "{{ airflow_extra_packages }}"
+  when: 
+    - airflow_extra_packages
+    - ansible_version.full is version_compare('2.7', '<')
+
 - name: Airflow | Installing Airflow Extra Packages
   pip:
     executable: "{{ airflow_pip_executable }}"
-    name: apache-airflow[{{ item }}]
+    name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
-  with_items: "{{ airflow_extra_packages }}"
-  when: airflow_extra_packages
+  when: 
+    - airflow_extra_packages
+    - ansible_version.full is version_compare('2.7', '>=')
 
 - name: Airflow | Installing DAGs dependencies
   pip:
@@ -104,4 +113,4 @@
     mode: 0644
   notify: restart {{ item.key }}
   with_dict: "{{ airflow_services }}"
-  when: "{{ item.value.enabled }}"
+  when: item.value.enabled
