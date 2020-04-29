@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 ### Added
-- * Add support for Google OAuth webserver authentication* @kazauwa
+- * Add support for Google OAuth webserver authorization* @kazauwa
 
 ## [1.8.0](https://github.com/idealista/airflow-role/tree/1.8.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.3...1.8.0)
