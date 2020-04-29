@@ -222,6 +222,14 @@ authenticate = {{ airflow_webserver_authenticate }}
 auth_backend = {{ airflow_webserver_auth_backend }}
 {% endif %}
 
+{% if airflow_webserver_auth_backend == 'airflow.contrib.auth.backends.google_auth' %}
+[google]
+client_id = {{ airflow_google_auth_client_id }}
+client_secret = {{ airflow_google_auth_client_secret }}
+oauth_callback_route = {{ airflow_google_auth_oauth2_callback }}
+domain = {{ airflow_google_auth_domain_whitelist }}
+{% endif %}
+
 # Filter the list of dags by owner name (requires authentication to be enabled)
 filter_by_owner = {{ airflow_webserver_filter_by_owner }}
 

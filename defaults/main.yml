@@ -168,6 +168,7 @@ airflow_webserver_default_dag_run_display_number: 25
 # - airflow.contrib.auth.backends.password_auth
 # - airflow.contrib.auth.backends.ldap_auth
 # - airflow.contrib.auth.backends.github_enterprise_auth
+# - airflow.contrib.auth.backends.google_auth
 # - others? :)
 airflow_webserver_authenticate: False
 airflow_webserver_auth_backend:
@@ -184,6 +185,12 @@ airflow_ldap_bind_password:
 airflow_ldap_basedn:
 airflow_ldap_cacert:
 airflow_ldap_search_scope:
+
+## Google OAuth (only applies if airflow_webserver_auth_backend == "airflow.contrib.auth.backends.google_auth")
+airflow_google_auth_client_id:
+airflow_google_auth_client_secret:
+airflow_google_auth_oauth2_callback: '/oauth2callback'
+airflow_google_auth_domain_whitelist:
 
 ## MAIL
 airflow_email_backend: airflow.utils.email.send_email_smtp
