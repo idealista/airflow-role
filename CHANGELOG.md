@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+- *[#66](https://github.com/idealista/airflow-role/issues/66) Add python 3.8 and virtual env 
+- *[#66] Updated airflow version, 1.9.0 deprecated.
 
 ## [1.8.0](https://github.com/idealista/airflow-role/tree/1.8.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.3...1.8.0)

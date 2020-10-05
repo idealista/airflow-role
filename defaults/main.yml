@@ -1,18 +1,50 @@
 ---
 ## General
-airflow_version: 1.9.0
+airflow_version: 1.10.12
 # Available extra packages: https://airflow.apache.org/installation.html#extra-packages
 # List should follow Ansible's YAML basics: https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
 airflow_extra_packages: []
 
-airflow_pip_executable: "pip"
-airflow_executable: "/usr/local/bin/airflow"
+airflow_python_download: "https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz"
+
+airflow_pip_executable: "{{ airflow_home }}/python/bin/pip3"
+airflow_pip_venv_executable: "{{ airflow_home }}/airflow_venv/bin/pip3"
+airflow_executable: "{{ airflow_home }}/airflow_venv/bin/airflow"
 
 airflow_required_libs:
   - python-pip
   - acl
+  - build-essential
+  - freetds-bin
+  - krb5-user
+  - ldap-utils
+  - libffi6
+  - libsasl2-2
+  - libsasl2-modules
+  - libssl1.1
+  - locales
+  - lsb-release
+  - sasl2-bin
+  - sqlite3
+  - unixodbc
+  - libssl-dev
+  - libffi-dev
+  - python3-venv
+  - python3-pip
+  - zlib1g-dev 
+  - libncurses5-dev 
+  - libgdbm-dev
+  - libnss3-dev
+  - libssl-dev
+  - libsqlite3-dev
+  - libreadline-dev
+  - libffi-dev
+  - curl
+  - libbz2-dev
 
-airflow_required_python_packages: []
+airflow_required_python_packages:
+  - name: cffi
+  - name: virtualenv
   # Version is not mandatory
   # - {name: pyasn1, version: 0.4.4}
 
@@ -47,6 +79,9 @@ airflow_environment_file_folder: /etc/sysconfig
 airflow_environment_extra_vars: []
   # - name: PATH
   #   value: "/custom/path/bin:$PATH"
+airflow_download_path: /usr/src
+airflow_package_path: "{{ airflow_download_path }}/{{airflow_app_name}}"
+airflow_src_bin: "{{ airflow_download_path }}/{{ airflow_release_name }}/bin/{{ airflow_exec_name }}"
 
 # Allowing playbooks to provide external config files&templates
 airflow_extra_conf_path: "{{ playbook_dir }}/files/airflow"

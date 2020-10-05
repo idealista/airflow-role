@@ -30,12 +30,31 @@
     state: present
     update_cache: yes
 
+- name: Airflow | Copy Environment File
+  template:
+    src: airflow-environment-file.j2
+    dest: "{{ airflow_environment_file_folder }}/airflow"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: Airflow | Install Python 3.8
+  include: install_python.yml
+
 - name: Airflow | Installing Python pip dependencies
   pip:
     executable: "{{ airflow_pip_executable }}"
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
   with_items: "{{ airflow_required_python_packages }}"
+
+- name: AIRFLOW | Create virtualenv
+  command:
+    chdir: "{{ airflow_home }}"
+    cmd: "{{airflow_home}}/python/bin/virtualenv -p {{ airflow_home }}/python/bin/python3 airflow_venv"
+    creates: "{{airflow_home }}/airflow_venv"
+  become: yes
+  become_user: "{{ airflow_user }}"
 
 - name: Airflow | Installing proper Celery version
   pip:
@@ -59,7 +78,7 @@
 
 - name: Airflow | Installing Airflow
   pip:
-    executable: "{{ airflow_pip_executable }}"
+    executable: "{{ airflow_pip_venv_executable }}"
     name: apache-airflow
     version: "{{ airflow_version }}"
     extra_args: --no-cache-dir
@@ -69,7 +88,7 @@
 
 - name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
   pip:
-    executable: "{{ airflow_pip_executable }}"
+    executable: "{{ airflow_pip_venv_executable }}"
     name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
   with_items: "{{ airflow_extra_packages }}"
   when: 
@@ -78,7 +97,7 @@
 
 - name: Airflow | Installing Airflow Extra Packages
   pip:
-    executable: "{{ airflow_pip_executable }}"
+    executable: "{{ airflow_pip_venv_executable }}"
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
   when: 
@@ -97,14 +116,6 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
-
-- name: Airflow | Copy Environment File
-  template:
-    src: airflow-environment-file.j2
-    dest: "{{ airflow_environment_file_folder }}/airflow"
-    mode: 0644
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
 
 - name: Airflow | Copy Daemon scripts
   template:

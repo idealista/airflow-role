@@ -1,0 +1,53 @@
+---
+- name: AIRFLOW | Check python 3.8 installed
+  stat:
+    path: "{{ airflow_home }}/python"
+  register: python_installed
+
+- name: AIRFLOW | Get python
+  get_url:
+    url: "{{ airflow_python_download }}"
+    dest: "{{ airflow_download_path}}/Python.tgz"
+  when: not python_installed.stat.exists
+
+- name: AIRFLOW | Unarchive python
+  unarchive:
+    src: "{{ airflow_download_path }}/Python.tgz"
+    dest: "{{ airflow_download_path }}/"
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+    remote_src: yes
+  when: not python_installed.stat.exists
+
+- name: AIRFLOW | Change folder name to python
+  shell:
+    cmd: "mv {{ airflow_download_path }}/Python-* {{ airflow_download_path }}/python"
+    executable: /bin/bash
+  ignore_errors: true
+  when: not python_installed.stat.exists
+
+- name: AIRFLOW | Configure python install
+  shell:
+    chdir: "{{ airflow_download_path }}/python"
+    cmd: "source {{ airflow_environment_file_folder }}/airflow && ./configure --prefix={{ airflow_home }}/python"
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ airflow_user }}"
+  when: not python_installed.stat.exists
+
+- name: AIRFLOW | Make python install
+  shell:
+    chdir: "{{ airflow_download_path }}/python"
+    cmd: "make"
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ airflow_user }}"
+  when: not python_installed.stat.exists
+- name: AIRFLOW | Make install python install
+  shell:
+    chdir: "{{ airflow_download_path }}/python"
+    cmd: "make install"
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ airflow_user }}"
+  when: not python_installed.stat.exists
