@@ -7,7 +7,7 @@
   hosts: all
   become: true
   vars:
-    goss_version: v0.3.10
+    goss_version: v0.3.13
     goss_arch: amd64
     goss_dst: /usr/local/bin/goss
     goss_url: >

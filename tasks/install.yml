@@ -57,18 +57,6 @@
     path: /etc/environment
     line: 'AIRFLOW_HOME={{ airflow_home }}'
 
-- name: AIRFLOW | Check airflow version
-  shell: '[ -x "$(command version airflow)" ] && echo "true" || echo "false"'
-  register: airflow_check_command
-  changed_when: false
-  ignore_errors: true
-  become: true
-  become_user: "{{ airflow_user }}"
-
-- name: AIRFLOW | Set installed fact
-  set_fact:
-    airflow_check: "{{ airflow_check_command.stdout | bool }}"
-
 - name: Airflow | Installing Airflow
   pip:
     executable: "{{ airflow_pip_executable }}"
@@ -78,8 +66,6 @@
   register: airflow_install
   environment:
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
-  when:
-    - not airflow_check
 
 - name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
   pip:
