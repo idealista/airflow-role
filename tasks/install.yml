@@ -67,7 +67,7 @@
 
 - name: AIRFLOW | Set installed fact
   set_fact:
-    airflow_check: "{{ airflow_check_command.stdout }} == 'true'"
+    airflow_check: "{{ airflow_check_command.stdout | bool }}"
 
 - name: Airflow | Installing Airflow
   pip:
