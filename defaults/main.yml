@@ -1,15 +1,21 @@
 ---
 ## General
-airflow_version: 1.9.0
+airflow_version: 1.10.12
 # Available extra packages: https://airflow.apache.org/installation.html#extra-packages
 # List should follow Ansible's YAML basics: https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
 airflow_extra_packages: []
+# http://airflow.apache.org/docs/stable/installation.html example: 
+# --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
+airflow_install_use_constraints: false
+airflow_mayor_python_version: 3.7
+airflow_extra_packages_constraints: '--constraint "https://raw.githubusercontent.com/apache/airflow/constraints-{{ airflow_version }}/constraints-{{ airflow_mayor_python_version }}.txt"'
 
-airflow_pip_executable: "pip"
+airflow_pip_executable: "pip3"
 airflow_executable: "/usr/local/bin/airflow"
 
 airflow_required_libs:
   - python-pip
+  - python3-pip
   - acl
 
 airflow_required_python_packages: []

@@ -3,31 +3,31 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: False
-
+lint: |
+  yamllint .
+  ansible-lint .
 platforms:
-  - name: airflow_extra_packages-${MOLECULE_DISTRO:-stretch}
-    image: debian:${MOLECULE_DISTRO:-stretch}
-    privileged: true
+  - name: airflow_extra_packages-${MOLECULE_DISTRO:-buster}
+    image: debian:${MOLECULE_DISTRO:-buster}
+    privileged: false
     capabilities:
       - SYS_ADMIN
     volumes:
       - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+    tmpfs:
+      - /tmp:exec
+      - /run
+      - /run/lock
     groups:
       - airflow
     command: '/lib/systemd/systemd'
+    stop_signal: 'RTMIN+3'
 
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
-    enabled: False
 scenario:
   name: extra_packages
 verifier:
-  name: goss
-  lint:
-    name: yamllint
-    enabled: False
+  name: ansible
