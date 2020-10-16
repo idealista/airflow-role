@@ -58,7 +58,7 @@
     line: 'AIRFLOW_HOME={{ airflow_home }}'
 
 - name: AIRFLOW | Check airflow version
-  shell: '[ -x "$(command version airflow)" ] && echo "True" || echo "False"'
+  shell: '[ -x "$(command version airflow)" ] && echo "true" || echo "false"'
   register: airflow_check_command
   changed_when: false
   ignore_errors: true
@@ -67,7 +67,7 @@
 
 - name: AIRFLOW | Set installed fact
   set_fact:
-    airflow_check: "{{ airflow_check_command.stdout }}"
+    airflow_check: "{{ airflow_check_command.stdout }} == 'true'"
 
 - name: Airflow | Installing Airflow
   pip:
