@@ -28,7 +28,7 @@
   apt:
     pkg: "{{ airflow_required_libs }}"
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Airflow | Installing Python pip dependencies
   pip:
@@ -62,7 +62,7 @@
   register: airflow_check_command
   changed_when: false
   ignore_errors: true
-  become: yes
+  become: true
   become_user: "{{ airflow_user }}"
 
 - name: AIRFLOW | Set installed fact
@@ -103,7 +103,9 @@
 - name: Airflow | Installing Airflow Extra Packages With Constraints
   pip:
     executable: "{{ airflow_pip_executable }}"
-    name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}] {{ airflow_extra_packages_constraints }}"
+    name: >
+      "apache-airflow[{{ airflow_extra_packages | join(', ') }}]
+      {{ airflow_extra_packages_constraints }}"
     version: "{{ airflow_version }}"
   when:
     - airflow_extra_packages
