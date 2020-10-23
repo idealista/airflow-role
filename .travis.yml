@@ -1,21 +1,20 @@
 ---
 language: python
-python: "2.7.15"
+python: "3.8.6"
 sudo: required
 
 env:
-  - ansible_version: 2.4.5
-  - ansible_version: 2.7.9
-  - ansible_version: 2.8.1
+  - ansible_version: 2.8.8
 
 services:
   - docker
 
 install:
-  - pip install ansible==${ansible_version}
-  - pip install -r test-requirements.txt
+  - pip3 install pipenv
+  - pipenv install ansible==${ansible_version}
+  - pipenv install -r test-requirements.txt
 script:
-  - molecule test --all
+  - pipenv run molecule test --all
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
