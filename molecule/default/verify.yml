@@ -26,7 +26,7 @@
         mode: 0755
       register: download_goss
       until: download_goss is succeeded
-      retries: 3
+      retries: 6
 
     - name: Copy Goss tests to remote
       template:
