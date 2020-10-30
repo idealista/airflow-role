@@ -8,7 +8,7 @@ services:
 
 install:
   - pip3 install pipenv
-  - pipenv install -r test-requirements.txt
+  - pipenv sync
 script:
   - pipenv run molecule test --all
 
