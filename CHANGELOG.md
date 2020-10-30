@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+### Changed
+- *[#68](https://github.com/idealista/airflow-role/issues/68) Update dependencies versions and solve some lint errors @lorientedev
 
 ## [1.8.0](https://github.com/idealista/airflow-role/tree/1.8.0)
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.7.3...1.8.0)
