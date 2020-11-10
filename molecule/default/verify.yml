@@ -26,14 +26,14 @@
         mode: 0755
       register: download_goss
       until: download_goss is succeeded
-      retries: 3
+      retries: 6
 
     - name: Copy Goss tests to remote
       template:
         src: "{{ item }}"
         dest: "{{ goss_test_directory }}/{{ item | basename }}"
       with_fileglob:
-        - "{{ lookup('env', 'MOLECULE_VERIFIER_TEST_DIRECTORY') }}/test_*.yml"
+        - "{{ playbook_dir }}/tests/test_*.yml"
 
     - name: Register test files
       shell: "ls {{ goss_test_directory }}/test_*.yml"

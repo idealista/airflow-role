@@ -28,7 +28,7 @@
   apt:
     pkg: "{{ airflow_required_libs }}"
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Airflow | Installing Python pip dependencies
   pip:
@@ -72,7 +72,7 @@
     executable: "{{ airflow_pip_executable }}"
     name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
   with_items: "{{ airflow_extra_packages }}"
-  when: 
+  when:
     - airflow_extra_packages
     - ansible_version.full is version_compare('2.7', '<')
 
@@ -81,7 +81,7 @@
     executable: "{{ airflow_pip_executable }}"
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
-  when: 
+  when:
     - airflow_extra_packages
     - ansible_version.full is version_compare('2.7', '>=')
 

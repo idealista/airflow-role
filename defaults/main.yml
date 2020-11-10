@@ -1,8 +1,10 @@
 ---
 ## General
 airflow_version: 1.9.0
-# Available extra packages: https://airflow.apache.org/installation.html#extra-packages
-# List should follow Ansible's YAML basics: https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
+# Available extra packages:
+# https://airflow.apache.org/installation.html#extra-packages
+# List should follow Ansible's YAML basics:
+# https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
 airflow_extra_packages: []
 
 airflow_pip_executable: "pip"
@@ -12,9 +14,10 @@ airflow_required_libs:
   - python-pip
   - acl
 
-airflow_required_python_packages: []
-  # Version is not mandatory
-  # - {name: pyasn1, version: 0.4.4}
+airflow_required_python_packages: 
+  - {name: werkzeug, version: 0.16.1}
+#   Version is not mandatory
+#   - {name: pyasn1, version: 0.4.4}
 
 # Owner
 airflow_user: airflow
@@ -25,16 +28,16 @@ airflow_scheduler_runs: 5
 
 airflow_services:
   airflow-webserver:
-    enabled: yes
+    enabled: true
     state: started
   airflow-scheduler:
-    enabled: yes
+    enabled: true
     state: started
   airflow-worker:
-    enabled: no
+    enabled: false
     state: started
   airflow-flower:
-    enabled: no
+    enabled: false
     state: started
 
 # Files & Paths
@@ -45,8 +48,8 @@ airflow_child_process_log_folder: "{{ airflow_logs_folder }}/scheduler"
 airflow_pidfile_folder: "/run/airflow"
 airflow_environment_file_folder: /etc/sysconfig
 airflow_environment_extra_vars: []
-  # - name: PATH
-  #   value: "/custom/path/bin:$PATH"
+#   - name: PATH
+#     value: "/custom/path/bin:$PATH"
 
 # Allowing playbooks to provide external config files&templates
 airflow_extra_conf_path: "{{ playbook_dir }}/files/airflow"
@@ -60,10 +63,12 @@ airflow_fab_logging_level: "WARN"
 
 airflow_logging_config_class:
 
-airflow_log_format: "[%%(asctime)s] {{ '{' }}%%(filename)s:%%(lineno)d} %%(levelname)s - %%(message)s"
+airflow_log_format: >
+ "[%%(asctime)s] {{ '{' }}%%(filename)s:%%(lineno)d} %%(levelname)s - %%(message)s"
 airflow_simple_log_format: "%%(asctime)s %%(levelname)s - %%(message)s"
 
-airflow_log_filename_template: "{{ '{{' }} ti.dag_id {{ '}}' }}/{{ '{{' }} ti.task_id {{ '}}' }}/{{ '{{' }} ts {{ '}}' }}/{{ '{{' }} try_number {{ '}}' }}.log"
+airflow_log_filename_template: >
+ "{{ '{{' }} ti.dag_id {{ '}}' }}/{{ '{{' }} ti.task_id {{ '}}' }}/{{ '{{' }} ts {{ '}}' }}/{{ '{{' }} try_number {{ '}}' }}.log"
 airflow_log_processor_filename_template: "{{ '{{' }} filename {{ '}}' }}.log"
 
 airflow_hostname_callable: "socket:getfqdn"
@@ -75,7 +80,7 @@ airflow_enable_xcom_pickling: "True"
 airflow_killed_task_cleanup_time: 60
 airflow_dag_run_conf_overrides_params: "False"
 
-airflow_load_examples: True
+airflow_load_examples: true
 
 # The executor class that airflow should use. Choices include
 # SequentialExecutor, LocalExecutor, CeleryExecutor, DaskExecutor
@@ -83,27 +88,28 @@ airflow_executor: SequentialExecutor
 
 airflow_parallelism: 32
 airflow_dag_concurrency: 16
-airflow_dags_are_paused_at_creation: True
+airflow_dags_are_paused_at_creation: true
 airflow_non_pooled_task_slot_count: 128
 airflow_max_active_runs_per_dag: 16
 
 airflow_fernet_key:
 
-airflow_donot_pickle: False
+airflow_donot_pickle: false
 airflow_dagbag_import_timeout: 30
 
 airflow_task_runner: BashTaskRunner
 
 airflow_default_impersonation:
-airflow_unit_test_mode: False
+airflow_unit_test_mode: false
 
 airflow_plugins_folder: "{{ airflow_home }}/plugins"
 
 ## REMOTE LOGS
 airflow_remote_base_log_folder:
 airflow_remote_log_conn_id:
-airflow_encrypt_s3_logs: False
-airflow_s3_log_folder: # DEPRECATED
+airflow_encrypt_s3_logs: false
+# DEPRECATED
+airflow_s3_log_folder:
 
 ## DB
 airflow_database_conn: sqlite:///{{ airflow_home }}/airflow.db
@@ -150,26 +156,27 @@ airflow_webserver_worker_refresh_batch_size: 1
 airflow_webserver_worker_refresh_interval: 30
 airflow_webserver_secret_key: temporary_key
 airflow_webserver_worker_class: sync
-airflow_webserver_expose_config: False
-airflow_webserver_filter_by_owner: False
+airflow_webserver_expose_config: false
+airflow_webserver_filter_by_owner: false
 airflow_webserver_owner_mode: user
 airflow_webserver_dag_orientation: LR
-airflow_webserver_demo_mode: False
+airflow_webserver_demo_mode: false
 airflow_webserver_log_fetch_timeout_sec: 5
-airflow_webserver_hide_paused_dags_by_default: False
+airflow_webserver_hide_paused_dags_by_default: false
 airflow_webserver_page_size: 100
 airflow_webserver_rbac: "False"
 airflow_webserver_navbar_color: "#007A87"
 airflow_webserver_default_dag_run_display_number: 25
 
-## Webserver Authentication (http://pythonhosted.org/airflow/security.html#web-authentication)
+## Webserver Authentication
+# (http://pythonhosted.org/airflow/security.html#web-authentication)
 
 # Choices of auth_backend include:
 # - airflow.contrib.auth.backends.password_auth
 # - airflow.contrib.auth.backends.ldap_auth
 # - airflow.contrib.auth.backends.github_enterprise_auth
 # - others? :)
-airflow_webserver_authenticate: False
+airflow_webserver_authenticate: false
 airflow_webserver_auth_backend:
 
 ## LDAP (only applies if airflow_webserver_auth_backend == "airflow.contrib.auth.backends.ldap_auth")
@@ -190,8 +197,8 @@ airflow_email_backend: airflow.utils.email.send_email_smtp
 
 ## SMTP
 airflow_smtp_host: localhost
-airflow_smtp_starttls: True
-airflow_smtp_ssl: False
+airflow_smtp_starttls: true
+airflow_smtp_ssl: true
 airflow_smtp_port: 25
 airflow_smtp_mail_from: airflow@airflow.com
 airflow_smtp_user:
@@ -212,13 +219,13 @@ airflow_scheduler_min_file_parsing_loop_time: 1
 airflow_scheduler_dag_dir_list_interval: 300
 airflow_scheduler_print_stats_interval: 30
 airflow_scheduler_zombie_task_threshold: 300
-airflow_scheduler_catchup_by_default: True
+airflow_scheduler_catchup_by_default: true
 airflow_scheduler_max_threads: 2
-airflow_scheduler_authenticate: False
+airflow_scheduler_authenticate: true
 airflow_scheduler_max_tis_per_query: 512
 
 ## STASTD
-airflow_statsd_on: False
+airflow_statsd_on: false
 airflow_statsd_host: localhost
 airflow_statsd_port: 8125
 airflow_statsd_prefix: airflow
@@ -235,9 +242,11 @@ airflow_celery_ssl_key:
 airflow_celery_ssl_cert:
 airflow_celery_ssl_cacert:
 
-celery_extra_packages: # DICT
+# DICT
+celery_extra_packages:
 
-celery_version: 3.1.17 # This Celery version is guaranteed to work with Airflow 1.8.x
+# This Celery version is guaranteed to work with Airflow 1.8.x
+celery_version: 3.1.17
 
 ## FLOWER
 airflow_flower_host: 0.0.0.0
@@ -248,8 +257,8 @@ airflow_mesos_master_host: localhost:5050
 airflow_mesos_framework_name: Airflow
 airflow_mesos_task_cpu: 1
 airflow_mesos_task_memory: 256
-airflow_mesos_checkpoint: False
-airflow_mesos_authenticate: False
+airflow_mesos_checkpoint: false
+airflow_mesos_authenticate: false
 
 ## KERBEROS
 airflow_kerberos_ccache: /tmp/airflow_krb5_ccache
@@ -262,20 +271,21 @@ airflow_kerberos_keytab: airflow.keytab
 airflow_github_enterprise_api_rev: v3
 
 ## ADMIN
-airflow_admin_hide_sensitive_variable_fields: True
+airflow_admin_hide_sensitive_variable_fields: true
 airflow_admin_variables: []
-  # - key: bucket_name
-  #   value: logs_foo
+#   - key: bucket_name
+#     value: logs_foo
 airflow_admin_connections: []
-  # - conn_id: gcp_conn
-  #   conn_type: google_cloud_platform
-  #   conn_extra: '{"extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform", "extra__google_cloud_platform__project": "myprojet", "extra__google_cloud_platform__key_path": ""}'
-  # - conn_id: pg_conn
-  #   conn_uri: postgres://user:passwordh@host:5432/dbname
+#   - conn_id: gcp_conn
+#     conn_type: google_cloud_platform
+#     conn_extra: '{"extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform", "extra__google_cloud_platform__project": "myprojet", "extra__google_cloud_platform__key_path": ""}'
+#   - conn_id: pg_conn
+#     conn_uri: postgres://user:passwordh@host:5432/dbname
 
 ## ELASTICSEARCH
 airflow_elasticsearch_host:
-airflow_elasticsearch_log_id_template: "{dag_id}-{task_id}-{execution_date}-{try_number}"
+airflow_elasticsearch_log_id_template: >
+ "{dag_id}-{task_id}-{execution_date}-{try_number}"
 airflow_elasticsearch_end_of_log_mark: "end_of_log"
 
 ## KUBERNETES
@@ -293,7 +303,8 @@ airflow_kubernetes_git_branch:
 airflow_kubernetes_git_user:
 airflow_kubernetes_git_password:
 airflow_kubernetes_git_subpath:
-airflow_kubernetes_git_sync_container_repository: "gcr.io/google-containers/git-sync-amd64"
+airflow_kubernetes_git_sync_container_repository: >
+ "gcr.io/google-containers/git-sync-amd64"
 airflow_kubernetes_git_sync_container_tag: "v2.0.5"
 airflow_kubernetes_git_sync_init_container_name: "git-sync-clone"
 airflow_kubernetes_worker_service_account_name:
@@ -305,4 +316,4 @@ airflow_kubernetes_in_cluster: "True"
 # Python dependencies needed by the DAGs. This variable is expected to be a
 # list of items following the structure provided in the example comment
 dags_dependencies:
-  # - {name: pip_package, version: version_needed}
+#   - {name: pip_package, version: version_needed}

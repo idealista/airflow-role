@@ -23,7 +23,7 @@ These instructions will get you a copy of the role for your ansible playbook. On
 
 ### Prerequisities
 
-Ansible 2.4.5.0 version installed.
+Ansible 2.8.8 version installed.
 Inventory destination should be a Debian or Ubuntu environment.
 
 For testing purposes, [Molecule](https://molecule.readthedocs.io/) with [Docker](https://www.docker.com/) as driver.
@@ -35,7 +35,7 @@ Create or add to your roles dependency file (e.g requirements.yml) from GitHub:
 ```
 - src: http://github.com/idealista/airflow-role.git
   scm: git
-  version: 1.7.2
+  version: 1.7.3
   name: airflow
 ```
 
@@ -43,7 +43,7 @@ or using [Ansible Galaxy](https://galaxy.ansible.com/idealista/airflow-role/) as
 
 ```
 - src: idealista.airflow-role
-  version: 1.7.2
+  version: 1.7.3
   name: airflow
 ```
 
@@ -81,7 +81,7 @@ airflow_extra_packages:
 ## Testing
 
 ```
-pipenv install -r test-requirements.txt --python 2.7
+pipenv install -r test-requirements.txt --python 3.8
 pipenv run molecule test
 ```
 
