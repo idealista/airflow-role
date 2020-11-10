@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 ### Changed
 
-## [1.8.1](https://github.com/idealista/airflow-role/tree/1.8.0)
+## [1.8.1](https://github.com/idealista/airflow-role/tree/1.8.1)
 
 - *[#68](https://github.com/idealista/airflow-role/issues/68) Update dependencies versions and solve some lint errors @lorientedev
 
