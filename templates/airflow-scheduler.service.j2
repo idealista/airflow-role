@@ -25,6 +25,7 @@ ExecStart={{ airflow_executable }} scheduler -n ${SCHEDULER_RUNS} --pid {{ airfl
 Restart=always
 RestartSec=5s
 RuntimeDirectory=airflow
+PrivateTmp={{ airflow_private_tmp }}
 
 [Install]
 WantedBy=multi-user.target
