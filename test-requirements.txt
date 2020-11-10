@@ -1,2 +1,4 @@
-molecule==2.20.1
-docker==3.7.2
+molecule==3.0.1
+docker==4.1.0
+ansible-lint==4.2.0
+ansible==2.8.8

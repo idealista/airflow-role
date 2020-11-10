@@ -3,9 +3,9 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: False
+lint: |
+  yamllint .
+  ansible-lint .
 
 platforms:
   - name: airflow_extra_packages-${MOLECULE_DISTRO:-stretch}
@@ -23,11 +23,8 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
-    enabled: False
+    enabled: false
 scenario:
   name: extra_packages
 verifier:
-  name: goss
-  lint:
-    name: yamllint
-    enabled: False
+  name: ansible
