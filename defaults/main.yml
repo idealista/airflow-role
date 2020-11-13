@@ -26,6 +26,8 @@ airflow_group: airflow
 ## Service options
 airflow_scheduler_runs: 5
 
+airflow_private_tmp: false
+
 airflow_services:
   airflow-webserver:
     enabled: true
