@@ -24,7 +24,7 @@ Type=simple
 ExecStart={{ airflow_executable }} webserver --pid {{ airflow_pidfile_folder }}/webserver.pid
 Restart=on-failure
 RestartSec=5s
-PrivateTmp=true
+PrivateTmp={{ airflow_private_tmp }}
 RuntimeDirectory=airflow
 
 [Install]

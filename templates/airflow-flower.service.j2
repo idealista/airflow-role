@@ -25,6 +25,7 @@ ExecStart={{ airflow_executable }} flower --pid {{ airflow_pidfile_folder }}/flo
 Restart=on-failure
 RestartSec=10s
 RuntimeDirectory=airflow
+PrivateTmp={{ airflow_private_tmp }}
 
 [Install]
 WantedBy=multi-user.target
