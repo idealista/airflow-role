@@ -25,6 +25,7 @@ ExecStart={{ airflow_executable }} worker --pid {{ airflow_pidfile_folder }}/wor
 KillSignal=SIGINT
 Restart=on-failure
 RestartSec=10s
+PrivateTmp={{ airflow_private_tmp }}
 RuntimeDirectory=airflow
 
 [Install]
