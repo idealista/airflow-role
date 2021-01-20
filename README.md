@@ -35,7 +35,7 @@ Create or add to your roles dependency file (e.g requirements.yml) from GitHub:
 ```
 - src: http://github.com/idealista/airflow-role.git
   scm: git
-  version: 1.7.3
+  version: 1.8.2
   name: airflow
 ```
 
@@ -43,7 +43,7 @@ or using [Ansible Galaxy](https://galaxy.ansible.com/idealista/airflow-role/) as
 
 ```
 - src: idealista.airflow-role
-  version: 1.7.3
+  version: 1.8.2
   name: airflow
 ```
 
