@@ -34,7 +34,7 @@
     - restart airflow-worker
     - restart airflow-flower
 
-- name: Airflow | Initializing DB
+- name: Airflow | Initializing DB < 2.0
   command: "{{ airflow_executable }} initdb"
   environment:
     AIRFLOW_HOME: "{{ airflow_home }}"
@@ -42,7 +42,22 @@
   become_user: "{{ airflow_user }}"
   tags:
     skip_ansible_lint
-  when: airflow_install.changed or airflow_config.changed
+  when: airflow_version is version( '2.0.0', '<')
+  notify:
+    - restart airflow-webserver
+    - restart airflow-scheduler
+    - restart airflow-worker
+    - restart airflow-flower
+
+- name: Airflow | Initializing DB > 2.0
+  command: "{{ airflow_executable }} db init"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_home }}"
+  become: true
+  become_user: "{{ airflow_user }}"
+  tags:
+    skip_ansible_lint
+  when: airflow_version is version( '2.0.0', '>=') 
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler

@@ -22,6 +22,9 @@
 SCHEDULER_RUNS={{ airflow_scheduler_runs }}
 
 AIRFLOW_HOME={{ airflow_home }}
+PATH=$PATH:{{ airflow_root_path }}/airflow_venv/bin
+
+HOSTALIASES=/etc/host.aliases
 
 {% for extra_var in airflow_environment_extra_vars %}
 {{ extra_var.name }}={{ extra_var.value }}
