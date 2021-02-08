@@ -9,6 +9,7 @@ airflow_extra_packages: []
 
 airflow_pip_executable: "pip"
 airflow_executable: "/usr/local/bin/airflow"
+airflow_root_path: "/opt/airflow"
 
 airflow_required_libs:
   - python-pip
