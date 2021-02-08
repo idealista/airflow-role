@@ -42,7 +42,7 @@
   become_user: "{{ airflow_user }}"
   tags:
     skip_ansible_lint
-  when: airflow_version is version( '2.0.0', '<')
+  when: airflow_version is version( '2.0.0', '<') and ( airflow_install.changed or airflow_config.changed)
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
@@ -57,7 +57,7 @@
   become_user: "{{ airflow_user }}"
   tags:
     skip_ansible_lint
-  when: airflow_version is version( '2.0.0', '>=')
+  when: airflow_version is version( '2.0.0', '>=') and  (airflow_install.changed or airflow_config.changed)
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
