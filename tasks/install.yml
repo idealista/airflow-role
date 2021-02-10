@@ -108,7 +108,7 @@
 
 - name: Airflow | Copy Daemon scripts
   template:
-    src: "{{ item.key }}.service.j2"
+    src: "{{ item.value.path }}"
     dest: /lib/systemd/system/{{ item.key }}.service
     mode: 0644
   notify: restart {{ item.key }}

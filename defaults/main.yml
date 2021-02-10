@@ -33,15 +33,19 @@ airflow_services:
   airflow-webserver:
     enabled: true
     state: started
+    path: airflow-webserver.service.j2
   airflow-scheduler:
     enabled: true
     state: started
+    path: airflow-scheduler.service.j2
   airflow-worker:
     enabled: false
     state: started
+    path: airflow-worker.service.j2
   airflow-flower:
     enabled: false
     state: started
+    path: airflow-flower.service.j2
 
 # Files & Paths
 airflow_home: /etc/airflow
