@@ -90,6 +90,7 @@
     executable: "{{ airflow_pip_executable }}"
     name: "{{ item.name }}"
     version: "{{ item.version }}"
+    extra_args: "{{ item.extra_args }}"
   with_items: "{{ dags_dependencies }}"
   when: dags_dependencies
   notify:
