@@ -9,12 +9,13 @@ airflow_extra_packages: []
 
 airflow_pip_executable: "pip"
 airflow_executable: "/usr/local/bin/airflow"
+airflow_root_path: "/opt/airflow"
 
 airflow_required_libs:
   - python-pip
   - acl
 
-airflow_required_python_packages: 
+airflow_required_python_packages:
   - {name: werkzeug, version: 0.16.1}
 #   Version is not mandatory
 #   - {name: pyasn1, version: 0.4.4}

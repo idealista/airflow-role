@@ -1,3 +1,4 @@
+---
 service:
 {% for airflow_service in airflow_services %}
 {% if airflow_services[airflow_service]["enabled"] %}

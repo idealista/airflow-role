@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 ### Changed
 
+- *[#82](https://github.com/idealista/airflow-role/issues/82) Add support to airflow 2.0 version. @lorientedev
+
 ## [1.8.3](https://github.com/idealista/airflow-role/tree/1.8.3)
 
 - *[#78](https://github.com/idealista/airflow-role/issues/78) Add path for services templates to allow overwrite from playbook @lorientedev
+
 
 ## [1.8.2](https://github.com/idealista/airflow-role/tree/1.8.2)
 
