@@ -1,25 +1,73 @@
 ---
-service:
-{% for airflow_service in airflow_services %}
-{% if airflow_services[airflow_service]["enabled"] %}
-  {{ airflow_service }}:
-    enabled: true
-    running: true
-{% endif %}
-{% endfor %}
-
-user:
-  {{ airflow_user }}:
-    exists: true
-    groups:
-      - {{ airflow_group }}
-
-group:
-  {{ airflow_group }}:
-    exists: true
 
 command:
   /usr/local/bin/airflow version:
     exit-status: 0
     stdout:
       - "{{ airflow_version }}"
+service:
+  airflow-webserver:
+    enabled: "{{ airflow_services.airflow-webserver.enabled }}"
+    state: "{{ airflow_services.airflow-webserver.state }}"
+    running: true
+  airflow-scheduler:
+    enabled: "{{ airflow_services.airflow-scheduler.enabled }}"
+    state: "{{ airflow_services.airflow-scheduler.state }}"
+    running: true
+  airflow-worker:
+    enabled: "{{ airflow_services.airflow-worker.enabled }}"
+    state: "{{ airflow_services.airflow-worker.state }}"
+  airflow-flower:
+    enabled: "{{ airflow_services.airflow-flower.enabled }}"
+    state: "{{ airflow_services.airflow-flower.state }}"
+process:
+  {{ airflow_exec_name }}:
+    running: true
+user:
+  {{ airflow_user }}:
+    exists: true
+    groups:
+      - {{ airflow_group }}
+    shell: /usr/sbin/nologin
+group:
+  {{ airflow_group }}:
+    exists: true
+port:
+  tcp:{{ airflow_webserver_port }}:
+    listening: true
+    ip:
+      - {{ airflow_webserver_host }}
+  tcp:{{ airflow_flower_port }}:
+    listening: true
+    ip:
+      - {{ airflow_flower_host }}
+http:
+  {{ airflow_health_url }}:
+    status: 200
+# file:
+#   {{ airflow_bin_path }}:
+#     exists: true
+#     filetype: directory
+#     owner: {{ airflow_user }}
+#     group: {{ airflow_group }}
+#   {{ airflow_metadatadb_path }}:
+#     exists: true
+#     filetype: directory
+#     owner: {{ airflow_user }}
+#     group: {{ airflow_group }}
+#   {{ airflow_conf_path }}:
+#     exists: true
+#     filetype: directory
+#     owner: {{ airflow_user }}
+#     group: {{ airflow_group }}
+#   {{ airflow_config_file_path }}:
+#     exists: true
+#     filetype: file
+#     owner: {{ airflow_user }}
+#     group: {{ airflow_group }}
+#     contains:
+#       - "/APP_NAME\\s*=\\s.+/"
+#       - "/airflow_WEBSERVER_PORT\\s*=\\s\\d+/"
+#       - "/SECRET_KEY\\s*=\\s'.+'/"
+#       - "/SQLALCHEMY_DATABASE_URI\\s*=\\s'.+'/"
+

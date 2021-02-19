@@ -8,27 +8,31 @@
   user:
     name: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
-    shell: /bin/bash
+    system: yes
+    shell:  /usr/sbin/nologin
+    # shell: /bin/bash
+    createhome: yes
 
-- name: Airflow | Create path for Airflow home
+- name: Airflow | Ensure airflow skeleton paths
   file:
-    path: "{{ airflow_home }}"
-    state: directory
+    path: "{{ item }}"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
-
-- name: Airflow | Create path for configuration files
-  file:
-    path: "{{ airflow_environment_file_folder }}"
     state: directory
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
+  with_items: "{{ airflow_skeleton_paths }}"
 
 - name: Airflow | Installing dependencies
   apt:
     pkg: "{{ airflow_required_libs }}"
     state: present
     update_cache: true
+
+# See https://airflow.apache.org/docs/apache-airflow/stable/installation.html#installation-tools
+- name: Airflow | Install pip 20.2.4 version
+  pip:
+    executable: "{{ airflow_pip_executable }}"
+    name: pip
+    version: 20.2.4
 
 - name: Airflow | Installing Python pip dependencies
   pip:
@@ -52,16 +56,17 @@
   with_items: "{{ celery_extra_packages }}"
   when: airflow_executor == "CeleryExecutor" and celery_extra_packages
 
-- name: Airflow | Set AIRFLOW_HOME environment variable in /etc/environment
+- name: Airflow | Set AIRFLOW_HOME environment variable in "{{ airflow_home }}"
   lineinfile:
     path: /etc/environment
-    line: 'AIRFLOW_HOME={{ airflow_home }}'
+    line: "AIRFLOW_HOME={{ airflow_home }}"
 
 - name: Airflow | Installing Airflow
   pip:
     executable: "{{ airflow_pip_executable }}"
-    name: apache-airflow
+    name: "{{ airflow_package }}[{{ airflow_bundle_package | default(omit) }}]"
     version: "{{ airflow_version }}"
+    state: present
     extra_args: --no-cache-dir
   register: airflow_install
   environment:
@@ -70,10 +75,11 @@
 - name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
   pip:
     executable: "{{ airflow_pip_executable }}"
-    name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
+    name: "{{ airflow_package }}[{{ item }}]=={{ airflow_version }}"
   with_items: "{{ airflow_extra_packages }}"
   when:
-    - airflow_extra_packages
+    - airflow_extra_packages is defined
+    - not airflow_bundle_package
     - ansible_version.full is version_compare('2.7', '<')
 
 - name: Airflow | Installing Airflow Extra Packages
@@ -82,7 +88,8 @@
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
   when:
-    - airflow_extra_packages
+    - airflow_extra_packages is defined
+    - not airflow_bundle_package
     - ansible_version.full is version_compare('2.7', '>=')
 
 - name: Airflow | Installing DAGs dependencies
@@ -109,7 +116,7 @@
 - name: Airflow | Copy Daemon scripts
   template:
     src: "{{ item.value.path }}"
-    dest: /lib/systemd/system/{{ item.key }}.service
+    dest: "/lib/systemd/system/{{ item.key }}.service"
     mode: 0644
   notify: restart {{ item.key }}
   with_dict: "{{ airflow_services }}"

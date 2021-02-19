@@ -6,25 +6,34 @@ driver:
 lint: |
   yamllint .
   ansible-lint .
-
 platforms:
-  - name: airflow_extra_packages-${MOLECULE_DISTRO:-stretch}
-    image: debian:${MOLECULE_DISTRO:-stretch}
-    privileged: true
+  - name: airflow-extra-packages-${MOLECULE_DISTRO}
+    image: ${MOLECULE_DISTRO:-debian:MOLECULE_DISTRO-slim}
+    privileged: false
     capabilities:
       - SYS_ADMIN
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
     volumes:
       - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
-    groups:
-      - airflow
     command: '/lib/systemd/systemd'
-
+    stop_signal: 'RTMIN+3'
+    exposed_ports:
+      - 8088/tcp
+      - 8080/tcp
+      - 8081/tcp
+      - 5000/tcp
+    published_ports:
+      - 0.0.0.0:8088:8088/tcp
+      - 0.0.0.0:8080:8080/tcp
+      - 0.0.0.0:8081:8081/tcp
+      - 0.0.0.0:5000:5000/tcp
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-    enabled: false
-scenario:
-  name: extra_packages
+# scenario:
+#   name: default
 verifier:
   name: ansible
+

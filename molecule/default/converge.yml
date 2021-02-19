@@ -1,6 +1,6 @@
 ---
 
 - name: Converge
-  hosts: all
+  hosts: airflow_group
   roles:
     - role: airflow-role
