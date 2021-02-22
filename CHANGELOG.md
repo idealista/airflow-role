@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 ### Changed
 
+- *[#85](https://github.com/idealista/airflow-role/issues/85) Add extra args in pip install to allow different repositories @lorientedev
+
  ## [1.8.4](https://github.com/idealista/airflow-role/tree/1.8.4)
 
 - *[#82](https://github.com/idealista/airflow-role/issues/82) Add support to airflow 2.0 version. @lorientedev
