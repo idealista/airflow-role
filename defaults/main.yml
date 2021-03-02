@@ -97,6 +97,7 @@ airflow_required_libs:
   - python3
   - python3-dev
   - python3-pip
+  - python3-setuptools
   - python-pip
   - acl
 # Airflow 2.0 system level requirements https://airflow.apache.org/docs/apache-airflow/stable/installation.html#system-dependencies
@@ -113,8 +114,8 @@ airflow_required_libs:
   - sqlite3
   - unixodbc
 
-airflow_required_python_packages:
-  - {name: werkzeug, version: 0.16.1}
+# airflow_required_python_packages:
+  # - {name: werkzeug, version: 0.16.1}
 #   Version is not mandatory
 #   - {name: pyasn1, version: 0.4.4}
 
@@ -155,7 +156,7 @@ airflow_services:
     path: airflow-flower.service.j2
 
 # Files & Paths
-airflow_executable: "/usr/local/bin/airflow"
+airflow_executable: "{{ airflow_app_home }}/bin/airflow"
 airflow_pip_executable: "pip3"
 airflow_app_home: "/opt/{{ airflow_app_name }}"
 airflow_home: "/home/{{ airflow_user }}"
@@ -163,6 +164,7 @@ airflow_conf_path: "/etc/{{ airflow_app_name }}"
 airflow_pidfile_folder: "/run/{{ airflow_app_name }}"
 airflow_environment_file_folder: /etc/sysconfig
 airflow_environment_extra_vars: []
+airflow_health_url: "{{ airflow_webserver_host }}:{{ airflow_webserver_port }}/health"
 #   - name: PATH
 #     value: "/custom/path/bin:$PATH"
 airflow_skeleton_paths:
@@ -172,7 +174,6 @@ airflow_skeleton_paths:
   - "{{ airflow_dags_folder }}"
   - "{{ airflow_logs_folder }}"
   - "{{ airflow_child_process_log_folder }}"
-  - "{{ airflow_pidfile_folder }}"
   - "{{ airflow_environment_file_folder }}"
   - "{{ airflow_plugins_folder }}"
 
@@ -191,7 +192,7 @@ celery_version: 3.1.17
 # DAGs
 # Python dependencies needed by the DAGs. This variable is expected to be a
 # list of items following the structure provided in the example comment
-dags_dependencies:
+# dags_dependencies:
 #   - {name: pip_package, version: version_needed}
 
 
@@ -200,6 +201,7 @@ dags_dependencies:
 # [core]
 airflow_dags_folder: "{{ airflow_home }}/dags"
 airflow_hostname_callable: "socket:getfqdn"
+airflow_hostname_callable_v2: "socket.getfqdn"
 airflow_default_timezone: "utc"
 # The executor class that airflow should use. Choices include
 # SequentialExecutor, LocalExecutor, CeleryExecutor, DaskExecutor
@@ -337,7 +339,7 @@ airflow_webserver_worker_timeout: 120
 airflow_webserver_worker_refresh_batch_size: 1
 airflow_webserver_worker_refresh_interval: 30
 airflow_webserver_reload_on_plugin_change: False
-airflow_webserver_secret_key: temporary_key
+airflow_webserver_secret_key: "replace_me"
 airflow_webserver_workers: 4
 airflow_webserver_worker_class: sync
 airflow_webserver_access_logfile: "{{ airflow_logs_folder }}/gunicorn-access.log"
@@ -356,6 +358,7 @@ airflow_webserver_log_animation_speed: 1000
 airflow_webserver_hide_paused_dags_by_default: False
 airflow_webserver_page_size: 100
 airflow_webserver_navbar_color: "#007A87"
+airflow_webserver_navbar_color_v2: "#fff"
 airflow_webserver_default_dag_run_display_number: 25
 airflow_webserver_enable_proxy_fix: False
 airflow_webserver_proxy_fix_x_for: 1

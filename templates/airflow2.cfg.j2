@@ -11,7 +11,7 @@ dags_folder = {{ airflow_dags_folder }}
 #
 # No argument should be required in the function specified.
 # If using IP address as hostname is preferred, use value ``airflow.utils.net.get_host_ip_address``
-hostname_callable = {{ airflow_hostname_callable }}
+hostname_callable = {{ airflow_hostname_callable_v2 }}
 
 # Default timezone in case supplied date times are naive
 # can be utc (default), system, or any IANA timezone string (e.g. Europe/Amsterdam)
@@ -35,7 +35,8 @@ sql_engine_encoding = {{ airflow_database_engine_encoding }}
 # This is particularly useful in case of mysql with utf8mb4 encoding because
 # primary keys for XCom table has too big size and ``sql_engine_collation_for_ids`` should
 # be set to ``utf8mb3_general_ci``.
-sql_engine_collation_for_ids = {{ airflow_database_engine_collation_for_ids }}
+# sql_engine_collation_for_ids =
+{% if airflow_database_engine_collation_for_ids %}sql_engine_collation_for_ids = {{ airflow_database_engine_collation_for_ids }}{% endif %}
 
 # If SqlAlchemy should pool database connections.
 sql_alchemy_pool_enabled = {{ airflow_database_pool_enabled }}
@@ -75,7 +76,8 @@ sql_alchemy_schema = {{ airflow_database_schema }}
 # This is useful when you want to configure db engine args that SqlAlchemy won't parse
 # in connection string.
 # See https://docs.sqlalchemy.org/en/13/core/engines.html#sqlalchemy.create_engine.params.connect_args
-sql_alchemy_connect_args = {{ airflow_database_connect_args }}
+# sql_alchemy_connect_args =
+{% if airflow_database_connect_args %}sql_alchemy_connect_args = {{ airflow_database_connect_args }}{% endif %}
 
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
@@ -175,7 +177,7 @@ min_serialized_dag_fetch_interval = {{ airflow_min_serialized_dag_fetch_interval
 # If set to True, Webserver reads file contents from DB instead of
 # trying to access files in a DAG folder.
 # Example: store_dag_code = False
-store_dag_code = {{ airflow_store_dag_code }}
+{% if airflow_store_dag_code %}store_dag_code = {{ airflow_store_dag_code }}{% endif %}
 
 # Maximum number of Rendered Task Instance Fields (Template Fields) per task to store
 # in the Database.
@@ -515,7 +517,7 @@ hide_paused_dags_by_default = {{ airflow_webserver_hide_paused_dags_by_default }
 page_size = {{ airflow_webserver_page_size }}
 
 # Define the color of navigation bar
-navbar_color = {{ airflow_webserver_navbar_color }}
+navbar_color = {{ airflow_webserver_navbar_color_v2 }}
 
 # Default dagrun to show in UI
 default_dag_run_display_number = {{ airflow_webserver_default_dag_run_display_number }}
@@ -553,10 +555,10 @@ x_frame_enabled = {{ airflow_webserver_x_frame_enabled }}
 
 # Send anonymous user activity to your analytics tool
 # choose from google_analytics, segment, or metarouter
-analytics_tool = {{ airflow_webserver_analytics_tool }}
+{% if airflow_webserver_analytics_tool %}analytics_tool = {{ airflow_webserver_analytics_tool }}{% endif %}
 
 # Unique ID of your account in the analytics tool
-analytics_id = {{ airflow_webserver_analytics_id }}
+{% if airflow_webserver_analytics_id %}analytics_id = {{ airflow_webserver_analytics_id }}{% endif %}
 
 # 'Recent Tasks' stats will show for old DagRuns if set
 show_recent_stats_for_completed_runs = {{ airflow_webserver_show_recent_stats_for_completed_runs }}
@@ -585,12 +587,12 @@ default_email_on_failure = {{ airflow_email_default_email_on_failure }}
 # File that will be used as the template for Email subject (which will be rendered using Jinja2).
 # If not set, Airflow uses a base template.
 # Example: subject_template = /path/to/my_subject_template_file
-subject_template = {{airflow_email_subject_template }}
+{% if airflow_email_subject_template %}subject_template = {{ airflow_email_subject_template }}{% endif %}
 
 # File that will be used as the template for Email content (which will be rendered using Jinja2).
 # If not set, Airflow uses a base template.
 # Example: html_content_template = /path/to/my_html_content_template_file
-html_content_template = {{ airflow_email_html_content_template }}
+{% if airflow_email_html_content_template %}html_content_template = {{ airflow_email_html_content_template }}{% endif %}
 
 [smtp]
 
@@ -652,7 +654,7 @@ worker_concurrency = {{ airflow_celery_concurrency }}
 # If autoscale option is available, worker_concurrency will be ignored.
 # http://docs.celeryproject.org/en/latest/reference/celery.bin.worker.html#cmdoption-celery-worker-autoscale
 # Example: worker_autoscale = 16,12
-worker_autoscale = {{ airflow_celery_worker_autoscale }}
+{% if airflow_celery_worker_autoscale %}worker_autoscale = {{ airflow_celery_worker_autoscale }}{% endif %}
 
 # Used to increase the number of tasks that a worker prefetches which can improve performance.
 # The number of processes multiplied by worker_prefetch_multiplier is the number of tasks
@@ -662,7 +664,7 @@ worker_autoscale = {{ airflow_celery_worker_autoscale }}
 # claimed blocked tasks.
 # https://docs.celeryproject.org/en/stable/userguide/optimizing.html#prefetch-limits
 # Example: worker_prefetch_multiplier = 1
-worker_prefetch_multiplier = {{ airflow_celery_worker_prefetch_multiplier }}
+{% if airflow_celery_worker_prefetch_multiplier %}worker_prefetch_multiplier = {{ airflow_celery_worker_prefetch_multiplier }}{% endif %}
 
 # When you start an airflow worker, airflow starts a tiny web server
 # subprocess to serve the workers local log files to the airflow main
@@ -758,7 +760,7 @@ worker_precheck = {{ airflow_celery_worker_precheck }}
 # See:
 # http://docs.celeryproject.org/en/master/userguide/configuration.html#std:setting-broker_transport_options
 # Example: visibility_timeout = 21600
-visibility_timeout = {{ airflow_celery_broker_visibility_timeout }}
+{% if airflow_celery_broker_visibility_timeout %}visibility_timeout = {{ airflow_celery_broker_visibility_timeout }}{% endif %}
 
 [dask]
 {% if airflow_executor == "DaskExecutor" %}
@@ -961,10 +963,10 @@ in_cluster = {{ airflow_kubernetes_in_cluster }}
 
 # When running with in_cluster=False change the default cluster_context or config_file
 # options to Kubernetes client. Leave blank these to use default behaviour like ``kubectl`` has.
-cluster_context = {{ airflow_kubernetes_cluster_context }}
+{% if airflow_kubernetes_cluster_context %}cluster_context = {{ airflow_kubernetes_cluster_context }}{% endif %}
 
 # Path to the kubernetes configfile to be used when ``in_cluster`` is set to False
-config_file = {{ airflow_kubernetes_config_file }}
+{% if airflow_kubernetes_config_file %}config_file = {{ airflow_kubernetes_config_file }}{% endif %}
 
 # Keyword parameters to pass while calling a kubernetes client core_v1_api methods
 # from Kubernetes Executor provided as a single line formatted JSON dictionary string.

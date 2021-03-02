@@ -1,7 +1,7 @@
 ---
 
 command:
-  /usr/local/bin/airflow version:
+  "{{ airflow_executable }} version":
     exit-status: 0
     stdout:
       - "{{ airflow_version }}"
@@ -21,7 +21,7 @@ service:
     enabled: "{{ airflow_services.airflow-flower.enabled }}"
     state: "{{ airflow_services.airflow-flower.state }}"
 process:
-  {{ airflow_exec_name }}:
+  {{ airflow_executable }}:
     running: true
 user:
   {{ airflow_user }}:
@@ -44,30 +44,14 @@ port:
 http:
   {{ airflow_health_url }}:
     status: 200
-# file:
-#   {{ airflow_bin_path }}:
-#     exists: true
-#     filetype: directory
-#     owner: {{ airflow_user }}
-#     group: {{ airflow_group }}
-#   {{ airflow_metadatadb_path }}:
-#     exists: true
-#     filetype: directory
-#     owner: {{ airflow_user }}
-#     group: {{ airflow_group }}
-#   {{ airflow_conf_path }}:
-#     exists: true
-#     filetype: directory
-#     owner: {{ airflow_user }}
-#     group: {{ airflow_group }}
-#   {{ airflow_config_file_path }}:
-#     exists: true
-#     filetype: file
-#     owner: {{ airflow_user }}
-#     group: {{ airflow_group }}
-#     contains:
-#       - "/APP_NAME\\s*=\\s.+/"
-#       - "/airflow_WEBSERVER_PORT\\s*=\\s\\d+/"
-#       - "/SECRET_KEY\\s*=\\s'.+'/"
-#       - "/SQLALCHEMY_DATABASE_URI\\s*=\\s'.+'/"
-
+file:
+  "{{ airflow_app_home }}/bin":
+    exists: true
+    filetype: directory
+    owner: {{ airflow_user }}
+    group: {{ airflow_group }}
+  {{ airflow_conf_path }}:
+    exists: true
+    filetype: directory
+    owner: {{ airflow_user }}
+    group: {{ airflow_group }}

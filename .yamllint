@@ -28,7 +28,7 @@ rules:
     level: error
   hyphens:
     level: error
-  indentation: disable
+  indentation: enable
   key-duplicates: enable
   line-length: disable
   new-line-at-end-of-file: disable
@@ -36,4 +36,3 @@ rules:
     type: unix
   trailing-spaces: disable
   truthy: disable
-  

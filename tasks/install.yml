@@ -8,10 +8,10 @@
   user:
     name: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
-    system: yes
-    shell:  /usr/sbin/nologin
+    system: true
+    shell: /usr/sbin/nologin
     # shell: /bin/bash
-    createhome: yes
+    createhome: true
 
 - name: Airflow | Ensure airflow skeleton paths
   file:
@@ -34,48 +34,90 @@
     name: pip
     version: 20.2.4
 
-- name: Airflow | Installing Python pip dependencies
+- name: Airflow | Install virtualenv
   pip:
     executable: "{{ airflow_pip_executable }}"
+    name: virtualenv
+
+- name: Airflow | Check if exists virtualenv
+  stat:
+    path: "{{ airflow_app_home }}/pyvenv.cfg"
+  register: virtualenv_check
+
+- name: Airflow | Set a virtualenv
+  become: true
+  become_user: "{{ airflow_user }}"
+  command: "virtualenv -p python{{ airflow_python_version }} {{ airflow_app_home }}"
+  when: not virtualenv_check.stat.exists
+
+- name: Airflow | Installing Python pip dependencies
+  become: true
+  become_user: "{{ airflow_user }}"
+  pip:
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   with_items: "{{ airflow_required_python_packages }}"
+  when: airflow_required_python_packages is defined
 
 - name: Airflow | Installing proper Celery version
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: celery
     version: "{{ celery_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   when: airflow_executor == "CeleryExecutor"
 
 - name: Airflow | Installing extra Celery packages
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: celery[{{ item }}]
     version: "{{ celery_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   with_items: "{{ celery_extra_packages }}"
   when: airflow_executor == "CeleryExecutor" and celery_extra_packages
 
-- name: Airflow | Set AIRFLOW_HOME environment variable in "{{ airflow_home }}"
+- name: Airflow | Add Airflow bin path to the PATH env"
   lineinfile:
     path: /etc/environment
-    line: "AIRFLOW_HOME={{ airflow_home }}"
+    line: "PATH=$PATH:{{ airflow_app_home }}/bin"
+
+- name: Airflow | Set AIRFLOW_HOME environment variable in app "{{ airflow_app_home }}"
+  lineinfile:
+    path: /etc/environment
+    line: "AIRFLOW_HOME={{ airflow_app_home }}"
+
+- name: Airflow | Set AIRFLOW_CONFIG environment variable in app "{{ airflow_conf_path }}"
+  lineinfile:
+    path: /etc/environment
+    line: "AIRFLOW_CONFIG={{ airflow_conf_path }}/airflow.cfg"
 
 - name: Airflow | Installing Airflow
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "{{ airflow_package }}[{{ airflow_bundle_package | default(omit) }}]"
     version: "{{ airflow_version }}"
     state: present
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
     extra_args: --no-cache-dir
   register: airflow_install
   environment:
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
 
 - name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "{{ airflow_package }}[{{ item }}]=={{ airflow_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   with_items: "{{ airflow_extra_packages }}"
   when:
     - airflow_extra_packages is defined
@@ -83,22 +125,28 @@
     - ansible_version.full is version_compare('2.7', '<')
 
 - name: Airflow | Installing Airflow Extra Packages
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   when:
     - airflow_extra_packages is defined
     - not airflow_bundle_package
     - ansible_version.full is version_compare('2.7', '>=')
 
 - name: Airflow | Installing DAGs dependencies
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "{{ item.name }}"
     version: "{{ item.version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version }}"
   with_items: "{{ dags_dependencies }}"
-  when: dags_dependencies
+  when: dags_dependencies is defined
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
