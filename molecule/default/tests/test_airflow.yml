@@ -7,22 +7,17 @@ command:
       - "{{ airflow_version }}"
 service:
   airflow-webserver:
-    enabled: "{{ airflow_services.airflow-webserver.enabled }}"
-    state: "{{ airflow_services.airflow-webserver.state }}"
-    running: true
+    enabled: {{ airflow_services.airflow_webserver.enabled }}
+    running: {{ airflow_services.airflow_webserver.running }}
   airflow-scheduler:
-    enabled: "{{ airflow_services.airflow-scheduler.enabled }}"
-    state: "{{ airflow_services.airflow-scheduler.state }}"
-    running: true
+    enabled: {{ airflow_services.airflow_scheduler.enabled }}
+    running: {{ airflow_services.airflow_scheduler.running }}
   airflow-worker:
-    enabled: "{{ airflow_services.airflow-worker.enabled }}"
-    state: "{{ airflow_services.airflow-worker.state }}"
+    enabled: {{ airflow_services.airflow_worker.enabled }}
+    running: {{ airflow_services.airflow_worker.running }}
   airflow-flower:
-    enabled: "{{ airflow_services.airflow-flower.enabled }}"
-    state: "{{ airflow_services.airflow-flower.state }}"
-process:
-  {{ airflow_executable }}:
-    running: true
+    enabled: {{ airflow_services.airflow_flower.enabled }}
+    running: {{ airflow_services.airflow_flower.running }}
 user:
   {{ airflow_user }}:
     exists: true
@@ -34,11 +29,11 @@ group:
     exists: true
 port:
   tcp:{{ airflow_webserver_port }}:
-    listening: true
+    listening: {{ airflow_services.airflow_webserver.running }}
     ip:
       - {{ airflow_webserver_host }}
   tcp:{{ airflow_flower_port }}:
-    listening: true
+    listening: {{ airflow_services.airflow_flower.running }}
     ip:
       - {{ airflow_flower_host }}
 http:

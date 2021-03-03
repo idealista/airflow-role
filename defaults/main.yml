@@ -133,25 +133,32 @@ airflow_admin_user:
   email: email@domain.com
 
 ## Service options
-airflow_scheduler_runs: 5
-
+airflow_scheduler_runs: 1000
 airflow_private_tmp: false
 
 airflow_services:
-  airflow-webserver:
+  airflow_webserver:
+    service_name: airflow-webserver
     enabled: true
+    running: true
     state: started
     path: airflow-webserver.service.j2
-  airflow-scheduler:
+  airflow_scheduler:
+    service_name: airflow-scheduler
     enabled: true
+    running: true
     state: started
     path: airflow-scheduler.service.j2
-  airflow-worker:
+  airflow_worker:
+    service_name: airflow-worker
     enabled: false
+    running: false
     state: started
     path: airflow-worker.service.j2
-  airflow-flower:
+  airflow_flower:
+    service_name: airflow-flower
     enabled: false
+    running: false
     state: started
     path: airflow-flower.service.j2
 
@@ -164,7 +171,7 @@ airflow_conf_path: "/etc/{{ airflow_app_name }}"
 airflow_pidfile_folder: "/run/{{ airflow_app_name }}"
 airflow_environment_file_folder: /etc/sysconfig
 airflow_environment_extra_vars: []
-airflow_health_url: "{{ airflow_webserver_host }}:{{ airflow_webserver_port }}/health"
+airflow_health_url: "http://{{ airflow_webserver_host }}:{{ airflow_webserver_port }}/health"
 #   - name: PATH
 #     value: "/custom/path/bin:$PATH"
 airflow_skeleton_paths:

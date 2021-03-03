@@ -148,10 +148,10 @@
   with_items: "{{ dags_dependencies }}"
   when: dags_dependencies is defined
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    - restart airflow_webserver
+    - restart airflow_scheduler
+    - restart airflow_worker
+    - restart airflow_flower
 
 - name: Airflow | Copy Environment File
   template:
@@ -164,8 +164,8 @@
 - name: Airflow | Copy Daemon scripts
   template:
     src: "{{ item.value.path }}"
-    dest: "/lib/systemd/system/{{ item.key }}.service"
+    dest: "/lib/systemd/system/{{ item.value.service_name }}.service"
     mode: 0644
-  notify: restart {{ item.key }}
+  notify: restart {{ item.value.service_name }}
   with_dict: "{{ airflow_services }}"
   when: item.value.enabled
