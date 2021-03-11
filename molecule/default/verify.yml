@@ -29,7 +29,7 @@
         mode: 0755
       register: download_goss
       until: download_goss is succeeded
-      retries: 3
+      retries: 6
 
     - name: Copy Goss tests to remote
       template:
@@ -43,7 +43,7 @@
       register: test_files
 
     - name: Execute Goss tests
-      command: "{{ goss_dst }} -g {{ item }} validate --format {{ goss_format }}"
+      command: "{{ goss_dst }} -g {{ item }} validate --format {{ goss_format }} --retry-timeout 10s"
       register: test_results
       with_items: "{{ test_files.stdout_lines }}"
       ignore_errors: true

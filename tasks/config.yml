@@ -52,8 +52,6 @@
 
 - name: Airflow | Initializing DB < 2.0
   command: "{{ airflow_executable }} initdb"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_app_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   tags:
@@ -69,15 +67,11 @@
 
 - name: Airflow | Initializing DB > 2.0
   command: "{{ airflow_executable }} db init"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_app_home }}"
   become: true
   become_user: "{{ airflow_user }}"
-  # tags:
-  #   skip_ansible_lint
   when:
     - airflow_version is version( '2.0.0', '>=')
-    - (airflow_install.changed or airflow_config.changed)
+    - airflow_install.changed or airflow_config.changed
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
@@ -146,8 +140,6 @@
 
 - name: Airflow | Add variables from configuration file
   command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_app_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
@@ -158,8 +150,6 @@
   command: "{{ airflow_executable }} connections -a \
   {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
   {% endfor %}"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_app_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"

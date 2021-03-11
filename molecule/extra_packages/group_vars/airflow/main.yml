@@ -1,11 +1,12 @@
 ---
-airflow_fernet_key: xKy13nPFfDflJ0DYGVTwf_DEmbItfURHlEDxrt-bBQw=
-
-airflow_required_libs:
-  - acl
-  - python-pip
-  - python-mysqldb
+airflow_fernet_key: nOtAfErNeTkEyRePlAcEmE____ItfURHlEDxrt-bBQw=
 
 airflow_extra_packages:
   - celery
-  - mysql
+  - cgroups
+  - ftp
+  - http
+  - jdbc
+  - sftp
+  - sqlite
+  - ssh

@@ -3,8 +3,12 @@
 airflow_app_name: airflow
 airflow_version: 2.0.1
 airflow_package: apache-airflow
+
+# The default buster's python version, if you want other version you should make sure it is
+# installed before
 airflow_python_version: 3.7
 airflow_constraint_url: "https://raw.githubusercontent.com/apache/airflow/constraints-{{ airflow_version }}/constraints-{{ airflow_python_version }}.txt"
+
 # Available extra packages:
 # https://airflow.apache.org/docs/apache-airflow/stable/extra-packages-ref.html
 # List should follow Ansible's YAML basics:
@@ -94,12 +98,11 @@ airflow_bundle_package: # all|all_dbs|devel|devel_hadoop|devel_all|devel_ci See 
   # - microsoft.winrm
 
 airflow_required_libs:
-  - python3
   - python3-dev
   - python3-pip
   - python3-setuptools
   - python-pip
-  - acl
+  # - acl
 # Airflow 2.0 system level requirements https://airflow.apache.org/docs/apache-airflow/stable/installation.html#system-dependencies
   - freetds-bin
   - krb5-user
@@ -166,7 +169,6 @@ airflow_services:
 airflow_executable: "{{ airflow_app_home }}/bin/airflow"
 airflow_pip_executable: "pip3"
 airflow_app_home: "/opt/{{ airflow_app_name }}"
-airflow_home: "/home/{{ airflow_user }}"
 airflow_conf_path: "/etc/{{ airflow_app_name }}"
 airflow_pidfile_folder: "/run/{{ airflow_app_name }}"
 airflow_environment_file_folder: /etc/sysconfig
@@ -176,7 +178,6 @@ airflow_health_url: "http://{{ airflow_webserver_host }}:{{ airflow_webserver_po
 #     value: "/custom/path/bin:$PATH"
 airflow_skeleton_paths:
   - "{{ airflow_app_home }}"
-  - "{{ airflow_home }}"
   - "{{ airflow_conf_path }}"
   - "{{ airflow_dags_folder }}"
   - "{{ airflow_logs_folder }}"
@@ -206,7 +207,7 @@ celery_version: 3.1.17
 # AIRFLOW CONFIGURATION https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html
 # ---------------------
 # [core]
-airflow_dags_folder: "{{ airflow_home }}/dags"
+airflow_dags_folder: "{{ airflow_app_home }}/dags"
 airflow_hostname_callable: "socket:getfqdn"
 airflow_hostname_callable_v2: "socket.getfqdn"
 airflow_default_timezone: "utc"
@@ -231,7 +232,7 @@ airflow_load_examples: False
 airflow_load_default_connections: False
 airflow_plugins_folder: "{{ airflow_app_home }}/plugins"
 airflow_execute_tasks_new_python_interpreter: False
-airflow_fernet_key:
+airflow_fernet_key: nOtAfErNeTkEyRePlAcEmE____ItfURHlEDxrt-bBQw=
 airflow_donot_pickle: false
 airflow_dagbag_import_timeout: 30
 airflow_dagbag_import_error_tracebacks: True

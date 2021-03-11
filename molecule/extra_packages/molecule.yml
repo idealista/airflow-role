@@ -7,8 +7,10 @@ lint: |
   yamllint .
   ansible-lint .
 platforms:
-  - name: airflow-extra-packages-${MOLECULE_DISTRO}
-    image: ${MOLECULE_DISTRO:-debian:MOLECULE_DISTRO-slim}
+  - name: airflow-extra-packages
+    groups:
+      - airflow_group
+    image: ${MOLECULE_DISTRO:-debian:buster-slim}
     privileged: false
     capabilities:
       - SYS_ADMIN
@@ -36,4 +38,3 @@ provisioner:
 #   name: default
 verifier:
   name: ansible
-

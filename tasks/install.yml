@@ -11,7 +11,7 @@
     system: true
     shell: /usr/sbin/nologin
     # shell: /bin/bash
-    createhome: true
+    createhome: false
 
 - name: Airflow | Ensure airflow skeleton paths
   file:
@@ -20,6 +20,12 @@
     group: "{{ airflow_group }}"
     state: directory
   with_items: "{{ airflow_skeleton_paths }}"
+
+- name: Airflow | Copy profile.d file
+  template:
+    src: airflow-profile.d-file.j2
+    dest: "/etc/profile.d/airflow.sh"
+    mode: 0644
 
 - name: Airflow | Installing dependencies
   apt:
@@ -81,21 +87,6 @@
     virtualenv_python: "python{{ airflow_python_version }}"
   with_items: "{{ celery_extra_packages }}"
   when: airflow_executor == "CeleryExecutor" and celery_extra_packages
-
-- name: Airflow | Add Airflow bin path to the PATH env"
-  lineinfile:
-    path: /etc/environment
-    line: "PATH=$PATH:{{ airflow_app_home }}/bin"
-
-- name: Airflow | Set AIRFLOW_HOME environment variable in app "{{ airflow_app_home }}"
-  lineinfile:
-    path: /etc/environment
-    line: "AIRFLOW_HOME={{ airflow_app_home }}"
-
-- name: Airflow | Set AIRFLOW_CONFIG environment variable in app "{{ airflow_conf_path }}"
-  lineinfile:
-    path: /etc/environment
-    line: "AIRFLOW_CONFIG={{ airflow_conf_path }}/airflow.cfg"
 
 - name: Airflow | Installing Airflow
   become: true
