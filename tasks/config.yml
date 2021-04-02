@@ -20,6 +20,21 @@
     owner: root
     group: root
 
+- name: Airflow | Copy webserver_config.py file
+  template:
+    src: webserver_config.j2
+    dest: "{{ airflow_app_home }}/webserver_config.py"
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+    mode: 0644
+  register: airflow_config
+  when: airflow_version is version( '2.0.0', '>=')
+  notify:
+    - restart airflow-webserver
+    - restart airflow-scheduler
+    - restart airflow-worker
+    - restart airflow-flower
+
 - name: Airflow | Copy basic airflow config file (< 2.0)
   template:
     src: "{{ airflow_config_template_path }}"
@@ -77,36 +92,6 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
-
-- name: Airflow | Check Admin user (> 2.0)
-  command: "{{ airflow_executable }} users list"
-  register: airflow_check_admin
-  changed_when: false
-  when: airflow_version is version( '2.0.0', '>=')
-  no_log: true
-
-- name: Airflow | Create Admin user (> 2.0)
-  command:
-    argv:
-      - "{{ airflow_executable }}"
-      - users
-      - create
-      - --username
-      - "{{ airflow_admin_user.username }}"
-      - --password
-      - "{{ airflow_admin_user.password }}"
-      - --firstname
-      - "{{ airflow_admin_user.firstname }}"
-      - --lastname
-      - "{{ airflow_admin_user.lastname }}"
-      - --role
-      - "{{ airflow_admin_user.role }}"
-      - --email
-      - "{{ airflow_admin_user.email }}"
-  no_log: true
-  when:
-    - airflow_version is version( '2.0.0', '>=')
-    - "airflow_admin_user.email not in airflow_check_admin.stdout"
 
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
   copy:
