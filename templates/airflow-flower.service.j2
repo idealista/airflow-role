@@ -22,7 +22,11 @@ EnvironmentFile={{ airflow_environment_file_folder }}/airflow
 User={{ airflow_user }}
 Group={{ airflow_group }}
 Type=simple
+{% if airflow_version is version( '2.0.0', '>=') %}
+ExecStart={{ airflow_executable }} celery flower --pid {{ airflow_pidfile_folder }}-flower/flower.pid
+{% else %}
 ExecStart={{ airflow_executable }} flower --pid {{ airflow_pidfile_folder }}-flower/flower.pid
+{% endif %}
 Restart=on-failure
 RestartSec=10s
 PrivateTmp={{ airflow_private_tmp }}
