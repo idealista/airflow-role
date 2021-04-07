@@ -52,7 +52,7 @@
 - name: Airflow | Set a virtualenv
   become: true
   become_user: "{{ airflow_user }}"
-  command: "virtualenv -p python{{ airflow_python_version }} {{ airflow_app_home }}"
+  command: "virtualenv -p python{{ airflow_python_version | default(omit) }} {{ airflow_app_home }}"
   when: not virtualenv_check.stat.exists
 
 - name: Airflow | Installing Python pip dependencies
@@ -62,30 +62,34 @@
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ airflow_app_home }}"
-    virtualenv_python: "python{{ airflow_python_version }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ airflow_required_python_packages }}"
   when: airflow_required_python_packages is defined
 
-# - name: Airflow | Installing proper Celery version
-#   become: true
-#   become_user: "{{ airflow_user }}"
-#   pip:
-#     name: celery
-#     version: "{{ celery_version }}"
-#     virtualenv: "{{ airflow_app_home }}"
-#     virtualenv_python: "python{{ airflow_python_version }}"
-#   when: airflow_executor == "CeleryExecutor"
+- name: Airflow | Installing proper Celery version
+  become: true
+  become_user: "{{ airflow_user }}"
+  pip:
+    name: celery
+    version: "{{ celery_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
+  when:
+    - airflow_executor == "CeleryExecutor"
+    - airflow_version is version( '2.0.0', '<')
 
-# - name: Airflow | Installing extra Celery packages
-#   become: true
-#   become_user: "{{ airflow_user }}"
-#   pip:
-#     name: celery[{{ item }}]
-#     version: "{{ celery_version }}"
-#     virtualenv: "{{ airflow_app_home }}"
-#     virtualenv_python: "python{{ airflow_python_version }}"
-#   with_items: "{{ celery_extra_packages }}"
-#   when: airflow_executor == "CeleryExecutor" and celery_extra_packages
+- name: Airflow | Installing extra Celery packages
+  become: true
+  become_user: "{{ airflow_user }}"
+  pip:
+    name: celery[{{ item }}]
+    version: "{{ celery_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
+  with_items: "{{ celery_extra_packages }}"
+  when:
+    - airflow_executor == "CeleryExecutor" and celery_extra_packages
+    - airflow_version is version( '2.0.0', '<')
 
 - name: Airflow | Installing Airflow
   become: true
@@ -95,7 +99,7 @@
     version: "{{ airflow_version }}"
     state: present
     virtualenv: "{{ airflow_app_home }}"
-    virtualenv_python: "python{{ airflow_python_version }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
     extra_args: --no-cache-dir
   register: airflow_install
   environment:
@@ -107,7 +111,7 @@
   pip:
     name: "{{ airflow_package }}[{{ item }}]=={{ airflow_version }}"
     virtualenv: "{{ airflow_app_home }}"
-    virtualenv_python: "python{{ airflow_python_version }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ airflow_extra_packages }}"
   when:
     - airflow_extra_packages is defined
@@ -121,7 +125,7 @@
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
     virtualenv: "{{ airflow_app_home }}"
-    virtualenv_python: "python{{ airflow_python_version }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   when:
     - airflow_extra_packages is defined
     - not airflow_bundle_package
@@ -134,7 +138,7 @@
     name: "{{ item.name }}"
     version: "{{ item.version }}"
     virtualenv: "{{ airflow_app_home }}"
-    virtualenv_python: "python{{ airflow_python_version }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ dags_dependencies }}"
   when: dags_dependencies is defined
   notify:
