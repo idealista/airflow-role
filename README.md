@@ -24,7 +24,9 @@ These instructions will get you a copy of the role for your ansible playbook. On
 Ansible 2.9.9 version installed.
 Inventory destination should be a Debian (preferable Debian 10 Buster ) or Ubuntu environment.
 
-This role should work with older versions of Debian but you need to know that due to Airflow minimum requirements you should check that Python 3.6 (or higher) is installed before (See: [Airflow prerequisites](https://airflow.apache.org/docs/apache-airflow/stable/installation.html#prerequisites)). By default this role use the predefined installation of Python that comes with the distro.
+ℹ️ This role should work with older versions of Debian but you need to know that due to Airflow minimum requirements you should check that 🐍 Python 3.6 (or higher) is installed before (👉 See: [Airflow prerequisites](https://airflow.apache.org/docs/apache-airflow/stable/installation.html#prerequisites)).
+
+ℹ️ By default this role use the predefined installation of Python that comes with the distro.
 
 For testing purposes, [Molecule](https://molecule.readthedocs.io/) with [Docker](https://www.docker.com/) as driver.
 
@@ -70,14 +72,17 @@ Look to the defaults properties files to see the possible configuration properti
 - [`airflow-cfg.yml`](./defaults/main/airflow-cfg.yml) for all the related airflow.cfg config parameters
 - [`webserver-config-py.yml`](./defaults/main/webserver-config-py.yml) for all the related webserver_config.py config parameters
 
-👉 Don't forget to set your:
+👉 Don't forget :
 
-- 🔑 Fernet key
-- 🔑 Webserver secret key
-- 🐍 Python and pip version
+- 🔑 To set Fernet key.
+- 🔑 To set webserver secret key.
+- 📝 To set your AIRFLOW_HOME and AIRFLOW_CONFIG at your own discretion.
+- 📝 To set your installation and config skelton paths at your own discretion.
+  - 👉 See `airflow_skeleton_paths` in [`main.yml`](./defaults/main/main.yml)
+- 🐍 Python and pip version.
 - 📦 [Extra packages](#Extra-packages) if you need additional operators, hooks, sensors...
 - 📦 [Required Python packages](#Required-Python-packages) with version specific like SQLAlchemy for example (to avoid known Airflow bugs❗️) like below or because are necessary
-- ⚠️ With Airflow v1.10.0, PyPi package `pyasn1` v0.4.4 is needed. To install it:
+- ⚠️ With Airflow v1.10.0, PyPi package `pyasn1` v0.4.4 is needed. See examples below
 
 ### 📦 Required Python packages
 
