@@ -34,10 +34,11 @@
     update_cache: true
 
 # See https://airflow.apache.org/docs/apache-airflow/stable/installation.html#installation-tools
-- name: Airflow | Install pip 20.2.4 version
+- name: Airflow | Install pip "{{ airflow_pip_version }}" version
   pip:
     name: pip
-    version: 20.2.4
+    version: "{{ airflow_pip_version }}"
+  when: airflow_pip_version is defined
 
 - name: Airflow | Install virtualenv
   pip:

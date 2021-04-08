@@ -17,8 +17,10 @@
     goss_format: documentation
 
   vars_files:
-    - ../../defaults/main.yml
-    - ./group_vars/airflow/main.yml
+    - ../../defaults/main/main.yml
+    - ../../defaults/main/airflow-cfg.yml
+    - ../../defaults/main/webserver-config-py.yml
+    - ./group_vars/airflow_group/main.yml
 
   tasks:
     - name: Download and install Goss

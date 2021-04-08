@@ -7,6 +7,3 @@
   environment:
     AIRFLOW_HOME: "{{ airflow_app_home }}"
     AIRFLOW_CONFIG: "{{ airflow_conf_path }}/airflow.cfg"
-  vars_files:
-    - ../../defaults/main.yml
-    - ./group_vars/airflow/main.yml

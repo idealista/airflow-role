@@ -19,7 +19,7 @@
   vars_files:
     - ../../defaults/main/main.yml
     - ../../defaults/main/airflow-cfg.yml
-    - ../../defaults/main/webserver-py.yml
+    - ../../defaults/main/webserver-config-py.yml
     - ./group_vars/airflow_group/main.yml
 
   tasks:

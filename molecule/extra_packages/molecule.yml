@@ -1,11 +1,14 @@
 ---
 dependency:
   name: galaxy
+
 driver:
   name: docker
+
 lint: |
   yamllint .
   ansible-lint .
+
 platforms:
   - name: airflow-extra-packages
     groups:
@@ -32,9 +35,12 @@ platforms:
       - 0.0.0.0:8080:8080/tcp
       - 0.0.0.0:8081:8081/tcp
       - 0.0.0.0:5000:5000/tcp
+
 provisioner:
   name: ansible
-# scenario:
-#   name: default
+
+scenario:
+  name: extra_packages
+
 verifier:
   name: ansible
