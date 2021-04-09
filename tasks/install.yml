@@ -141,7 +141,7 @@
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ airflow_app_home }}"
     virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
-  extra_args: "{{ item.extra_args | default(omit) }}"
+    extra_args: "{{ item.extra_args | default(omit) }}"
   with_items: "{{ dags_dependencies }}"
   when: dags_dependencies is defined
   notify:
