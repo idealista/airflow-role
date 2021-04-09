@@ -3,6 +3,7 @@
 - name: Airflow | Ensure Airflow group
   group:
     name: "{{ airflow_group }}"
+  become: true
 
 - name: Airflow | Ensure Airflow user
   user:
@@ -10,8 +11,8 @@
     group: "{{ airflow_group }}"
     system: true
     shell: /usr/sbin/nologin
-    # shell: /bin/bash
     createhome: false
+  become: true
 
 - name: Airflow | Ensure airflow skeleton paths
   file:

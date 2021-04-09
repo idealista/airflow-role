@@ -27,6 +27,7 @@ ExecStart={{ airflow_executable }} celery flower --pid {{ airflow_pidfile_folder
 {% else %}
 ExecStart={{ airflow_executable }} flower --pid {{ airflow_pidfile_folder }}-flower/flower.pid
 {% endif %}
+KillSignal=SIGINT
 Restart=on-failure
 RestartSec=10s
 PrivateTmp={{ airflow_private_tmp }}

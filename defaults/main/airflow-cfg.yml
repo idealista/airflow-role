@@ -74,7 +74,7 @@ airflow_task_log_prefix_template:
 airflow_log_filename_template: >
  "{{ '{{' }} ti.dag_id {{ '}}' }}/{{ '{{' }} ti.task_id {{ '}}' }}/{{ '{{' }} ts {{ '}}' }}/{{ '{{' }} try_number {{ '}}' }}.log"
 airflow_log_processor_filename_template: "{{ '{{' }} filename {{ '}}' }}.log"
-airflow_dag_processor_manager_log_location: "{airflow_logs_folder}/dag_processor_manager/dag_processor_manager.log"
+airflow_dag_processor_manager_log_location: "{{ airflow_logs_folder }}/dag_processor_manager/dag_processor_manager.log"
 airflow_task_log_reader: "task"
 airflow_extra_loggers:
 

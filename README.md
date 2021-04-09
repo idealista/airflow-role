@@ -17,7 +17,7 @@ This ansible role installs a Apache Airflow server in a Debian/Ubuntu environmen
 
 ## Getting Started
 
-These instructions will get you a copy of the role for your ansible playbook. Once launched, it will install a [Apache Airflow](https://airflow.apache.org/) server in a Debian or Ubuntu system.
+These instructions will get you a copy of the role for your ansible playbook. Once launched, it will install [Apache Airflow](https://airflow.apache.org/) in a Debian or Ubuntu system.
 
 ### Prerequisites ☑️
 

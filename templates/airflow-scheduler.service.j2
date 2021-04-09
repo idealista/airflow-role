@@ -23,6 +23,7 @@ User={{ airflow_user }}
 Group={{ airflow_group }}
 Type=simple
 ExecStart={{ airflow_executable }} scheduler -n ${SCHEDULER_RUNS} --pid {{ airflow_pidfile_folder }}-scheduler/scheduler.pid
+KillSignal=SIGINT
 Restart=always
 RestartSec=5s
 PrivateTmp={{ airflow_private_tmp }}
