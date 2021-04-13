@@ -12,6 +12,12 @@
     - config
     - airflow_config
 
+- name: Airflow | Users
+  import_tasks: users.yml
+  tags:
+    - users
+    - airflow_users
+
 - name: Airflow | Service
   import_tasks: service.yml
   tags:

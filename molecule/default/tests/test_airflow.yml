@@ -1,25 +1,52 @@
 ---
-service:
-{% for airflow_service in airflow_services %}
-{% if airflow_services[airflow_service]["enabled"] %}
-  {{ airflow_service }}:
-    enabled: true
-    running: true
-{% endif %}
-{% endfor %}
 
+command:
+  "{{ airflow_executable }} version":
+    exit-status: 0
+    stdout:
+      - "{{ airflow_version }}"
+service:
+  airflow-webserver:
+    enabled: {{ airflow_services.airflow_webserver.enabled }}
+    running: {{ airflow_services.airflow_webserver.running }}
+  airflow-scheduler:
+    enabled: {{ airflow_services.airflow_scheduler.enabled }}
+    running: {{ airflow_services.airflow_scheduler.running }}
+  airflow-worker:
+    enabled: {{ airflow_services.airflow_worker.enabled }}
+    running: {{ airflow_services.airflow_worker.running }}
+  airflow-flower:
+    enabled: {{ airflow_services.airflow_flower.enabled }}
+    running: {{ airflow_services.airflow_flower.running }}
 user:
   {{ airflow_user }}:
     exists: true
     groups:
       - {{ airflow_group }}
-
+    shell: /usr/sbin/nologin
 group:
   {{ airflow_group }}:
     exists: true
-
-command:
-  /usr/local/bin/airflow version:
-    exit-status: 0
-    stdout:
-      - "{{ airflow_version }}"
+port:
+  tcp:{{ airflow_webserver_port }}:
+    listening: {{ airflow_services.airflow_webserver.running }}
+    ip:
+      - {{ airflow_webserver_host }}
+  tcp:{{ airflow_flower_port }}:
+    listening: {{ airflow_services.airflow_flower.running }}
+    ip:
+      - {{ airflow_flower_host }}
+http:
+  {{ airflow_health_url }}:
+    status: 200
+file:
+  "{{ airflow_app_home }}/bin":
+    exists: true
+    filetype: directory
+    owner: {{ airflow_user }}
+    group: {{ airflow_group }}
+  {{ airflow_conf_path }}:
+    exists: true
+    filetype: directory
+    owner: {{ airflow_user }}
+    group: {{ airflow_group }}

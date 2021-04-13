@@ -17,14 +17,15 @@ After=network.target postgresql.service mysql.service redis.service rabbitmq-ser
 Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
 
 [Service]
+RuntimeDirectory={{ airflow_app_name }}-scheduler
 EnvironmentFile={{ airflow_environment_file_folder }}/airflow
 User={{ airflow_user }}
 Group={{ airflow_group }}
 Type=simple
-ExecStart={{ airflow_executable }} scheduler -n ${SCHEDULER_RUNS} --pid {{ airflow_pidfile_folder }}/scheduler.pid
+ExecStart={{ airflow_executable }} scheduler -n ${SCHEDULER_RUNS} --pid {{ airflow_pidfile_folder }}-scheduler/scheduler.pid
+KillSignal=SIGINT
 Restart=always
 RestartSec=5s
-RuntimeDirectory=airflow
 PrivateTmp={{ airflow_private_tmp }}
 
 [Install]

@@ -3,26 +3,30 @@
 - name: Airflow | Ensure Airflow group
   group:
     name: "{{ airflow_group }}"
+  become: true
 
 - name: Airflow | Ensure Airflow user
   user:
     name: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
-    shell: /bin/bash
+    system: true
+    shell: /usr/sbin/nologin
+    createhome: false
+  become: true
 
-- name: Airflow | Create path for Airflow home
+- name: Airflow | Ensure airflow skeleton paths
   file:
-    path: "{{ airflow_home }}"
-    state: directory
+    path: "{{ item }}"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
-
-- name: Airflow | Create path for configuration files
-  file:
-    path: "{{ airflow_environment_file_folder }}"
     state: directory
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
+  with_items: "{{ airflow_skeleton_paths }}"
+
+- name: Airflow | Copy profile.d file
+  template:
+    src: airflow-profile.d-file.j2
+    dest: "/etc/profile.d/airflow.sh"
+    mode: 0644
 
 - name: Airflow | Installing dependencies
   apt:
@@ -30,74 +34,121 @@
     state: present
     update_cache: true
 
-- name: Airflow | Installing Python pip dependencies
+# See https://airflow.apache.org/docs/apache-airflow/stable/installation.html#installation-tools
+- name: Airflow | Install pip "{{ airflow_pip_version }}" version
+  pip:
+    name: pip
+    version: "{{ airflow_pip_version }}"
+  when: airflow_pip_version is defined
+
+- name: Airflow | Install virtualenv
   pip:
     executable: "{{ airflow_pip_executable }}"
+    name: virtualenv
+
+- name: Airflow | Check if exists virtualenv
+  stat:
+    path: "{{ airflow_app_home }}/pyvenv.cfg"
+  register: virtualenv_check
+
+- name: Airflow | Set a virtualenv
+  become: true
+  become_user: "{{ airflow_user }}"
+  command: "virtualenv -p python{{ airflow_python_version | default(omit) }} {{ airflow_app_home }}"
+  when: not virtualenv_check.stat.exists
+
+- name: Airflow | Installing Python pip dependencies
+  become: true
+  become_user: "{{ airflow_user }}"
+  pip:
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ airflow_required_python_packages }}"
+  when: airflow_required_python_packages is defined
 
 - name: Airflow | Installing proper Celery version
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: celery
     version: "{{ celery_version }}"
-  when: airflow_executor == "CeleryExecutor"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
+  when:
+    - airflow_executor == "CeleryExecutor"
+    - airflow_version is version( '2.0.0', '<')
 
 - name: Airflow | Installing extra Celery packages
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: celery[{{ item }}]
     version: "{{ celery_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ celery_extra_packages }}"
-  when: airflow_executor == "CeleryExecutor" and celery_extra_packages
-
-- name: Airflow | Set AIRFLOW_HOME environment variable in /etc/environment
-  lineinfile:
-    path: /etc/environment
-    line: 'AIRFLOW_HOME={{ airflow_home }}'
+  when:
+    - airflow_executor == "CeleryExecutor" and celery_extra_packages
+    - airflow_version is version( '2.0.0', '<')
 
 - name: Airflow | Installing Airflow
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
-    name: apache-airflow
+    name: "{{ airflow_package }}[{{ airflow_bundle_package | default(omit) }}]"
     version: "{{ airflow_version }}"
+    state: present
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
     extra_args: --no-cache-dir
   register: airflow_install
   environment:
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
 
 - name: Airflow | Installing Airflow Extra Packages (prior to Ansible 2.7)
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
-    name: "apache-airflow[{{ item }}]=={{ airflow_version }}"
+    name: "{{ airflow_package }}[{{ item }}]=={{ airflow_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   with_items: "{{ airflow_extra_packages }}"
   when:
-    - airflow_extra_packages
+    - airflow_extra_packages is defined
+    - not airflow_bundle_package
     - ansible_version.full is version_compare('2.7', '<')
 
 - name: Airflow | Installing Airflow Extra Packages
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
   when:
-    - airflow_extra_packages
+    - airflow_extra_packages is defined
+    - not airflow_bundle_package
     - ansible_version.full is version_compare('2.7', '>=')
 
 - name: Airflow | Installing DAGs dependencies
+  become: true
+  become_user: "{{ airflow_user }}"
   pip:
-    executable: "{{ airflow_pip_executable }}"
     name: "{{ item.name }}"
-    version: "{{ item.version }}"
-    extra_args: "{{ item.extra_args }}"
+    version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ airflow_app_home }}"
+    virtualenv_python: "python{{ airflow_python_version | default(omit) }}"
+    extra_args: "{{ item.extra_args | default(omit) }}"
   with_items: "{{ dags_dependencies }}"
-  when: dags_dependencies
+  when: dags_dependencies is defined
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    - restart airflow_webserver
+    - restart airflow_scheduler
+    - restart airflow_worker
+    - restart airflow_flower
 
 - name: Airflow | Copy Environment File
   template:
@@ -110,8 +161,8 @@
 - name: Airflow | Copy Daemon scripts
   template:
     src: "{{ item.value.path }}"
-    dest: /lib/systemd/system/{{ item.key }}.service
+    dest: "/lib/systemd/system/{{ item.value.service_name }}.service"
     mode: 0644
-  notify: restart {{ item.key }}
+  notify: restart {{ item.value.service_name }}
   with_dict: "{{ airflow_services }}"
   when: item.value.enabled
