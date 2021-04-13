@@ -17,15 +17,16 @@ After=network.target postgresql.service mysql.service redis.service rabbitmq-ser
 Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
 
 [Service]
+RuntimeDirectory={{ airflow_app_name }}-webserver
 EnvironmentFile={{ airflow_environment_file_folder }}/airflow
 User={{ airflow_user }}
 Group={{ airflow_group }}
 Type=simple
-ExecStart={{ airflow_executable }} webserver --pid {{ airflow_pidfile_folder }}/webserver.pid
+ExecStart={{ airflow_executable }} webserver --pid {{ airflow_pidfile_folder }}-webserver/webserver.pid
+KillSignal=SIGINT
 Restart=on-failure
 RestartSec=5s
 PrivateTmp={{ airflow_private_tmp }}
-RuntimeDirectory=airflow
 
 [Install]
 WantedBy=multi-user.target

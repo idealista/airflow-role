@@ -1,0 +1,78 @@
+---
+# AIRFLOW webserver_config.py
+# ------------------------------------------------------------------------------
+# Flask-WTF flag for CSRF
+airflow_WTF_CSRF_ENABLED: True
+
+# AUTHENTICATION CONFIG
+# ----------------------------------------------------
+# For details on how to set up each of the following authentication, see
+# http://flask-appbuilder.readthedocs.io/en/latest/security.html# authentication-methods
+# for details.
+
+# The authentication type must be one of: AUTH_OID, AUTH_DB, AUTH_LDAP, AUTH_REMOTE_USER, AUTH_OAUTH
+airflow_AUTH_TYPE: AUTH_DB
+
+# When using LDAP Auth, setup the ldap server
+airflow_AUTH_LDAP_SERVER:
+airflow_AUTH_LDAP_USE_TLS: False
+
+# registration configs
+airflow_AUTH_LDAP_FIRSTNAME_FIELD: givenName
+airflow_AUTH_LDAP_LASTNAME_FIELD: sn
+airflow_AUTH_LDAP_EMAIL_FIELD: mail  # if null in LDAP, email is set to: "{username}@email.notfound"
+
+# search configs
+airflow_AUTH_LDAP_SEARCH: # the LDAP search base
+airflow_AUTH_LDAP_UID_FIELD: # the username field
+airflow_AUTH_LDAP_BIND_USER: # the special bind username for search
+airflow_AUTH_LDAP_BIND_PASSWORD: # the special bind password for search
+
+airflow_AUTH_LDAP_SEARCH_FILTER: # limit the LDAP search scope
+
+# Setup Full admin role name
+airflow_AUTH_ROLE_ADMIN: Admin
+
+# Setup Public role name, no authentication needed
+airflow_AUTH_ROLE_PUBLIC: Public
+
+# Will allow user self registration
+airflow_AUTH_USER_REGISTRATION: False
+
+# If we should replace ALL the user's roles each login, or only on registration
+airflow_AUTH_ROLES_SYNC_AT_LOGIN: True
+
+# Force users to re-auth after 30min of inactivity (to keep roles in sync)
+airflow_PERMANENT_SESSION_LIFETIME: 1800
+
+# The recaptcha it's automatically enabled for user self registration is active and the keys are necessary
+airflow_RECAPTCHA_PRIVATE_KEY:
+airflow_RECAPTCHA_PUBLIC_KEY:
+
+# Config for Flask-Mail necessary for user self registration
+airflow_MAIL_SERVER:
+airflow_MAIL_PORT:
+airflow_MAIL_USE_TLS:
+airflow_MAIL_USE_SSL:
+airflow_MAIL_USERNAME:
+airflow_MAIL_PASSWORD:
+airflow_MAIL_DEFAULT_SENDER:
+airflow_MAIL_MAX_EMAILS:
+airflow_MAIL_ASCII_ATTACHMENTS:
+
+
+# The default user self registration role
+airflow_AUTH_USER_REGISTRATION_ROLE: Public
+
+# When using OAuth Auth, setup provider(s) info
+airflow_OAUTH_PROVIDERS:
+
+# When using OpenID Auth, uncomment to setup OpenID providers.
+airflow_OPENID_PROVIDERS:
+
+# Theme CONFIG
+# Flask App Builder comes up with a number of predefined themes
+# that you can use for Apache Airflow.
+# http://flask-appbuilder.readthedocs.io/en/latest/customizing.html#changing-themes
+# Valid themes will be: "bootstrap-theme.css" (default bootstrap), "amelia.css", "cerulean.css", "cosmo.css", "cyborg.css", "darkly.css", "flatly.css", "journal.css", "lumen.css", "paper.css", "readable.css", "sandstone.css", "simplex.css", "slate.css", "solar.css", "spacelab.css", "superhero.css", "united.css", "yeti.css"
+airflow_APP_THEME:

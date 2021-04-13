@@ -1,0 +1,169 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+"""Default configuration for the Airflow webserver"""
+import os
+
+from flask_appbuilder.security.manager import (
+    AUTH_DB,
+    AUTH_LDAP,
+    AUTH_OAUTH,
+    AUTH_OID,
+    AUTH_REMOTE_USER
+)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Flask-WTF flag for CSRF
+WTF_CSRF_ENABLED = {{ airflow_WTF_CSRF_ENABLED }}
+
+# ----------------------------------------------------
+# AUTHENTICATION CONFIG
+# ----------------------------------------------------
+# For details on how to set up each of the following authentication, see
+# http://flask-appbuilder.readthedocs.io/en/latest/security.html# authentication-methods
+# for details.
+
+# The authentication type
+# AUTH_OID : Is for OpenID
+# AUTH_DB : Is for database
+# AUTH_LDAP : Is for LDAP
+# AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
+# AUTH_OAUTH : Is for OAuth
+# AUTH_TYPE = AUTH_DB
+AUTH_TYPE = {{ airflow_AUTH_TYPE }}
+
+{% if airflow_AUTH_TYPE == "AUTH_LDAP" %}
+# When using LDAP Auth, setup the ldap server
+AUTH_LDAP_SERVER = '{{ airflow_AUTH_LDAP_SERVER }}'
+AUTH_LDAP_USE_TLS = {{ airflow_AUTH_LDAP_USE_TLS }}
+
+# registration configs
+AUTH_LDAP_FIRSTNAME_FIELD = '{{ airflow_AUTH_LDAP_FIRSTNAME_FIELD }}'
+AUTH_LDAP_LASTNAME_FIELD = '{{ airflow_AUTH_LDAP_LASTNAME_FIELD }}'
+AUTH_LDAP_EMAIL_FIELD = '{{ airflow_AUTH_LDAP_EMAIL_FIELD }}'  # if null in LDAP, email is set to: "{username}@email.notfound"
+
+# search configs
+AUTH_LDAP_SEARCH = '{{ airflow_AUTH_LDAP_SEARCH }}'  # the LDAP search base
+AUTH_LDAP_UID_FIELD = '{{ airflow_AUTH_LDAP_UID_FIELD }}'  # the username field
+AUTH_LDAP_BIND_USER = '{{ airflow_AUTH_LDAP_BIND_USER }}'  # the special bind username for search
+AUTH_LDAP_BIND_PASSWORD = '{{ airflow_AUTH_LDAP_BIND_PASSWORD }}'  # the special bind password for search
+
+# only allow users with memberOf="cn=myTeam,ou=teams,dc=example,dc=com"
+# AUTH_LDAP_SEARCH_FILTER = "(memberOf=cn=myTeam,ou=teams,dc=example,dc=com)"
+AUTH_LDAP_SEARCH_FILTER = '{{ airflow_AUTH_LDAP_SEARCH_FILTER }}'
+{% endif %}
+
+# Setup Full admin role name
+AUTH_ROLE_ADMIN = '{{ airflow_AUTH_ROLE_ADMIN }}'
+
+# Setup Public role name, no authentication needed
+AUTH_ROLE_PUBLIC = '{{ airflow_AUTH_ROLE_PUBLIC }}'
+
+# Will allow user self registration
+AUTH_USER_REGISTRATION = {{ airflow_AUTH_USER_REGISTRATION }}
+
+{% if airflow_AUTH_USER_REGISTRATION == True %}
+# The default user self registration role
+AUTH_USER_REGISTRATION_ROLE = '{{ airflow_AUTH_USER_REGISTRATION_ROLE }}'
+
+{% if airflow_RECAPTCHA_PRIVATE_KEY and airflow_RECAPTCHA_PUBLIC_KEY %}
+# The recaptcha it's automatically enabled for user self registration is active and the keys are necessary
+RECAPTCHA_PRIVATE_KEY = {{ airflow_RECAPTCHA_PRIVATE_KEY }}
+RECAPTCHA_PUBLIC_KEY = {{ airflow_RECAPTCHA_PUBLIC_KEY }}
+{% endif %}
+
+# Config for Flask-Mail necessary for user self registration
+{% if airflow_MAIL_SERVER %}
+MAIL_SERVER = '{{ airflow_MAIL_SERVER }}'
+{% endif %}
+{% if airflow_MAIL_PORT %}
+MAIL_PORT = {{ airflow_MAIL_PORT }}
+{% endif %}
+{% if airflow_MAIL_USE_TLS %}
+MAIL_USE_TLS = {{ airflow_MAIL_USE_TLS }}
+{% endif %}
+{% if airflow_MAIL_USE_SSL %}
+MAIL_USE_SSL = {{ airflow_MAIL_USE_SSL }}
+{% endif %}
+{% if airflow_MAIL_USERNAME %}
+MAIL_USERNAME = '{{ airflow_MAIL_USERNAME }}'
+{% endif %}
+{% if airflow_MAIL_PASSWORD %}
+MAIL_PASSWORD = '{{ airflow_MAIL_PASSWORD }}'
+{% endif %}
+{% if airflow_MAIL_DEFAULT_SENDER %}
+MAIL_DEFAULT_SENDER = '{{ airflow_MAIL_DEFAULT_SENDER }}'
+{% endif %}
+{% if airflow_MAIL_MAX_EMAILS %}
+MAIL_MAX_EMAILS = {{ airflow_MAIL_MAX_EMAILS }}
+{% endif %}
+{% if airflow_MAIL_ASCII_ATTACHMENTS %}
+MAIL_ASCII_ATTACHMENTS = {{ airflow_MAIL_ASCII_ATTACHMENTS }}
+{% endif %}
+{% endif %}
+
+# If we should replace ALL the user's roles each login, or only on registration
+AUTH_ROLES_SYNC_AT_LOGIN = {{ airflow_AUTH_ROLES_SYNC_AT_LOGIN }}
+
+# Force users to re-auth after 30min of inactivity (to keep roles in sync)
+PERMANENT_SESSION_LIFETIME = {{ airflow_PERMANENT_SESSION_LIFETIME }}
+
+# When using OAuth Auth, uncomment to setup provider(s) info
+# Google OAuth example:
+# OAUTH_PROVIDERS = [{
+#   'name':'google',
+#     'token_key':'access_token',
+#     'icon':'fa-google',
+#         'remote_app': {
+#             'api_base_url':'https://www.googleapis.com/oauth2/v2/',
+#             'client_kwargs':{
+#                 'scope': 'email profile'
+#             },
+#             'access_token_url':'https://accounts.google.com/o/oauth2/token',
+#             'authorize_url':'https://accounts.google.com/o/oauth2/auth',
+#             'request_token_url': None,
+#             'client_id': GOOGLE_KEY,
+#             'client_secret': GOOGLE_SECRET_KEY,
+#         }
+# }]
+{% if airflow_OAUTH_PROVIDERS %}
+OAUTH_PROVIDERS = {{ airflow_OAUTH_PROVIDERS }}
+{% endif %}
+
+# When using OpenID Auth, uncomment to setup OpenID providers.
+# example for OpenID authentication
+# OPENID_PROVIDERS = [
+#    { 'name': 'Yahoo', 'url': 'https://me.yahoo.com' },
+#    { 'name': 'AOL', 'url': 'http://openid.aol.com/<username>' },
+#    { 'name': 'Flickr', 'url': 'http://www.flickr.com/<username>' },
+#    { 'name': 'MyOpenID', 'url': 'https://www.myopenid.com' }]
+{% if airflow_OPENID_PROVIDERS %}
+OPENID_PROVIDERS = {{ airflow_OPENID_PROVIDERS }}
+{% endif %}
+
+# ----------------------------------------------------
+# Theme CONFIG
+# ----------------------------------------------------
+# Flask App Builder comes up with a number of predefined themes
+# that you can use for Apache Airflow.
+# http://flask-appbuilder.readthedocs.io/en/latest/customizing.html#changing-themes
+# Please make sure to remove "navbar_color" configuration from airflow.cfg
+# in order to fully utilize the theme. (or use that property in conjunction with theme)
+{% if airflow_APP_THEME %}
+APP_THEME = '{{ airflow_APP_THEME }}'
+{% endif %}

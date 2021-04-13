@@ -1,0 +1,389 @@
+---
+# AIRFLOW CONFIGURATION https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html
+# ------------------------------------------------------------------------------
+# [core]
+airflow_dags_folder: "{{ airflow_app_home }}/dags"
+airflow_hostname_callable: "socket:getfqdn"
+airflow_hostname_callable_v2: "socket.getfqdn"
+airflow_default_timezone: "utc"
+# The executor class that airflow should use. Choices include
+# SequentialExecutor, LocalExecutor, CeleryExecutor, DaskExecutor
+airflow_executor: SequentialExecutor
+airflow_database_conn: "sqlite:///{{ airflow_app_home }}/airflow.db"
+airflow_database_engine_encoding: utf-8
+airflow_database_engine_collation_for_ids:
+airflow_database_pool_enabled: True
+airflow_database_pool_size: 5
+airflow_database_max_overflow: 10
+airflow_database_pool_recycle: 2000
+airflow_database_pool_pre_ping: True
+airflow_database_schema:
+airflow_database_connect_args:
+airflow_parallelism: 32
+airflow_dag_concurrency: 16
+airflow_dags_are_paused_at_creation: true
+airflow_max_active_runs_per_dag: 16
+airflow_load_examples: False
+airflow_load_default_connections: False
+airflow_plugins_folder: "{{ airflow_app_home }}/plugins"
+airflow_execute_tasks_new_python_interpreter: False
+airflow_fernet_key:
+airflow_donot_pickle: false
+airflow_dagbag_import_timeout: 30
+airflow_dagbag_import_error_tracebacks: True
+airflow_dagbag_import_error_traceback_depth: 2
+airflow_dag_file_processor_timeout: 50
+airflow_task_runner: BashTaskRunner
+airflow_default_impersonation:
+airflow_security:
+airflow_unit_test_mode: false
+airflow_enable_xcom_pickling: "True"
+airflow_killed_task_cleanup_time: 60
+airflow_dag_run_conf_overrides_params: False
+airflow_dag_discovery_safe_mode: True
+airflow_default_task_retries: 0
+airflow_min_serialized_dag_update_interval: 30
+airflow_min_serialized_dag_fetch_interval: 10
+airflow_store_dag_code: False
+airflow_max_num_rendered_ti_fields_per_task: 30
+airflow_check_slas: True
+airflow_xcom_backend: airflow.models.xcom.BaseXCom
+airflow_lazy_load_plugins: True
+airflow_lazy_discover_providers: True
+airflow_max_db_retries: 3
+
+airflow_non_pooled_task_slot_count: 128
+
+# [logging]
+airflow_logs_folder: /var/log/airflow
+airflow_remote_logging: False
+airflow_remote_log_conn_id:
+airflow_google_key_path:
+airflow_remote_base_log_folder:
+airflow_encrypt_s3_logs: false
+airflow_logging_level: "INFO"
+airflow_fab_logging_level: "WARN"
+airflow_logging_config_class:
+airflow_colored_console_log: True
+colored_log_format: "[%%(blue)s%%(asctime)s%%(reset)s] {{ '{{' }}%%(blue)s%%(filename)s:%%(reset)s%%(lineno)d{{ '}}' }} %%(log_color)s%%(levelname)s%%(reset)s - %%(log_color)s%%(message)s%%(reset)s"
+colored_formatter_class: airflow.utils.log.colored_log.CustomTTYColoredFormatter
+airflow_log_format: >
+ "[%%(asctime)s] {{ '{' }}%%(filename)s:%%(lineno)d} %%(levelname)s - %%(message)s"
+airflow_simple_log_format: "%%(asctime)s %%(levelname)s - %%(message)s"
+airflow_task_log_prefix_template:
+airflow_log_filename_template: >
+ "{{ '{{' }} ti.dag_id {{ '}}' }}/{{ '{{' }} ti.task_id {{ '}}' }}/{{ '{{' }} ts {{ '}}' }}/{{ '{{' }} try_number {{ '}}' }}.log"
+airflow_log_processor_filename_template: "{{ '{{' }} filename {{ '}}' }}.log"
+airflow_dag_processor_manager_log_location: "{{ airflow_logs_folder }}/dag_processor_manager/dag_processor_manager.log"
+airflow_task_log_reader: "task"
+airflow_extra_loggers:
+
+# [metrics]
+# STASTD
+airflow_statsd_on: false
+airflow_statsd_host: localhost
+airflow_statsd_port: 8125
+airflow_statsd_prefix: airflow
+airflow_statsd_allow_list:
+airflow_stat_name_handler:
+airflow_statsd_datadog_enabled: False
+airflow_statsd_datadog_tags:
+airflow_statsd_custom_client_path:
+
+# [secrets]
+airflow_secrets_backend:
+airflow_backend_kwargs:
+
+# [cli]
+airflow_cli_api_client: airflow.api.client.local_client
+airflow_cli_api_endpoint_url: http://localhost:8080
+
+# [debug]
+airflow_fail_fast: False
+
+# [api]
+airflow_enable_experimental_api: False
+airflow_auth_backend: airflow.api.auth.backend.default
+airflow_maximum_page_limit: 100
+airflow_fallback_page_limit: 100
+airflow_google_oauth2_audience:
+
+# [lineage]
+airflow_lineage_backend:
+
+# [atlas]
+airflow_atlas_sasl_enabled: False
+airflow_atlas_host:
+airflow_atlas_port: 21000
+airflow_atlas_username:
+airflow_atlas_password:
+
+# [operators]
+airflow_operator_default_owner: airflow
+airflow_operator_default_cpus: 1
+airflow_operator_default_ram: 512
+airflow_operator_default_disk: 512
+airflow_operator_default_gpus: 0
+airflow_allow_illegal_arguments: False
+
+# [hive]
+airflow_default_hive_mapred_queue:
+airflow_mapred_job_name_template:
+
+# [webserver]
+airflow_webserver_base_url: "http://localhost:{{ airflow_webserver_port }}"
+airflow_webserver_default_ui_timezone: UTC
+airflow_webserver_host: 0.0.0.0
+airflow_webserver_port: 8080
+airflow_webserver_ssl_cert:
+airflow_webserver_ssl_key:
+airflow_webserver_master_timeout: 120
+airflow_webserver_worker_timeout: 120
+airflow_webserver_worker_refresh_batch_size: 1
+airflow_webserver_worker_refresh_interval: 30
+airflow_webserver_reload_on_plugin_change: False
+airflow_webserver_secret_key:
+airflow_webserver_workers: 4
+airflow_webserver_worker_class: sync
+airflow_webserver_access_logfile: "{{ airflow_logs_folder }}/gunicorn-access.log"
+airflow_webserver_error_logfile: "{{ airflow_logs_folder }}/gunicorn-error.log"
+airflow_webserver_access_logformat:
+airflow_webserver_expose_config: False
+airflow_webserver_expose_hostname: True
+airflow_webserver_expose_stacktrace: True
+airflow_webserver_dag_default_view: tree # Valid values are: tree, graph, duration, gantt, landing_times
+airflow_webserver_dag_orientation: LR
+airflow_webserver_demo_mode: False
+airflow_webserver_log_fetch_timeout_sec: 5
+airflow_webserver_log_fetch_delay_sec: 2
+airflow_webserver_log_auto_tailing_offset: 30
+airflow_webserver_log_animation_speed: 1000
+airflow_webserver_hide_paused_dags_by_default: False
+airflow_webserver_page_size: 100
+airflow_webserver_navbar_color: "#007A87"
+airflow_webserver_navbar_color_v2: "#fff"
+airflow_webserver_default_dag_run_display_number: 25
+airflow_webserver_enable_proxy_fix: False
+airflow_webserver_proxy_fix_x_for: 1
+airflow_webserver_proxy_fix_x_proto: 1
+airflow_webserver_proxy_fix_x_host: 1
+airflow_webserver_proxy_fix_x_port: 1
+airflow_webserver_proxy_fix_x_prefix: 1
+airflow_webserver_cookie_secure: False
+airflow_webserver_cookie_samesite: Lax
+airflow_webserver_default_wrap: False
+airflow_webserver_x_frame_enabled: True
+airflow_webserver_analytics_tool:
+airflow_webserver_analytics_id:
+airflow_webserver_show_recent_stats_for_completed_runs: True
+airflow_webserver_update_fab_perms: True
+airflow_webserver_session_lifetime_minutes: 43200
+
+airflow_webserver_filter_by_owner: False
+airflow_webserver_owner_mode: user
+airflow_webserver_rbac: False
+
+# [email]
+airflow_email_backend: airflow.utils.email.send_email_smtp
+airflow_email_default_email_on_retry: True
+airflow_email_default_email_on_failure: True
+airflow_email_subject_template:
+airflow_email_html_content_template:
+
+# [smtp]
+airflow_smtp_host: localhost
+airflow_smtp_starttls: True
+airflow_smtp_ssl: True
+airflow_smtp_port: 25
+airflow_smtp_mail_from: airflow@airflow.com
+airflow_smtp_user:
+airflow_smtp_passwd:
+
+# [sentry]
+airflow_sentry_on: false
+airflow_sentry_dsn:
+
+# [celery_kubernetes_executor]
+airflow_kubernetes_queue: kubernetes
+
+# [celery]
+airflow_celery_app_name: airflow.executors.celery_executor
+airflow_celery_concurrency: 16
+airflow_celery_worker_autoscale:
+airflow_celery_worker_prefetch_multiplier:
+airflow_celery_worker_log_server_port: 8793
+airflow_celery_worker_umask: 0o077
+airflow_celery_broker_url: sqla+mysql://airflow:airflow@localhost:3306/airflow
+airflow_celery_result_backend: db+mysql://airflow:airflow@localhost:3306/airflow
+airflow_celery_default_queue: default
+airflow_celery_sync_parallelism: 0
+airflow_celery_config_options: airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG
+airflow_celery_ssl_active: False
+airflow_celery_ssl_key:
+airflow_celery_ssl_cert:
+airflow_celery_ssl_cacert:
+airflow_celery_pool: prefork
+airflow_celery_operation_timeout: 1.0
+airflow_celery_task_track_started: True
+airflow_celery_task_adoption_timeout: 600
+airflow_celery_task_publish_max_retries: 3
+airflow_celery_worker_precheck: False
+
+# [flower]
+airflow_flower_host: 0.0.0.0
+airflow_flower_url_prefix:
+airflow_flower_port: 5555
+airflow_flower_basic_auth:
+
+# [celery_broker_transport_options]
+airflow_celery_broker_visibility_timeout:
+
+# [dask]
+airflow_dask_cluster_address: 127.0.0.1:8786
+airflow_dask_tls_ca:
+airflow_dask_tls_cert:
+airflow_dask_tls_key:
+
+# [scheduler]
+airflow_scheduler_job_heartbeat_sec: 5
+airflow_scheduler_clean_tis_without_dagrun_interval: 15.0
+airflow_scheduler_heartbeat_sec: 5
+airflow_scheduler_num_runs: -1
+airflow_scheduler_processor_poll_interval: 1
+airflow_scheduler_min_file_process_interval: 30
+airflow_scheduler_dag_dir_list_interval: 300
+airflow_scheduler_print_stats_interval: 30
+airflow_scheduler_pool_metrics_interval: 5.0
+airflow_scheduler_scheduler_health_check_threshold: 30
+airflow_scheduler_orphaned_tasks_check_interval: 300.0
+airflow_child_process_log_folder: "{{ airflow_logs_folder }}/scheduler"
+airflow_scheduler_zombie_task_threshold: 300
+airflow_scheduler_catchup_by_default: True
+airflow_scheduler_max_tis_per_query: 512
+airflow_scheduler_use_row_level_locking: True
+airflow_scheduler_max_dagruns_to_create_per_loop: 10
+airflow_scheduler_max_dagruns_per_loop_to_schedule: 20
+airflow_scheduler_schedule_after_task_execution: True
+airflow_scheduler_parsing_processes: 2
+airflow_scheduler_use_job_schedule: True
+airflow_scheduler_allow_trigger_in_future: False
+
+airflow_scheduler_run_duration: -1
+airflow_scheduler_min_file_parsing_loop_time: 1
+airflow_scheduler_max_threads: 2
+airflow_scheduler_authenticate: True
+
+# [kerberos]
+airflow_kerberos_ccache: /tmp/airflow_krb5_ccache
+airflow_kerberos_principal: airflow
+airflow_kerberos_reinit_frequency: 3600
+airflow_kerberos_kinit_path: kinit
+airflow_kerberos_keytab: airflow.keytab
+
+# [github_enterprise]
+airflow_github_enterprise_api_rev: v3
+
+# [admin]
+airflow_admin_hide_sensitive_variable_fields: True
+airflow_admin_sensitive_variable_fields:
+airflow_admin_variables: []
+#   - key: bucket_name
+#     value: logs_foo
+airflow_admin_connections: []
+#   - conn_id: gcp_conn
+#     conn_type: google_cloud_platform
+#     conn_extra: '{"extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform", "extra__google_cloud_platform__project": "myprojet", "extra__google_cloud_platform__key_path": ""}'
+#   - conn_id: pg_conn
+#     conn_uri: postgres://user:passwordh@host:5432/dbname
+
+# [elasticsearch]
+airflow_elasticsearch_host:
+airflow_elasticsearch_log_id_template: >
+ "{dag_id}-{task_id}-{execution_date}-{try_number}"
+airflow_elasticsearch_end_of_log_mark: "end_of_log"
+airflow_elasticsearch_frontend:
+airflow_elasticsearch_write_stdout: False
+airflow_elasticsearch_json_format: False
+airflow_elasticsearch_json_fields: asctime, filename, lineno, levelname, message
+
+# [elasticsearch_configs]
+airflow_elasticsearch_configs_use_ssl: False
+airflow_elasticsearch_configs_verify_certs: True
+
+# [kubernetes]
+airflow_kubernetes_pod_template_file:
+airflow_kubernetes_worker_container_repository:
+airflow_kubernetes_worker_container_tag:
+airflow_kubernetes_namespace: default
+airflow_kubernetes_delete_worker_pods: True
+airlfow_kubernetes_delete_worker_pods_on_failure: False
+airflow_kubernetes_worker_pods_creation_batch_size: 1
+airflow_kubernetes_multi_namespace_mode: False
+airflow_kubernetes_in_cluster: True
+airflow_kubernetes_cluster_context:
+airflow_kubernetes_config_file:
+airflow_kubernetes_kube_client_request_args:
+airflow_kubernetes_delete_option_kwargs:
+airflow_kubernetes_enable_tcp_keepalive: False
+airflow_kubernetes_tcp_keep_idle: 120
+airflow_kubernetes_tcp_keep_intvl: 30
+airflow_kubernetes_tcp_keep_cnt: 6
+
+airflow_kubernetes_airflow_configmap:
+airflow_kubernetes_dags_volume_subpath:
+airflow_kubernetes_dags_volume_claim:
+airflow_kubernetes_logs_volume_subpath:
+airflow_kubernetes_logs_volume_claim:
+airflow_kubernetes_git_repo:
+airflow_kubernetes_git_branch:
+airflow_kubernetes_git_user:
+airflow_kubernetes_git_password:
+airflow_kubernetes_git_subpath:
+airflow_kubernetes_git_sync_container_repository: >
+ "gcr.io/google-containers/git-sync-amd64"
+airflow_kubernetes_git_sync_container_tag: "v2.0.5"
+airflow_kubernetes_git_sync_init_container_name: "git-sync-clone"
+airflow_kubernetes_worker_service_account_name:
+airflow_kubernetes_image_pull_secrets:
+airflow_kubernetes_gcp_service_account_keys:
+
+# [smart_sensor]
+airflow_use_smart_sensor: False
+airflow_shard_code_upper_limit: 10000
+airflow_shards: 5
+airflow_sensors_enabled: NamedHivePartitionSensor
+
+# [Webserver Authentication]
+# (http://pythonhosted.org/airflow/security.html#web-authentication)
+
+# Choices of auth_backend include:
+# - airflow.contrib.auth.backends.password_auth
+# - airflow.contrib.auth.backends.ldap_auth
+# - airflow.contrib.auth.backends.github_enterprise_auth
+# - others? :)
+airflow_webserver_authenticate: false
+airflow_webserver_auth_backend:
+
+# [LDAP] (only applies if airflow_webserver_auth_backend == "airflow.contrib.auth.backends.ldap_auth")
+# Bear in mind that, starting with Airflow 1.10.0, PyPi package pyasn1 v0.4.4 is needed
+airflow_ldap_uri:
+airflow_ldap_user_filter:
+airflow_ldap_user_name_attr:
+airflow_ldap_superuser_filter:
+airflow_ldap_data_profiler_filter:
+airflow_ldap_bind_user:
+airflow_ldap_bind_password:
+airflow_ldap_basedn:
+airflow_ldap_cacert:
+airflow_ldap_search_scope:
+
+# [mesos]
+airflow_mesos_master_host: localhost:5050
+airflow_mesos_framework_name: Airflow
+airflow_mesos_task_cpu: 1
+airflow_mesos_task_memory: 256
+airflow_mesos_checkpoint: false
+airflow_mesos_authenticate: false
+
+# DEPRECATED
+airflow_s3_log_folder:

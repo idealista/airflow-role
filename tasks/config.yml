@@ -20,14 +20,45 @@
     owner: root
     group: root
 
-- name: Airflow | Copy basic airflow config file
+- name: Airflow | Copy webserver_config.py file
+  template:
+    src: webserver_config.j2
+    dest: "{{ airflow_app_home }}/webserver_config.py"
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+    mode: 0644
+  register: airflow_config
+  when: airflow_version is version( '2.0.0', '>=')
+  notify:
+    - restart airflow-webserver
+    - restart airflow-scheduler
+    - restart airflow-worker
+    - restart airflow-flower
+
+- name: Airflow | Copy basic airflow config file (< 2.0)
   template:
     src: "{{ airflow_config_template_path }}"
-    dest: "{{ airflow_home }}/airflow.cfg"
+    dest: "{{ airflow_conf_path }}/airflow.cfg"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     mode: 0640
   register: airflow_config
+  when: airflow_version is version( '2.0.0', '<')
+  notify:
+    - restart airflow-webserver
+    - restart airflow-scheduler
+    - restart airflow-worker
+    - restart airflow-flower
+
+- name: Airflow | Copy basic airflow config file (>= 2.0)
+  template:
+    src: "{{ airflow_config_template_path_v2 }}"
+    dest: "{{ airflow_conf_path }}/airflow.cfg"
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+    mode: 0640
+  register: airflow_config
+  when: airflow_version is version( '2.0.0', '>=')
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
@@ -36,13 +67,13 @@
 
 - name: Airflow | Initializing DB < 2.0
   command: "{{ airflow_executable }} initdb"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   tags:
     skip_ansible_lint
-  when: airflow_version is version( '2.0.0', '<') and ( airflow_install.changed or airflow_config.changed)
+  when:
+    - airflow_version is version( '2.0.0', '<')
+    - (airflow_install.changed or airflow_config.changed)
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
@@ -51,13 +82,11 @@
 
 - name: Airflow | Initializing DB > 2.0
   command: "{{ airflow_executable }} db init"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_home }}"
   become: true
   become_user: "{{ airflow_user }}"
-  tags:
-    skip_ansible_lint
-  when: airflow_version is version( '2.0.0', '>=') and  (airflow_install.changed or airflow_config.changed)
+  when:
+    - airflow_version is version( '2.0.0', '>=')
+    - airflow_install.changed or airflow_config.changed
   notify:
     - restart airflow-webserver
     - restart airflow-scheduler
@@ -67,7 +96,7 @@
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
   copy:
     src: "{{ item }}"
-    dest: "{{ airflow_home }}/{{ item | basename }}"
+    dest: "{{ airflow_conf_path }}/{{ item | basename }}"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     mode: 0640
@@ -82,7 +111,7 @@
 - name: Airflow | Copy extra airflow config templates (provided by playbooks)
   template:
     src: "{{ item }}"
-    dest: "{{ airflow_home }}/{{ item | basename }}"
+    dest: "{{ airflow_conf_path }}/{{ item | basename }}"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     mode: 0640
@@ -95,10 +124,7 @@
     - restart airflow-flower
 
 - name: Airflow | Add variables from configuration file
-  command: "{{ airflow_executable }} variables -s \
-   {{ item.key }} {{ item.value }}"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_home }}"
+  command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
@@ -109,8 +135,6 @@
   command: "{{ airflow_executable }} connections -a \
   {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
   {% endfor %}"
-  environment:
-    AIRFLOW_HOME: "{{ airflow_home }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"
