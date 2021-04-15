@@ -19,6 +19,7 @@
     mode: 0644
     owner: root
     group: root
+  tags: airflow-gunicorn-logrotate
 
 - name: Airflow | Copy webserver_config.py file
   template:
@@ -34,6 +35,7 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-webserver-config-py
 
 - name: Airflow | Copy basic airflow config file (< 2.0)
   template:
@@ -49,6 +51,7 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-cfg
 
 - name: Airflow | Copy basic airflow config file (>= 2.0)
   template:
@@ -64,13 +67,12 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-cfg
 
 - name: Airflow | Initializing DB < 2.0
   command: "{{ airflow_executable }} initdb"
   become: true
   become_user: "{{ airflow_user }}"
-  tags:
-    skip_ansible_lint
   when:
     - airflow_version is version( '2.0.0', '<')
     - (airflow_install.changed or airflow_config.changed)
@@ -79,6 +81,9 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags:
+    - airflow-db-init
+    - skip_ansible_lint
 
 - name: Airflow | Initializing DB > 2.0
   command: "{{ airflow_executable }} db init"
@@ -92,6 +97,7 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-db-init
 
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
   copy:
@@ -107,6 +113,7 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-extra-config
 
 - name: Airflow | Copy extra airflow config templates (provided by playbooks)
   template:
@@ -122,6 +129,7 @@
     - restart airflow-scheduler
     - restart airflow-worker
     - restart airflow-flower
+  tags: airflow-extra-config
 
 - name: Airflow | Add variables from configuration file
   command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
@@ -129,7 +137,8 @@
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
   tags:
-    skip_ansible_lint
+    - skip_ansible_lint
+    - airflow-extra-vars-file
 
 - name: Airflow | Add connections from configuration file
   command: "{{ airflow_executable }} connections -a \
@@ -139,4 +148,5 @@
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"
   tags:
-    skip_ansible_lint
+    - skip_ansible_lint
+    - airflow-extra-conn-file

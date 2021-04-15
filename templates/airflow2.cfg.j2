@@ -254,8 +254,8 @@ logging_config_class = {{ airflow_logging_config_class }}
 colored_console_log = {{ airflow_colored_console_log }}
 
 # Log format for when Colored logs is enabled
-colored_log_format = {{ colored_log_format }}
-colored_formatter_class = {{ colored_formatter_class }}
+colored_log_format = {{ airflow_colored_log_format }}
+colored_formatter_class = {{ airflow_colored_formatter_class }}
 
 # Format of Log line
 log_format = {{ airflow_log_format }}
@@ -312,7 +312,7 @@ statsd_datadog_tags = {{ airflow_statsd_datadog_tags }}
 # If you want to utilise your own custom Statsd client set the relevant
 # module path below.
 # Note: The module path must exist on your PYTHONPATH for Airflow to pick it up
-statsd_custom_client_path = {{ airflow_statsd_custom_client_path }}
+{% if airflow_statsd_custom_client_path %}statsd_custom_client_path = {{ airflow_statsd_custom_client_path }}{% endif %}
 
 [secrets]
 # Full class name of secrets backend to enable (will precede env vars and metastore in search path)
@@ -408,7 +408,7 @@ default_hive_mapred_queue = {{ airflow_default_hive_mapred_queue }}
 
 # Template for mapred_job_name in HiveOperator, supports the following named parameters
 # hostname, dag_id, task_id, execution_date
-mapred_job_name_template = {{ airflow_mapred_job_name_template }}
+{% if airflow_mapred_job_name_template %}mapred_job_name_template = {{ airflow_mapred_job_name_template }}{% endif %}
 
 [webserver]
 # The base url of your website as airflow cannot guess what domain or
@@ -474,7 +474,7 @@ error_logfile = {{ airflow_webserver_error_logfile }}
 # Access log format for gunicorn webserver.
 # default format is %%(h)s %%(l)s %%(u)s %%(t)s "%%(r)s" %%(s)s %%(b)s "%%(f)s" "%%(a)s"
 # documentation - https://docs.gunicorn.org/en/stable/settings.html#access-log-format
-access_logformat = {{ airflow_webserver_access_logformat }}
+access_logformat = {% if airflow_webserver_access_logformat %}{{ airflow_webserver_access_logformat }}{% endif %}
 
 # Expose the configuration file in the web server
 expose_config = {{ airflow_webserver_expose_config }}
