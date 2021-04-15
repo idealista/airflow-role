@@ -23,7 +23,7 @@ SCHEDULER_RUNS={{ airflow_scheduler_runs }}
 
 AIRFLOW_HOME={{ airflow_app_home }}
 AIRFLOW_CONFIG={{ airflow_conf_path }}/airflow.cfg
-PATH=$PATH:{{ airflow_app_home }}/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ airflow_app_home }}/bin
 
 HOSTALIASES=/etc/host.aliases
 
