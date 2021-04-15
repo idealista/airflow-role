@@ -5,6 +5,23 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.0...bugfix/broken-features-release-2.0.0)
+
+### Changed
+
+- :arrows_clockwise: Update missing vars in cfg (v2) template
+- :arrows_clockwise: Update conditionally vars missing or unnecesary in cfg (v2) template
+
+### Fixed
+
+- :hammer_and_wrench: Fix environment template PATH
+- :hammer_and_wrench: Fix wrong typed and escaped log options in airflow-cfg.yaml group_vars
+
+### Added
+
+- :heavy_plus_sign: tags for config files related
+- :broom: Clean airflow-cfg.yml with bad format values and unnecesary quotation
+
 ## [2.0.0](https://github.com/idealista/airflow-role/tree/2.0.0)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/1.8.4...2.0.0)
