@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+<!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.0...bugfix/broken-features-release-2.0.0) -->
 
-[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.0...bugfix/broken-features-release-2.0.0)
+## [2.0.1](https://github.com/idealista/airflow-role/tree/2.0.1)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.0...2.0.1)
 
 ### Changed
 
@@ -14,8 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ### Fixed
 
-- :hammer_and_wrench: Fix environment template PATH
-- :hammer_and_wrench: Fix wrong typed and escaped log options in airflow-cfg.yaml group_vars
+- :hammer_and_wrench: Fix environment template PATH ➡️ [#96](https://github.com/idealista/airflow-role/issues/96) [BUG] Servie PATH environment not working as expected
+- :hammer_and_wrench: Fix wrong typed and escaped log options in airflow-cfg.yaml group_vars ➡️ [#95](https://github.com/idealista/airflow-role/issues/95) [BUG] Tasks Log view is broken
 
 ### Added
 
