@@ -5,13 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
-[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler)
+<!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler) -->
+
+## [2.0.2](https://github.com/idealista/airflow-role/tree/2.0.2)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...2.0.2)
+
+### Fixed
 
 - :hammer_and_wrench: Fix notify handler typo in task ➡️ [#99](https://github.com/idealista/airflow-role/issues/99) [BUG] notify restart airflow services not found when installing DAG dependencies
 
 ## [2.0.1](https://github.com/idealista/airflow-role/tree/2.0.1)
-
-[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.0...2.0.1)
 
 ### Changed
 
