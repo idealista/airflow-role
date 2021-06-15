@@ -1,13 +1,20 @@
 ---
 
 - name: Airflow | Check Admin user (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command: "{{ airflow_executable }} users list"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_app_home }}"
+    AIRFLOW_CONFIG: "{{ airflow_conf_path }}/airflow.cfg"
   register: airflow_check_admin
   changed_when: false
   when: airflow_version is version( '2.0.0', '>=')
   no_log: true
 
 - name: Airflow | Create Admin user AUTH_DB (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command:
     argv:
       - "{{ airflow_executable }}"
@@ -25,6 +32,9 @@
       - "{{ item.role }}"
       - --email
       - "{{ item.email }}"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_app_home }}"
+    AIRFLOW_CONFIG: "{{ airflow_conf_path }}/airflow.cfg"
   no_log: true
   with_items: "{{ airflow_admin_users }}"
   when:
@@ -33,6 +43,8 @@
     - "airflow_AUTH_TYPE == 'AUTH_DB'"
 
 - name: Airflow | Create Admin users AUTH_LDAP (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command:
     argv:
       - "{{ airflow_executable }}"
@@ -50,6 +62,9 @@
       - "{{ item.role }}"
       - --email
       - "{{ item.email }}"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_app_home }}"
+    AIRFLOW_CONFIG: "{{ airflow_conf_path }}/airflow.cfg"
   no_log: true
   with_items: "{{ airflow_admin_users }}"
   when:
