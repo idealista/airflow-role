@@ -10,8 +10,9 @@
     name: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     system: true
-    shell: /usr/sbin/nologin
-    createhome: false
+    shell: "{{ airflow_shell }}"
+    createhome: "{{ airflow_createhome }}"
+    home: "{{ airflow_user_home }}"
   become: true
 
 - name: Airflow | Ensure airflow skeleton paths

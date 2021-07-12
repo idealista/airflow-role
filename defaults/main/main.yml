@@ -1,8 +1,14 @@
 ---
 # [General]
 airflow_app_name: airflow
-airflow_version: 2.0.1
+airflow_version: 2.1.1
 airflow_package: apache-airflow
+
+# Owner
+airflow_user: airflow
+airflow_group: airflow
+airflow_shell: /usr/sbin/nologin
+airflow_createhome: yes
 
 # The default buster's python version, if you want other version you should make sure it is
 # installed before
@@ -132,10 +138,6 @@ airflow_required_libs: "{{ airflow_default_required_libs + airflow_additional_re
 #   Version is not mandatory
 #   - {name: pyasn1, version: 0.4.4}
 
-# Owner
-airflow_user: airflow
-airflow_group: airflow
-
 # Admin user
 airflow_admin_users:
   - name:
@@ -145,6 +147,16 @@ airflow_admin_users:
     firstname:
     lastname:
     email:
+
+# Admin user
+# airflow_regular_users:
+#   - name:
+#     username:
+#     password:
+#     role:
+#     firstname:
+#     lastname:
+#     email:
 
 # Service options
 airflow_scheduler_runs: 1000
@@ -179,6 +191,7 @@ airflow_services:
 # Files & Paths
 airflow_executable: "{{ airflow_app_home }}/bin/airflow"
 airflow_pip_executable: "pip3"
+airflow_user_home: "/var/lib/{{ airflow_user }}"
 airflow_app_home: "/opt/{{ airflow_app_name }}"
 airflow_conf_path: "/etc/{{ airflow_app_name }}"
 airflow_pidfile_folder: "/run/{{ airflow_app_name }}"

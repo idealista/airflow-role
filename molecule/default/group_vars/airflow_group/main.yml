@@ -1,17 +1,45 @@
 ---
+
+airflow_load_examples: true
+
 # Example keys
 airflow_fernet_key: xKy13nPFfDflJ0DYGVTwf_DEmbItfURHlEDxrt-bBQw=
 airflow_webserver_secret_key: "ihadsf908auw0340684"
 
 airflow_admin_users:
-  - name: default
-    username: admin
-    password: admin
+  - name: Erwin
+    username: erwin
+    password: 5urv3yC0rpsFTW
     role: Admin
-    firstname: Admin
-    lastname: Admin
-    email: admin@email.com
+    firstname: Erwin
+    lastname: Smith
+    email: erwin@attack.com
+
+airflow_regular_users:
+  - name: Levi
+    username: levi
+    password: strongerThanU
+    role: Op
+    firstname: Levi
+    lastname: Ackerman
+    email: levi@attack.com
+  - name: Eren
+    username: eren
+    password: 104thGraduated
+    role: User
+    firstname: Eren
+    lastname: Yeager
+    email: eren@attack.com
 
 airflow_required_python_packages:
   - { name: SQLAlchemy, version: 1.3.23 }
   - { name: psycopg2 }
+
+# [smtp]
+airflow_smtp_host: localhost
+airflow_smtp_starttls: True
+airflow_smtp_ssl: True
+airflow_smtp_port: 25
+airflow_smtp_mail_from: airflow@attack.com
+airflow_smtp_user: user
+airflow_smtp_passwd: password

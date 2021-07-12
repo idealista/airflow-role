@@ -1,13 +1,17 @@
 ---
 
 - name: Airflow | Check Admin user (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command: "{{ airflow_executable }} users list"
   register: airflow_check_admin
   changed_when: false
   when: airflow_version is version( '2.0.0', '>=')
   no_log: true
 
-- name: Airflow | Create Admin user AUTH_DB (> 2.0)
+- name: Airflow | Create Admin users (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command:
     argv:
       - "{{ airflow_executable }}"
@@ -30,9 +34,10 @@
   when:
     - airflow_version is version( '2.0.0', '>=')
     - "item.email not in airflow_check_admin.stdout"
-    - "airflow_AUTH_TYPE == 'AUTH_DB'"
 
-- name: Airflow | Create Admin users AUTH_LDAP (> 2.0)
+- name: Airflow | Create regular users (> 2.0)
+  become: true
+  become_user: "{{ airflow_user }}"
   command:
     argv:
       - "{{ airflow_executable }}"
@@ -51,8 +56,7 @@
       - --email
       - "{{ item.email }}"
   no_log: true
-  with_items: "{{ airflow_admin_users }}"
+  with_items: "{{ airflow_regular_users }}"
   when:
     - airflow_version is version( '2.0.0', '>=')
-    - "item.email not in airflow_check_admin.stdout"
-    - "airflow_AUTH_TYPE == 'AUTH_LDAP'"
+    - airflow_regular_users is defined
