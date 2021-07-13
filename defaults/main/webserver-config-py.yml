@@ -40,7 +40,7 @@ airflow_AUTH_ROLE_PUBLIC: Public
 airflow_AUTH_USER_REGISTRATION: False
 
 # If we should replace ALL the user's roles each login, or only on registration
-airflow_AUTH_ROLES_SYNC_AT_LOGIN: True
+airflow_AUTH_ROLES_SYNC_AT_LOGIN: False
 
 # Force users to re-auth after 30min of inactivity (to keep roles in sync)
 airflow_PERMANENT_SESSION_LIFETIME: 1800
