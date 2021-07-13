@@ -4,5 +4,6 @@ tests/__pycache__
 .molecule
 .cache
 tests/roles
-.vscode/*
+/.vscode
 *.vt100
+/logs

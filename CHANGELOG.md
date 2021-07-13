@@ -7,6 +7,27 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 <!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler) -->
 
+## [2.0.3](https://github.com/idealista/airflow-role/tree/2.0.3)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.2...2.0.3)
+
+### Changed
+
+- :arrows_clockwise: Bump default airflow version to 2.1.1
+- :arrows_clockwise: Bump requirements versions
+- :arrows_clockwise: Some default values has been updated
+
+### Added
+
+- :heavy_plus_sign: Add regular users task
+- :heavy_plus_sign: molecule config flower port exposed
+- :heavy_plus_sign: molecule default scenario create admin and regular users
+- :heavy_plus_sign: create home options
+
+### Fixed
+
+- :hammer_and_wrench: become configured user when check for admin users
+
 ## [2.0.2](https://github.com/idealista/airflow-role/tree/2.0.2)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...2.0.2)
