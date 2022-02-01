@@ -8,6 +8,6 @@
     create 644 {{ airflow_user }} {{ airflow_group }}
     sharedscripts
     postrotate
-        [ -f {{ airflow_pidfile_folder }}-webserver/webserver.pid ] && kill -USR1 `cat {{ airflow_pidfile_folder }}/webserver.pid`
+        [ -f {{ airflow_pidfile_folder }}-webserver/webserver.pid ] && kill -USR1 `cat {{ airflow_pidfile_folder }}-webserver/webserver.pid`
     endscript
 }
