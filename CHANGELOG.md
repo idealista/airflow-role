@@ -7,7 +7,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 <!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler) -->
 
-- fix wrong webserver.pid path in template gunicorn-logrotate.j2
+## [2.0.4](https://github.com/idealista/airflow-role/tree/2.0.4)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.3...2.0.4)
+
+### Fixed
+- Wrong webserver.pid path in template gunicorn-logrotate.j2 [#110](https://github.com/idealista/airflow-role/issues/110) @ginolegigot
 
 ## [2.0.3](https://github.com/idealista/airflow-role/tree/2.0.3)
 
