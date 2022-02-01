@@ -7,6 +7,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 <!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler) -->
 
+## [2.0.4](https://github.com/idealista/airflow-role/tree/2.0.4)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.3...2.0.4)
+
+### Fixed
+- Wrong webserver.pid path in template gunicorn-logrotate.j2 [#110](https://github.com/idealista/airflow-role/issues/110) @ginolegigot
+
 ## [2.0.3](https://github.com/idealista/airflow-role/tree/2.0.3)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.2...2.0.3)
@@ -41,7 +48,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ### Changed
 
 - :arrows_clockwise: Update missing vars in cfg (v2) template
-- :arrows_clockwise: Update conditionally vars missing or unnecesary in cfg (v2) template
+- :arrows_clockwise: Update conditionally vars missing or unnecessary in cfg (v2) template
 
 ### Fixed
 
@@ -51,7 +58,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ### Added
 
 - :heavy_plus_sign: tags for config files related
-- :broom: Clean airflow-cfg.yml with bad format values and unnecesary quotation
+- :broom: Clean airflow-cfg.yml with bad format values and unnecessary quotation
 
 ## [2.0.0](https://github.com/idealista/airflow-role/tree/2.0.0)
 
