@@ -1,4 +1,6 @@
-# Apache Airflow Ansible role [![Build Status](https://travis-ci.org/idealista/airflow-role.png)](https://travis-ci.org/idealista/airflow-role)
+# Apache Airflow Ansible role
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/idealista/airflow-role?color=%23B62682) [![Ansible Galaxy](https://img.shields.io/badge/galaxy-idealista.clickhouse_role-B62682.svg)](https://galaxy.ansible.com/idealista/clickhouse_role) [![Build Status](https://travis-ci.org/idealista/airflow-role.png)](https://travis-ci.org/idealista/airflow-role)
 
 ![Logo](https://raw.githubusercontent.com/idealista/airflow-role/master/logo.gif)
 
@@ -111,9 +113,15 @@ airflow_extra_packages:
 
 ## Testing :test_tube:
 
-```shell
+```bash
 pipenv install -r test-requirements.txt --python 3.7
-pipenv run molecule test
+
+# Optional
+pipenv shell  # if in shell just use `molecule COMMAND`
+
+pipenv run molecule test  # To run role test
+# or
+pipenv run molecule converge  # To run play with the role
 ```
 
 ## Built With :building_construction:

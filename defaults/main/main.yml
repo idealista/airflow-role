@@ -25,7 +25,7 @@ airflow_constraint_url: "https://raw.githubusercontent.com/apache/airflow/constr
 # https://airflow.apache.org/docs/apache-airflow/stable/extra-packages-ref.html
 # List should follow Ansible's YAML basics:
 # https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics
-airflow_bundle_package: # all|all_dbs|devel|devel_hadoop|devel_all|devel_ci See bundle extras section 
+airflow_bundle_package:  # all|all_dbs|devel|devel_hadoop|devel_all|devel_ci See bundle extras section
 # airflow_extra_packages:
   # [Apache]
   # - apache.atlas

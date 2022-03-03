@@ -156,7 +156,7 @@ airflow_webserver_access_logformat:
 airflow_webserver_expose_config: False
 airflow_webserver_expose_hostname: True
 airflow_webserver_expose_stacktrace: True
-airflow_webserver_dag_default_view: tree # Valid values are: tree, graph, duration, gantt, landing_times
+airflow_webserver_dag_default_view: tree  # Valid values are: tree, graph, duration, gantt, landing_times
 airflow_webserver_dag_orientation: LR
 airflow_webserver_log_fetch_timeout_sec: 5
 airflow_webserver_log_fetch_delay_sec: 2
