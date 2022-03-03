@@ -14,7 +14,7 @@ airflow_admin_users:
 
 airflow_required_python_packages:
   - { name: SQLAlchemy, version: 1.3.23 }
-  - { name: psycopg2 }
+  - { name: psycopg2-binary }
 
 airflow_extra_packages:
   - celery
