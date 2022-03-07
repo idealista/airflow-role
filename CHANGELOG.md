@@ -5,14 +5,29 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
-<!-- [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.1...bugfix/wrong-task-handler) -->
+## [2.0.5](https://github.com/idealista/airflow-role/tree/2.0.5)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.4...2.0.5)
+
+### Fixed
+
+- :hammer_and_wrench: change psycopg2 to use the binary option to fix broken build
+- :hammer_and_wrench: Fix typos
+
+### Added
+
+- :heavy_plus_sign: Add anisble-lint config file
+
+### Changed
+
+- :arrows_clockwise: Update Readme
 
 ## [2.0.4](https://github.com/idealista/airflow-role/tree/2.0.4)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.3...2.0.4)
 
 ### Fixed
-- Wrong webserver.pid path in template gunicorn-logrotate.j2 [#110](https://github.com/idealista/airflow-role/issues/110) @ginolegigot
+- :hammer_and_wrench: Wrong webserver.pid path in template gunicorn-logrotate.j2 [#110](https://github.com/idealista/airflow-role/issues/110) @ginolegigot
 
 ## [2.0.3](https://github.com/idealista/airflow-role/tree/2.0.3)
 

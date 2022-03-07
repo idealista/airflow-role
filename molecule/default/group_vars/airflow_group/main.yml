@@ -32,8 +32,8 @@ airflow_regular_users:
     email: eren@attack.com
 
 airflow_required_python_packages:
-  - { name: SQLAlchemy, version: 1.3.23 }
-  - { name: psycopg2 }
+  - { name: SQLAlchemy, version: 1.3.23 }  # see https://github.com/apache/airflow/blob/main/setup.cfg#L157-L161
+  - { name: psycopg2-binary }
 
 # [smtp]
 airflow_smtp_host: localhost
