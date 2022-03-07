@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [2.0.5](https://github.com/idealista/airflow-role/tree/2.0.5)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.4...2.0.5)
+
 ### Fixed
 
 - :hammer_and_wrench: change psycopg2 to use the binary option to fix broken build
