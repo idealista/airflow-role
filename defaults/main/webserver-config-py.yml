@@ -23,12 +23,12 @@ airflow_AUTH_LDAP_LASTNAME_FIELD: sn
 airflow_AUTH_LDAP_EMAIL_FIELD: mail  # if null in LDAP, email is set to: "{username}@email.notfound"
 
 # search configs
-airflow_AUTH_LDAP_SEARCH: # the LDAP search base
-airflow_AUTH_LDAP_UID_FIELD: # the username field
-airflow_AUTH_LDAP_BIND_USER: # the special bind username for search
-airflow_AUTH_LDAP_BIND_PASSWORD: # the special bind password for search
+airflow_AUTH_LDAP_SEARCH:  # the LDAP search base
+airflow_AUTH_LDAP_UID_FIELD:  # the username field
+airflow_AUTH_LDAP_BIND_USER:  # the special bind username for search
+airflow_AUTH_LDAP_BIND_PASSWORD:  # the special bind password for search
 
-airflow_AUTH_LDAP_SEARCH_FILTER: # limit the LDAP search scope
+airflow_AUTH_LDAP_SEARCH_FILTER:  # limit the LDAP search scope
 
 # Setup Full admin role name
 airflow_AUTH_ROLE_ADMIN: Admin

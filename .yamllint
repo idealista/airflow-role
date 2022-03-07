@@ -20,7 +20,7 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
-  comments: disable
+  comments: enable
   comments-indentation: disable
   document-start: disable
   empty-lines:
@@ -31,8 +31,8 @@ rules:
   indentation: enable
   key-duplicates: enable
   line-length: disable
-  new-line-at-end-of-file: disable
+  new-line-at-end-of-file: enable
   new-lines:
     type: unix
-  trailing-spaces: disable
+  trailing-spaces: enable
   truthy: disable
