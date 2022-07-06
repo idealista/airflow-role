@@ -121,7 +121,7 @@
 
 - name: Airflow | Add connections from configuration file
   command: "{{ airflow_executable }} connections -a \
-  {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
+  {% for key, value in item.items() %}--{{ key }} '{{ value }}' \
   {% endfor %}"
   become: true
   become_user: "{{ airflow_user }}"
