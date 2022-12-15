@@ -1,0 +1,28 @@
+---
+name: Molecule Test
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+        molecule_distro: ['debian', 'ubuntu']
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: airflow-role
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install deps
+        run: |
+          python3 -m pip install -U pip
+          python3 -m pip install pipenv
+          pipenv sync
+      - name: Test with molecule
+        run: pipenv run molecule test --all
+        env:
+          MOLECULE_DISTRO: ${{ matrix.molecule_distro }}
