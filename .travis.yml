@@ -1,7 +1,10 @@
 ---
 dist: focal
 language: python
-python: "3.9"
+python:
+- 3.9
+- 3.10
+- 3.11
 os: linux
 services:
   - docker
