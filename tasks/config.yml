@@ -121,8 +121,11 @@
 
 - name: Airflow | Add connections from configuration file
   command: "{{ airflow_executable }} connections add \
-  {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
-  {% endfor %}"
+      {% for key, value in item.items() %} \
+        {% if key == 'conn_id' %} {{ value }} \
+        {% else %} --{{ key | replace('_', '-') }} '{{ value }}' \
+        {% endif %} \
+      {% endfor %}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"
