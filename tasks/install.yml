@@ -147,5 +147,3 @@
   when: dags_dependencies is defined
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-
-
