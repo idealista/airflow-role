@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+### Fixed
+- :hammer_and_wrench: Allow intalling only some services
+- :hammer_and_wrench: Updating travis environment
+
+### Changed
+
+- :arrows_clockwise: Moving copy tasks of services to service.yml
 
 ## [2.0.5](https://github.com/idealista/airflow-role/tree/2.0.5)
 

@@ -1,5 +1,4 @@
 ---
-
 - name: Airflow | Ensure airflow directories structure
   file:
     path: "{{ item }}"
@@ -31,10 +30,7 @@
   register: airflow_config
   when: airflow_version is version( '2.0.0', '>=')
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-webserver-config-py
 
 - name: Airflow | Copy basic airflow config file (< 2.0)
@@ -47,10 +43,7 @@
   register: airflow_config
   when: airflow_version is version( '2.0.0', '<')
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-cfg
 
 - name: Airflow | Copy basic airflow config file (>= 2.0)
@@ -63,10 +56,7 @@
   register: airflow_config
   when: airflow_version is version( '2.0.0', '>=')
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-cfg
 
 - name: Airflow | Initializing DB < 2.0
@@ -77,10 +67,7 @@
     - airflow_version is version( '2.0.0', '<')
     - (airflow_install.changed or airflow_config.changed)
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags:
     - airflow-db-init
     - skip_ansible_lint
@@ -93,10 +80,7 @@
     - airflow_version is version( '2.0.0', '>=')
     - airflow_install.changed or airflow_config.changed
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-db-init
 
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
@@ -109,10 +93,7 @@
   with_fileglob:
     - "{{ airflow_extra_conf_path }}/*"
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-extra-config
 
 - name: Airflow | Copy extra airflow config templates (provided by playbooks)
@@ -125,10 +106,8 @@
   with_fileglob:
     - "{{ airflow_extra_conf_template_path }}/*"
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
+
   tags: airflow-extra-config
 
 - name: Airflow | Add variables from configuration file
