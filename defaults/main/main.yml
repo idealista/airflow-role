@@ -159,7 +159,7 @@ airflow_admin_users:
 #     email:
 
 # Service options
-airflow_scheduler_runs: 1000
+# airflow_scheduler_runs: 1000
 airflow_private_tmp: false
 
 airflow_services:
