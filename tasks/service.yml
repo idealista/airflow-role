@@ -1,5 +1,22 @@
 ---
 
+- name: Airflow | Copy Environment File
+  template:
+    src: airflow-environment-file.j2
+    dest: "{{ airflow_environment_file_folder }}/airflow"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: Airflow | Copy Daemon scripts
+  template:
+    src: "{{ item.value.path }}"
+    dest: "/lib/systemd/system/{{ item.value.service_name }}.service"
+    mode: 0644
+  notify: restart {{ item.value.service_name }}
+  with_dict: "{{ airflow_services }}"
+  when: item.value.enabled
+
 - name: Airflow | Configuring service
   systemd:
     name: "{{ item.value.service_name }}"
