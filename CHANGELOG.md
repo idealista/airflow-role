@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a changelog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
+
+## [2.0.7](https://github.com/idealista/airflow-role/tree/2.0.7)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.6...2.0.7)
+
+### Fixed
+- #114 The "-n" option might not be needed
+
+## [2.0.6](https://github.com/idealista/airflow-role/tree/2.0.6)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.5...2.0.6)
+
 ### Fixed
 - :hammer_and_wrench: Allow intalling only some services
 - :hammer_and_wrench: Updating travis environment
