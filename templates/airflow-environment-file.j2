@@ -19,7 +19,9 @@
 #
 
 # required setting, 0 sets it to unlimited. Scheduler will get restart after every X runs
+{% if airflow_scheduler_runs is defined %}
 SCHEDULER_RUNS={{ airflow_scheduler_runs }}
+{% endif %}
 
 AIRFLOW_HOME={{ airflow_app_home }}
 AIRFLOW_CONFIG={{ airflow_conf_path }}/airflow.cfg
