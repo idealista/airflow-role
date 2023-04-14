@@ -146,7 +146,4 @@
   with_items: "{{ dags_dependencies }}"
   when: dags_dependencies is defined
   notify:
-    - restart airflow-webserver
-    - restart airflow-scheduler
-    - restart airflow-worker
-    - restart airflow-flower
+    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
