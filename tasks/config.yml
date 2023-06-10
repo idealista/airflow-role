@@ -111,7 +111,7 @@
   tags: airflow-extra-config
 
 - name: Airflow | Add variables from configuration file
-  command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
+  command: "{{ airflow_executable }} variables set {{ item.key }} {{ item.value }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
@@ -120,9 +120,12 @@
     - airflow-extra-vars-file
 
 - name: Airflow | Add connections from configuration file
-  command: "{{ airflow_executable }} connections -a \
-  {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
-  {% endfor %}"
+  command: "{{ airflow_executable }} connections add \
+      {% for key, value in item.items() %} \
+        {% if key == 'conn_id' %} {{ value }} \
+        {% else %} --{{ key | replace('_', '-') }} '{{ value }}' \
+        {% endif %} \
+      {% endfor %}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"
