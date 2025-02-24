@@ -1,15 +1,14 @@
 ---
 
-- name: Airflow | Check users (> 2.0)
+- name: Airflow | Check users
   become: true
   become_user: "{{ airflow_user }}"
   ansible.builtin.command: "{{ airflow_executable }} users list"
   register: airflow_check_users
   changed_when: false
-  when: airflow_version is version( '2.0.0', '>=')
   no_log: true
 
-- name: Airflow | Create Admin users (> 2.0)
+- name: Airflow | Create Admin users
   become: true
   become_user: "{{ airflow_user }}"
   ansible.builtin.command:
@@ -32,10 +31,10 @@
   no_log: true
   with_items: "{{ airflow_admin_users }}"
   when:
-    - airflow_version is version( '2.0.0', '>=')
     - "item.email not in airflow_check_users.stdout"
+  register: airflow_created_admin_users
 
-- name: Airflow | Create regular users (> 2.0)
+- name: Airflow | Create regular users
   become: true
   become_user: "{{ airflow_user }}"
   ansible.builtin.command:
@@ -58,6 +57,5 @@
   no_log: true
   with_items: "{{ airflow_regular_users }}"
   when:
-    - airflow_version is version( '2.0.0', '>=')
     - airflow_regular_users is defined
     - "item.email not in airflow_check_users.stdout"

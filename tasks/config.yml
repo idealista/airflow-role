@@ -5,6 +5,7 @@
     state: directory
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
+    mode: 0755
   with_items:
     - "{{ airflow_logs_folder }}"
     - "{{ airflow_child_process_log_folder }}"
@@ -28,7 +29,6 @@
     group: "{{ airflow_group }}"
     mode: 0644
   register: airflow_config
-  when: airflow_version is version( '2.0.0', '>=')
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-webserver-config-py
@@ -41,43 +41,15 @@
     group: "{{ airflow_group }}"
     mode: 0640
   register: airflow_config
-  when: airflow_version is version( '2.0.0', '<')
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-cfg
 
-- name: Airflow | Copy basic airflow config file (>= 2.0)
-  template:
-    src: "{{ airflow_config_template_path_v2 }}"
-    dest: "{{ airflow_conf_path }}/airflow.cfg"
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
-    mode: 0640
-  register: airflow_config
-  when: airflow_version is version( '2.0.0', '>=')
-  notify:
-    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-  tags: airflow-cfg
-
-- name: Airflow | Initializing DB < 2.0
-  command: "{{ airflow_executable }} initdb"
+- name: Airflow | Initializing DB
+  ansible.builtin.command: "{{ airflow_executable }} db init"
   become: true
   become_user: "{{ airflow_user }}"
   when:
-    - airflow_version is version( '2.0.0', '<')
-    - (airflow_install.changed or airflow_config.changed)
-  notify:
-    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-  tags:
-    - airflow-db-init
-    - skip_ansible_lint
-
-- name: Airflow | Initializing DB > 2.0
-  command: "{{ airflow_executable }} db init"
-  become: true
-  become_user: "{{ airflow_user }}"
-  when:
-    - airflow_version is version( '2.0.0', '>=')
     - airflow_install.changed or airflow_config.changed
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
@@ -107,7 +79,6 @@
     - "{{ airflow_extra_conf_template_path }}/*"
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-
   tags: airflow-extra-config
 
 - name: Airflow | Add variables from configuration file
