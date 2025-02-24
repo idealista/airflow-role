@@ -23,7 +23,9 @@ platforms:
       - /run/lock
     volumes:
       - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock'
     command: '/lib/systemd/systemd'
+    cgroupns_mode: host
     stop_signal: 'RTMIN+3'
     exposed_ports:
       - 8088/tcp
@@ -46,4 +48,3 @@ scenario:
 
 verifier:
   name: ansible
-

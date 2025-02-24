@@ -1,7 +1,7 @@
 ---
 dist: focal
 language: python
-python: "3.9"
+python: "3.12"
 os: linux
 services:
   - docker
@@ -10,7 +10,8 @@ install:
   - pipenv sync
 env:
   jobs:
-    - MOLECULE_DISTRO=debian:buster-slim
+    - MOLECULE_DISTRO=debian:bookworm-slim
+    - MOLECULE_DISTRO=debian:bullseye-slim
 script:
   - pipenv run molecule test --all
 

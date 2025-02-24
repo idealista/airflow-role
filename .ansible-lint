@@ -3,3 +3,5 @@ exclude_paths:
 parseable: true
 use_default_rules: true
 verbosity: 1
+skip_list:
+  - role-name

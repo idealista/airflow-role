@@ -1,10 +1,13 @@
 ---
 
-airflow_load_examples: true
-
-# Example keys
-airflow_fernet_key: xKy13nPFfDflJ0DYGVTwf_DEmbItfURHlEDxrt-bBQw=
-airflow_webserver_secret_key: "ihadsf908auw0340684"
+airflow_cfg_extra:
+  - section: core
+    settings:
+      load_examples: true
+      fernet_key: xKy13nPFfDflJ0DYGVTwf_DEmbItfURHlEDxrt-bBQw= # Example keys
+  - section: webserver
+    settings:
+      secret_key: "ihadsf908auw0340684" # Example keys
 
 airflow_admin_users:
   - name: Erwin
@@ -19,27 +22,19 @@ airflow_regular_users:
   - name: Levi
     username: levi
     password: strongerThanU
-    role: Op
+    role: Public
     firstname: Levi
     lastname: Ackerman
     email: levi@attack.com
   - name: Eren
     username: eren
     password: 104thGraduated
-    role: User
+    role: Public
     firstname: Eren
     lastname: Yeager
     email: eren@attack.com
 
 airflow_required_python_packages:
-  - { name: SQLAlchemy, version: 1.3.23 }  # see https://github.com/apache/airflow/blob/main/setup.cfg#L157-L161
+  - { name: SQLAlchemy }
   - { name: psycopg2-binary }
-
-# [smtp]
-airflow_smtp_host: localhost
-airflow_smtp_starttls: True
-airflow_smtp_ssl: True
-airflow_smtp_port: 25
-airflow_smtp_mail_from: airflow@attack.com
-airflow_smtp_user: user
-airflow_smtp_passwd: password
+  - { name: pandas }
