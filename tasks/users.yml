@@ -3,7 +3,7 @@
 - name: Airflow | Check users (> 2.0)
   become: true
   become_user: "{{ airflow_user }}"
-  command: "{{ airflow_executable }} users list"
+  ansible.builtin.command: "{{ airflow_executable }} users list"
   register: airflow_check_users
   changed_when: false
   when: airflow_version is version( '2.0.0', '>=')
@@ -12,7 +12,7 @@
 - name: Airflow | Create Admin users (> 2.0)
   become: true
   become_user: "{{ airflow_user }}"
-  command:
+  ansible.builtin.command:
     argv:
       - "{{ airflow_executable }}"
       - users
@@ -38,7 +38,7 @@
 - name: Airflow | Create regular users (> 2.0)
   become: true
   become_user: "{{ airflow_user }}"
-  command:
+  ansible.builtin.command:
     argv:
       - "{{ airflow_executable }}"
       - users

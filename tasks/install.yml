@@ -1,12 +1,12 @@
 ---
 
 - name: Airflow | Ensure Airflow group
-  group:
+  ansible.builtin.group:
     name: "{{ airflow_group }}"
   become: true
 
 - name: Airflow | Ensure Airflow user
-  user:
+  ansible.builtin.user:
     name: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     system: true
@@ -16,7 +16,7 @@
   become: true
 
 - name: Airflow | Ensure airflow skeleton paths
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
@@ -24,13 +24,13 @@
   with_items: "{{ airflow_skeleton_paths }}"
 
 - name: Airflow | Copy profile.d file
-  template:
+  ansible.builtin.template:
     src: airflow-profile.d-file.j2
     dest: "/etc/profile.d/airflow.sh"
     mode: 0644
 
 - name: Airflow | Installing dependencies
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ airflow_required_libs }}"
     state: present
     update_cache: true
@@ -61,7 +61,7 @@
 - name: Airflow | Installing Python pip dependencies
   become: true
   become_user: "{{ airflow_user }}"
-  pip:
+  ansible.builtin.pip:
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ airflow_app_home }}"
@@ -97,7 +97,7 @@
 - name: Airflow | Installing Airflow
   become: true
   become_user: "{{ airflow_user }}"
-  pip:
+  ansible.builtin.pip:
     name: "{{ airflow_package }}[{{ airflow_bundle_package | default(omit) }}]"
     version: "{{ airflow_version }}"
     state: present
@@ -124,7 +124,7 @@
 - name: Airflow | Installing Airflow Extra Packages
   become: true
   become_user: "{{ airflow_user }}"
-  pip:
+  ansible.builtin.pip:
     name: "apache-airflow[{{ airflow_extra_packages | join(', ') }}]"
     version: "{{ airflow_version }}"
     virtualenv: "{{ airflow_app_home }}"
@@ -137,7 +137,7 @@
 - name: Airflow | Installing DAGs dependencies
   become: true
   become_user: "{{ airflow_user }}"
-  pip:
+  ansible.builtin.pip:
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ airflow_app_home }}"
