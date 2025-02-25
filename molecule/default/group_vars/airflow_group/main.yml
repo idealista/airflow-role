@@ -1,5 +1,9 @@
 ---
 
+airflow_webserver_host: 0.0.0.0
+airflow_flower_port: 5555
+airflow_flower_host: 0.0.0.0
+
 airflow_cfg_extra:
   - section: core
     settings:
