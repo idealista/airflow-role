@@ -4,7 +4,7 @@ airflow_webserver_host: 0.0.0.0
 airflow_flower_port: 5555
 airflow_flower_host: 0.0.0.0
 
-airflow_cfg_extra:
+airflow_cfg_base:
   - section: core
     settings:
       load_examples: true

@@ -1,17 +1,13 @@
 ---
 
 airflow_webserver_port: 8080
-airflow_cfg: "{{ [airflow_cfg_base, airflow_cfg_extra | default(omit)] | community.general.lists_mergeby('section', recursive=true) }}"
+airflow_cfg: "{{ [airflow_cfg_default, airflow_cfg_base | default([]), airflow_cfg_extra | default([])] | community.general.lists_mergeby('section', recursive=true) }}"
 
 # AIRFLOW CONFIGURATION https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html
-airflow_cfg_base:
+airflow_cfg_default:
   - section: core
     settings:
       dags_folder: "{{ airflow_app_home }}/dags"
-      default_timezone: utc
-      executor: SequentialExecutor
-      database_conn: "sqlite:///{{ airflow_app_home }}/airflow.db"
-      database_engine_encoding: utf-8
       dags_are_paused_at_creation: True
       load_examples: False
       load_default_connections: False
@@ -23,8 +19,5 @@ airflow_cfg_base:
   - section: webserver
     settings:
       base_url: "http://localhost:{{ airflow_webserver_port }}"
-      default_ui_timezone: UTC
-      workers: 4
       access_logfile: "{{ airflow_logs_folder }}/gunicorn-access.log"
       error_logfile: "{{ airflow_logs_folder }}/gunicorn-error.log"
-      navbar_color: "#007A87"
