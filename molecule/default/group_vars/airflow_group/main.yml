@@ -42,3 +42,12 @@ airflow_required_python_packages:
   - { name: SQLAlchemy }
   - { name: psycopg2-binary }
   - { name: pandas }
+
+airflow_extra_packages:
+  - celery
+  - cgroups
+  - ftp
+  - http
+  - jdbc
+  - sftp
+  - ssh

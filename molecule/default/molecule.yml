@@ -13,7 +13,7 @@ platforms:
   - name: airflow
     groups:
       - airflow_group
-    image: ${MOLECULE_DISTRO:-debian:buster-slim}
+    image: ${MOLECULE_DISTRO:-debian:bookworm-slim}
     privileged: false
     capabilities:
       - SYS_ADMIN
