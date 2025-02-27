@@ -1,9 +1,0 @@
----
-
-- name: Converge
-  hosts: airflow_group
-  roles:
-    - role: airflow-role
-  environment:
-    AIRFLOW_HOME: "{{ airflow_app_home }}"
-    AIRFLOW_CONFIG: "{{ airflow_conf_path }}/airflow.cfg"

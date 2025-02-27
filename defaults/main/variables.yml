@@ -1,0 +1,5 @@
+---
+
+airflow_admin_variables: []
+#   - key: bucket_name
+#     value: logs_foo
