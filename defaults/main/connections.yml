@@ -1,0 +1,8 @@
+---
+
+airflow_admin_connections: []
+#   - conn_id: gcp_conn
+#     conn_type: google_cloud_platform
+#     conn_extra: '{"extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform", "extra__google_cloud_platform__project": "myprojet", "extra__google_cloud_platform__key_path": ""}'
+#   - conn_id: pg_conn
+#     conn_uri: postgres://user:passwordh@host:5432/dbname

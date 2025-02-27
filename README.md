@@ -8,7 +8,7 @@ This ansible role installs a Apache Airflow server in a Debian/Ubuntu environmen
 
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites-ballot_box_with_check)
-  - [Installing](#Installing-inbox_tray )
+  - [Installing](#installing-inbox_tray )
 - [Usage](#usage-runner)
 - [Testing](#testing-test_tube)
 - [Built With](#built-with-building_construction)
@@ -23,10 +23,10 @@ These instructions will get you a copy of the role for your ansible playbook. On
 
 ### Prerequisites :ballot_box_with_check:
 
-Ansible 2.9.9 version installed.
-Inventory destination should be a Debian (preferable Debian 10 Buster ) or Ubuntu environment.
+Ansible >= 2.9.9 version installed (Tested with 2.18).
+Inventory destination should be a Debian (preferable Debian >= 10 Buster ) or Ubuntu environment.
 
-ℹ️ This role should work with older versions of Debian but you need to know that due to Airflow minimum requirements you should check that 🐍 Python 3.6 (or higher) is installed before (👉 See: [Airflow prerequisites](https://airflow.apache.org/docs/apache-airflow/stable/installation.html#prerequisites)).
+ℹ️ This role should work with older versions of Debian but you need to know that due to Airflow minimum requirements you should check that 🐍 Python 3.8 (or higher) is installed before (👉 See: [Airflow prerequisites](https://airflow.apache.org/docs/apache-airflow/stable/installation/prerequisites.html)).
 
 ℹ️ By default this role use the predefined installation of Python that comes with the distro.
 
@@ -39,15 +39,15 @@ Create or add to your roles dependency file (e.g requirements.yml) from GitHub:
 ```yml
 - src: http://github.com/idealista/airflow-role.git
   scm: git
-  version: 2.0.0
+  version: 3.0.0
   name: airflow
 ```
 
 or using [Ansible Galaxy](https://galaxy.ansible.com/idealista/airflow-role/) as origin if you prefer:
 
 ```yml
-- src: idealista.airflow-role
-  version: 2.0.0
+- src: idealista.airflow_role
+  version: 3.0.0
   name: airflow
 ```
 
@@ -74,6 +74,11 @@ Look to the defaults properties files to see the possible configuration properti
 - [`airflow-cfg.yml`](./defaults/main/airflow-cfg.yml) for all the related airflow.cfg config parameters.
 - [`webserver-config-py.yml`](./defaults/main/webserver-config-py.yml) for all the related webserver_config.py config parameters.
 
+❗Attention:❗
+
+- ⚠️ This version is no longer compatible with Apache Airflow 1.x versions.
+- ⚠️ Check out the new way to set airflow.cfg parameters in [`airflow-cfg.yml`](./defaults/main/airflow-cfg.yml) file.
+
 👉 Don't forget :
 
 - 🦸 To set your Admin user.
@@ -85,17 +90,17 @@ Look to the defaults properties files to see the possible configuration properti
 - 🐍 Python and pip version.
 - 📦 [Extra packages](#package-Extra-packages) if you need additional operators, hooks, sensors...
 - 📦 [Required Python packages](#package-Required-Python-packages) with version specific like SQLAlchemy for example (to avoid known Airflow bugs❗️) like below or because are necessary
-- ⚠️ With Airflow v1.10.0, PyPi package `pyasn1` v0.4.4 is needed. See examples below
 
 ### :package: Required Python packages
 
 [`airflow_required_python_packages`](./defaults/main/main.yml) should be a list following this format:
 
 ```yml
+# This is an example of how to set the required python packages
 airflow_required_python_packages:
-  - { name: SQLAlchemy, version: 1.3.23 }
+  - { name: SQLAlchemy, version: major.minor.patch }
   - { name: psycopg2 }
-  - {name: pyasn1, version: 0.4.4}
+  - {name: pyasn1}
 ```
 
 ### :package: Extra packages
@@ -103,6 +108,7 @@ airflow_required_python_packages:
 [`airflow_extra_packages`](./defaults/main/main.yml) should be a list following this format:
 
 ```yml
+# This is an example of how to set the extra packages
 airflow_extra_packages:
   - apache.atlas
   - celery
@@ -114,7 +120,7 @@ airflow_extra_packages:
 ## Testing :test_tube:
 
 ```bash
-pipenv install -r test-requirements.txt --python 3.7
+pipenv install -r test-requirements.txt --python 3.12
 
 # Optional
 pipenv shell  # if in shell just use `molecule COMMAND`
@@ -126,7 +132,7 @@ pipenv run molecule converge  # To run play with the role
 
 ## Built With :building_construction:
 
-![Ansible](https://img.shields.io/badge/ansible-2.9.9-green.svg)
+![Ansible](https://img.shields.io/badge/ansible-2.18.2-green.svg)
 
 ## Versioning :card_file_box:
 

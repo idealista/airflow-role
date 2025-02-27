@@ -1,10 +1,11 @@
 ---
 - name: Airflow | Ensure airflow directories structure
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
+    mode: 0755
   with_items:
     - "{{ airflow_logs_folder }}"
     - "{{ airflow_child_process_log_folder }}"
@@ -12,7 +13,7 @@
     - "{{ airflow_plugins_folder }}"
 
 - name: Airflow | Copy gunicorn logrotate config
-  template:
+  ansible.builtin.template:
     src: gunicorn-logrotate.j2
     dest: /etc/logrotate.d/airflow
     mode: 0644
@@ -21,70 +22,41 @@
   tags: airflow-gunicorn-logrotate
 
 - name: Airflow | Copy webserver_config.py file
-  template:
+  ansible.builtin.template:
     src: webserver_config.j2
     dest: "{{ airflow_app_home }}/webserver_config.py"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     mode: 0644
   register: airflow_config
-  when: airflow_version is version( '2.0.0', '>=')
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-webserver-config-py
 
-- name: Airflow | Copy basic airflow config file (< 2.0)
-  template:
+- name: Airflow | Copy basic airflow config file
+  ansible.builtin.template:
     src: "{{ airflow_config_template_path }}"
     dest: "{{ airflow_conf_path }}/airflow.cfg"
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
     mode: 0640
   register: airflow_config
-  when: airflow_version is version( '2.0.0', '<')
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-cfg
 
-- name: Airflow | Copy basic airflow config file (>= 2.0)
-  template:
-    src: "{{ airflow_config_template_path_v2 }}"
-    dest: "{{ airflow_conf_path }}/airflow.cfg"
-    owner: "{{ airflow_user }}"
-    group: "{{ airflow_group }}"
-    mode: 0640
-  register: airflow_config
-  when: airflow_version is version( '2.0.0', '>=')
-  notify:
-    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-  tags: airflow-cfg
-
-- name: Airflow | Initializing DB < 2.0
-  command: "{{ airflow_executable }} initdb"
+- name: Airflow | Initializing DB
+  ansible.builtin.command: "{{ airflow_executable }} db init"
   become: true
   become_user: "{{ airflow_user }}"
   when:
-    - airflow_version is version( '2.0.0', '<')
-    - (airflow_install.changed or airflow_config.changed)
-  notify:
-    "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-  tags:
-    - airflow-db-init
-    - skip_ansible_lint
-
-- name: Airflow | Initializing DB > 2.0
-  command: "{{ airflow_executable }} db init"
-  become: true
-  become_user: "{{ airflow_user }}"
-  when:
-    - airflow_version is version( '2.0.0', '>=')
     - airflow_install.changed or airflow_config.changed
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
   tags: airflow-db-init
 
 - name: Airflow | Copy extra airflow config files (provided by playbooks)
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ airflow_conf_path }}/{{ item | basename }}"
     owner: "{{ airflow_user }}"
@@ -97,7 +69,7 @@
   tags: airflow-extra-config
 
 - name: Airflow | Copy extra airflow config templates (provided by playbooks)
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ airflow_conf_path }}/{{ item | basename }}"
     owner: "{{ airflow_user }}"
@@ -107,11 +79,10 @@
     - "{{ airflow_extra_conf_template_path }}/*"
   notify:
     "{{ ['restart'] | product(airflow_services.values() | map(attribute='service_name')) | map('join', ' ') | list }}"
-
   tags: airflow-extra-config
 
 - name: Airflow | Add variables from configuration file
-  command: "{{ airflow_executable }} variables -s {{ item.key }} {{ item.value }}"
+  ansible.builtin.command: "{{ airflow_executable }} variables set {{ item.key }} {{ item.value }}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_variables }}"
@@ -120,9 +91,10 @@
     - airflow-extra-vars-file
 
 - name: Airflow | Add connections from configuration file
-  command: "{{ airflow_executable }} connections -a \
-  {% for key, value in item.iteritems() %}--{{ key }} '{{ value }}' \
-  {% endfor %}"
+  ansible.builtin.command: >
+    "{{ airflow_executable }} connections -a"
+    "{% for key, value in item.iteritems() %}--{{ key }} '{{ value }}'"
+    "{% endfor %}"
   become: true
   become_user: "{{ airflow_user }}"
   with_items: "{{ airflow_admin_connections }}"

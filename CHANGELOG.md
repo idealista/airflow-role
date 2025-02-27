@@ -5,11 +5,36 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [3.0.0](https://github.com/idealista/airflow-role/tree/3.0.0)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.7...3.0.0)
+
+### Updated
+
+- Updated Python dependencies and Airflow packages.
+- Improvements in the configuration of Airflow services.
+
+### Fixed
+
+- Minor bug fixes in installation and configuration tasks.
+- Documentation improvements and updates to the `README.md`.
+
+### Added
+
+- Support for fully qualified collection names (FQCN) in Ansible modules.
+- Added support for installing specific versions of `pip` and `virtualenv`.
+
+### Changed
+
+- Updated installation tasks to use FQCN instead of abbreviated modules.
+- Improved configuration for `virtualenv` and `pip` to ensure compatibility with different Python versions.
+
 ## [2.0.7](https://github.com/idealista/airflow-role/tree/2.0.7)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.6...2.0.7)
 
 ### Fixed
+
 - #114 The "-n" option might not be needed
 
 ## [2.0.6](https://github.com/idealista/airflow-role/tree/2.0.6)
@@ -17,6 +42,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.5...2.0.6)
 
 ### Fixed
+
 - :hammer_and_wrench: Allow intalling only some services
 - :hammer_and_wrench: Updating travis environment
 
@@ -46,6 +72,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.3...2.0.4)
 
 ### Fixed
+
 - :hammer_and_wrench: Wrong webserver.pid path in template gunicorn-logrotate.j2 [#110](https://github.com/idealista/airflow-role/issues/110) @ginolegigot
 
 ## [2.0.3](https://github.com/idealista/airflow-role/tree/2.0.3)
