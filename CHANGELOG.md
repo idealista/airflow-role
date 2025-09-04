@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 
 ## [Unreleased](https://github.com/idealista/airflow-role/tree/develop)
 
+## [3.0.1](https://github.com/idealista/airflow-role/tree/3.0.1)
+
+[Full Changelog](https://github.com/idealista/airflow-role/compare/3.0.0...3.0.1)
+
+### Fixed
+
+- `base_log_folder` is fixed in default config due to wrong `log_folder` named var
+
 ## [3.0.0](https://github.com/idealista/airflow-role/tree/3.0.0)
 
 [Full Changelog](https://github.com/idealista/airflow-role/compare/2.0.7...3.0.0)
