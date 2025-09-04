@@ -14,7 +14,7 @@ airflow_cfg_default:
       plugins_folder: "{{ airflow_app_home }}/plugins"
   - section: logging
     settings:
-      logs_folder: "{{ airflow_logs_folder }}"
+      base_log_folder: "{{ airflow_logs_folder }}"
       dag_processor_manager_log_location: "{{ airflow_logs_folder }}/dag_processor_manager/dag_processor_manager.log"
   - section: webserver
     settings:
